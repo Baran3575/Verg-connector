@@ -1,0 +1,302 @@
+==================== Launch Minecraft ====================
+▷ Launcher version: 2.4.9_hotfix1 (200032)
+▷ Architecture: arm64
+▷ Device model: samsung, SM-S721B
+▷ API version: 36
+▷ Renderer: MobileGlues (OpenGL 4.0, 1.17+)
+▷ Renderer Summary: MobileGlues eklentisinden
+▷ Selected Minecraft version: 1.21.1 NeoForge 21.1.234
+▷ Minecraft Info: 1.21.1, NeoForge - 21.1.234
+▷ Game Path: /storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/versions/1.21.1 NeoForge 21.1.234 (Isolation: true)
+▷ Custom Java arguments: NONE
+▷ Java Runtime: Internal-21
+▷ Account: Vergi911 (Local)
+==================== Env Map ====================
+▷ ZALITH_VERSION_CODE = 200032
+▷ TMPDIR = /data/user/0/com.movtery.zalithlauncher.v2/cache
+▷ AWTSTUB_WIDTH = 1520
+▷ POJAV_BIG_CORE_AFFINITY = 1
+▷ POJAV_NATIVEDIR = /data/app/~~r94pno3fSVvTFaAhOYEYrw==/com.movtery.zalithlauncher.v2--fP8HWrlFx8eSinzFhbSDQ==/lib/arm64
+▷ LIBGL_EGL = libmobileglues.so
+▷ DRIVER_PATH = /data/app/~~r94pno3fSVvTFaAhOYEYrw==/com.movtery.zalithlauncher.v2--fP8HWrlFx8eSinzFhbSDQ==/lib/arm64
+▷ HOME = /storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files
+▷ PATH = /data/user/0/com.movtery.zalithlauncher.v2/files/games/runtimes/Internal-21/bin:/product/bin:/apex/com.android.runtime/bin:/apex/com.android.art/bin:/apex/com.android.virt/bin:/system_ext/bin:/system/bin:/system/xbin:/odm/bin:/vendor/bin:/vendor/xbin
+▷ MOD_ANDROID_RUNTIME = /data/user/0/com.movtery.zalithlauncher.v2/app_runtime_mod
+▷ INST_NEOFORGE = 1
+▷ LD_LIBRARY_PATH = /system/lib64:/vendor/lib64:/vendor/lib64/hw:/system_ext/lib64:/data/app/~~KQAf4OoJ75eBjW6FCyUtUA==/com.fcl.plugin.mobileglues-G_zEHSPPOURyMNDHO70Lrg==/lib/arm64:/data/user/0/com.movtery.zalithlauncher.v2/app_runtime_mod:/data/app/~~r94pno3fSVvTFaAhOYEYrw==/com.movtery.zalithlauncher.v2--fP8HWrlFx8eSinzFhbSDQ==/lib/arm64
+▷ POJAV_RENDERER = opengles3
+▷ LIBGL_ES = 3
+▷ POJAVEXEC_EGL = libmobileglues.so
+▷ JAVA_HOME = /data/user/0/com.movtery.zalithlauncher.v2/files/games/runtimes/Internal-21
+▷ AWTSTUB_HEIGHT = 702
+==================== DLOPEN Java Runtime ====================
+[DEBUG] DLOPEN: /data/user/0/com.movtery.zalithlauncher.v2/files/games/runtimes/Internal-21/lib/libjli.so , success
+[DEBUG] DLOPEN: /data/user/0/com.movtery.zalithlauncher.v2/files/games/runtimes/Internal-21/lib/server/libjvm.so , success
+[DEBUG] DLOPEN: /data/user/0/com.movtery.zalithlauncher.v2/files/games/runtimes/Internal-21/lib/libfreetype.so , success
+[DEBUG] DLOPEN: /data/user/0/com.movtery.zalithlauncher.v2/files/games/runtimes/Internal-21/lib/libverify.so , success
+[DEBUG] DLOPEN: /data/user/0/com.movtery.zalithlauncher.v2/files/games/runtimes/Internal-21/lib/libjava.so , success
+[DEBUG] DLOPEN: /data/user/0/com.movtery.zalithlauncher.v2/files/games/runtimes/Internal-21/lib/libnet.so , success
+[DEBUG] DLOPEN: /data/user/0/com.movtery.zalithlauncher.v2/files/games/runtimes/Internal-21/lib/libnio.so , success
+[DEBUG] DLOPEN: /data/user/0/com.movtery.zalithlauncher.v2/files/games/runtimes/Internal-21/lib/libawt.so , success
+[DEBUG] DLOPEN: /data/user/0/com.movtery.zalithlauncher.v2/files/games/runtimes/Internal-21/lib/libawt_headless.so , success
+[DEBUG] DLOPEN: /data/user/0/com.movtery.zalithlauncher.v2/files/games/runtimes/Internal-21/lib/libfontmanager.so , success
+[DEBUG] DLOPEN: /data/user/0/com.movtery.zalithlauncher.v2/files/games/runtimes/Internal-21/lib/libsctp.so , success
+[DEBUG] DLOPEN: /data/user/0/com.movtery.zalithlauncher.v2/files/games/runtimes/Internal-21/lib/libnet.so , success
+[DEBUG] DLOPEN: /data/user/0/com.movtery.zalithlauncher.v2/files/games/runtimes/Internal-21/lib/libextnet.so , success
+[DEBUG] DLOPEN: /data/user/0/com.movtery.zalithlauncher.v2/files/games/runtimes/Internal-21/lib/libfreetype.so , success
+[DEBUG] DLOPEN: /data/user/0/com.movtery.zalithlauncher.v2/files/games/runtimes/Internal-21/lib/libverify.so , success
+[DEBUG] DLOPEN: /data/user/0/com.movtery.zalithlauncher.v2/files/games/runtimes/Internal-21/lib/libsyslookup.so , success
+[DEBUG] DLOPEN: /data/user/0/com.movtery.zalithlauncher.v2/files/games/runtimes/Internal-21/lib/libjli.so , success
+[DEBUG] DLOPEN: /data/user/0/com.movtery.zalithlauncher.v2/files/games/runtimes/Internal-21/lib/libjdwp.so , success
+[DEBUG] DLOPEN: /data/user/0/com.movtery.zalithlauncher.v2/files/games/runtimes/Internal-21/lib/libzip.so , success
+[DEBUG] DLOPEN: /data/user/0/com.movtery.zalithlauncher.v2/files/games/runtimes/Internal-21/lib/libawt.so , success
+[DEBUG] DLOPEN: /data/user/0/com.movtery.zalithlauncher.v2/files/games/runtimes/Internal-21/lib/libjaas.so , success
+[DEBUG] DLOPEN: /data/user/0/com.movtery.zalithlauncher.v2/files/games/runtimes/Internal-21/lib/libmanagement_agent.so , success
+[DEBUG] DLOPEN: /data/user/0/com.movtery.zalithlauncher.v2/files/games/runtimes/Internal-21/lib/libjimage.so , success
+[DEBUG] DLOPEN: /data/user/0/com.movtery.zalithlauncher.v2/files/games/runtimes/Internal-21/lib/liblcms.so , success
+[DEBUG] DLOPEN: /data/user/0/com.movtery.zalithlauncher.v2/files/games/runtimes/Internal-21/lib/libnio.so , success
+[DEBUG] DLOPEN: /data/user/0/com.movtery.zalithlauncher.v2/files/games/runtimes/Internal-21/lib/libawt_headless.so , success
+[DEBUG] DLOPEN: /data/user/0/com.movtery.zalithlauncher.v2/files/games/runtimes/Internal-21/lib/libmanagement_ext.so , success
+[DEBUG] DLOPEN: /data/user/0/com.movtery.zalithlauncher.v2/files/games/runtimes/Internal-21/lib/librmi.so , success
+[DEBUG] DLOPEN: /data/user/0/com.movtery.zalithlauncher.v2/files/games/runtimes/Internal-21/lib/libjawt.so , success
+[DEBUG] DLOPEN: /data/user/0/com.movtery.zalithlauncher.v2/files/games/runtimes/Internal-21/lib/libmlib_image.so , success
+[DEBUG] DLOPEN: /data/user/0/com.movtery.zalithlauncher.v2/files/games/runtimes/Internal-21/lib/libmanagement.so , success
+[DEBUG] DLOPEN: /data/user/0/com.movtery.zalithlauncher.v2/files/games/runtimes/Internal-21/lib/libjavajpeg.so , success
+[DEBUG] DLOPEN: /data/user/0/com.movtery.zalithlauncher.v2/files/games/runtimes/Internal-21/lib/libj2pkcs11.so , success
+[DEBUG] DLOPEN: /data/user/0/com.movtery.zalithlauncher.v2/files/games/runtimes/Internal-21/lib/libfontmanager.so , success
+[DEBUG] DLOPEN: /data/user/0/com.movtery.zalithlauncher.v2/files/games/runtimes/Internal-21/lib/libprefs.so , success
+[DEBUG] DLOPEN: /data/user/0/com.movtery.zalithlauncher.v2/files/games/runtimes/Internal-21/lib/libdt_socket.so , success
+[DEBUG] DLOPEN: /data/user/0/com.movtery.zalithlauncher.v2/files/games/runtimes/Internal-21/lib/libinstrument.so , success
+[DEBUG] DLOPEN: /data/user/0/com.movtery.zalithlauncher.v2/files/games/runtimes/Internal-21/lib/libj2gss.so , success
+[DEBUG] DLOPEN: /data/user/0/com.movtery.zalithlauncher.v2/files/games/runtimes/Internal-21/lib/libjsig.so , success
+[DEBUG] DLOPEN: /data/user/0/com.movtery.zalithlauncher.v2/files/games/runtimes/Internal-21/lib/libjava.so , success
+[DEBUG] DLOPEN: /data/user/0/com.movtery.zalithlauncher.v2/files/games/runtimes/Internal-21/lib/server/libjvm.so , success
+[DEBUG] DLOPEN: /data/user/0/com.movtery.zalithlauncher.v2/files/games/runtimes/Internal-21/lib/server/libjsig.so , success
+[DEBUG] DLOPEN: /data/user/0/com.movtery.zalithlauncher.v2/files/games/runtimes/Internal-21/lib/libawt_xawt.so , success
+==================== DLOPEN Renderer ====================
+[DEBUG] DLOPEN: /data/app/~~r94pno3fSVvTFaAhOYEYrw==/com.movtery.zalithlauncher.v2--fP8HWrlFx8eSinzFhbSDQ==/lib/arm64/libopenal.so , success
+Initializing MobileGlues ...
+The Open Source License of MobileGlues: 
+  GNU LGPL-2.1 License
+MG_DIR_PATH = /sdcard/MG
+[MobileGlues] Setting: enableAngle                 = false
+[MobileGlues] Setting: ignoreError                 = 0
+[MobileGlues] Setting: enableExtComputeShader      = false
+[MobileGlues] Setting: enableExtTimerQuery         = true
+[MobileGlues] Setting: enableExtDirectStateAccess  = false
+[MobileGlues] Setting: maxGlslCacheSize            = 32
+[MobileGlues] Setting: angleDepthClearFixMode      = 0
+[MobileGlues] Setting: bufferCoherentAsFlush       = 1
+[MobileGlues] Setting: customGLVersion             = 4.0.0
+[MobileGlues] Setting: fsr1Setting                 = 0
+[MobileGlues] Setting: hideMGEnvLevel              = 0
+EGL initialized successfully
+OpenGL ES Version: OpenGL ES 3.2 (320)
+Detected GL_EXT_multi_draw_indirect!
+[MobileGlues] Setting: multidrawMode               = Auto
+multidrawMode = Auto
+    -> MultidrawIndirect (Auto detected)
+[DEBUG] DLOPEN: /data/app/~~KQAf4OoJ75eBjW6FCyUtUA==/com.fcl.plugin.mobileglues-G_zEHSPPOURyMNDHO70Lrg==/lib/arm64/libmobileglues.so , success
+==================== JVM Args ====================
+▷ /data/user/0/com.movtery.zalithlauncher.v2/files/games/runtimes/Internal-21/bin/java
+▷ -Djava.home=/data/user/0/com.movtery.zalithlauncher.v2/files/games/runtimes/Internal-21
+▷ -Djava.io.tmpdir=/data/user/0/com.movtery.zalithlauncher.v2/cache
+▷ -Djna.boot.library.path=/data/user/0/com.movtery.zalithlauncher.v2/files/games/jna_dir/jna/5.14.0
+▷ -Duser.home=/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft
+▷ -Duser.language=tr
+▷ -Duser.country=TR
+▷ -Duser.timezone=Europe/Istanbul
+▷ -Dos.name=Linux
+▷ -Dos.version=Android-16
+▷ -Dpojav.path.minecraft=/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft
+▷ -Dpojav.path.private.account=/data/user/0/com.movtery.zalithlauncher.v2/databases
+▷ -Dorg.lwjgl.vulkan.libname=libvulkan.so
+▷ -Dglfwstub.windowWidth=1520
+▷ -Dglfwstub.windowHeight=702
+▷ -Dglfwstub.initEgl=false
+▷ -Dext.net.resolvPath=/data/user/0/com.movtery.zalithlauncher.v2/files/games/resolv.conf
+▷ -Dlog4j2.formatMsgNoLookups=true
+▷ -Djava.rmi.server.useCodebaseOnly=true
+▷ -Dcom.sun.jndi.rmi.object.trustURLCodebase=false
+▷ -Dcom.sun.jndi.cosnaming.object.trustURLCodebase=false
+▷ -Dnet.minecraft.clientmodname=Zalith Launcher
+▷ -Dfml.earlyprogresswindow=false
+▷ -Dfml.ignoreInvalidMinecraftCertificates=true
+▷ -Dfml.ignorePatchDiscrepancies=true
+▷ -Dloader.disable_forked_guis=true
+▷ -Djdk.lang.Process.launchMechanism=FORK
+▷ -Dsodium.checks.issue2561=false
+▷ -Djava.library.path=/data/user/0/com.movtery.zalithlauncher.v2/files/games/jna_dir/jna/5.14.0:/data/app/~~r94pno3fSVvTFaAhOYEYrw==/com.movtery.zalithlauncher.v2--fP8HWrlFx8eSinzFhbSDQ==/lib/arm64
+▷ -javaagent:/data/user/0/com.movtery.zalithlauncher.v2/files/components/launcher/MioLibPatcher.jar
+▷ -Xms2579M
+▷ -Xmx2579M
+▷ -Dorg.lwjgl.freetype.libname=/data/app/~~r94pno3fSVvTFaAhOYEYrw==/com.movtery.zalithlauncher.v2--fP8HWrlFx8eSinzFhbSDQ==/lib/arm64/libfreetype.so
+▷ -Dorg.lwjgl.spvc.libname=spirv-cross-c-shared
+▷ -Dorg.lwjgl.system.allocator=system
+▷ -XX:ActiveProcessorCount=10
+▷ -Dorg.lwjgl.opengl.libname=/data/app/~~KQAf4OoJ75eBjW6FCyUtUA==/com.fcl.plugin.mobileglues-G_zEHSPPOURyMNDHO70Lrg==/lib/arm64/libmobileglues.so
+▷ -Djava.awt.headless=false
+▷ -Dcacio.managed.screensize=1520x702
+▷ -Dcacio.font.fontmanager=sun.awt.X11FontManager
+▷ -Dcacio.font.fontscaler=sun.font.FreetypeFontScaler
+▷ -Dswing.defaultlaf=javax.swing.plaf.nimbus.NimbusLookAndFeel
+▷ -Dawt.toolkit=com.github.caciocavallosilano.cacio.ctc.CTCToolkit
+▷ -Djava.awt.graphicsenv=com.github.caciocavallosilano.cacio.ctc.CTCGraphicsEnvironment
+▷ -javaagent:/data/user/0/com.movtery.zalithlauncher.v2/files/components/caciocavallo17/cacio-agent.jar
+▷ --add-exports=java.desktop/java.awt=ALL-UNNAMED
+▷ --add-exports=java.desktop/java.awt.peer=ALL-UNNAMED
+▷ --add-exports=java.desktop/sun.awt.image=ALL-UNNAMED
+▷ --add-exports=java.desktop/sun.java2d=ALL-UNNAMED
+▷ --add-exports=java.desktop/java.awt.dnd.peer=ALL-UNNAMED
+▷ --add-exports=java.desktop/sun.awt=ALL-UNNAMED
+▷ --add-exports=java.desktop/sun.awt.event=ALL-UNNAMED
+▷ --add-exports=java.desktop/sun.awt.datatransfer=ALL-UNNAMED
+▷ --add-exports=java.desktop/sun.font=ALL-UNNAMED
+▷ --add-exports=java.base/sun.security.action=ALL-UNNAMED
+▷ --add-opens=java.base/java.util=ALL-UNNAMED
+▷ --add-opens=java.desktop/java.awt=ALL-UNNAMED
+▷ --add-opens=java.desktop/sun.font=ALL-UNNAMED
+▷ --add-opens=java.desktop/sun.java2d=ALL-UNNAMED
+▷ --add-opens=java.base/java.lang.reflect=ALL-UNNAMED
+▷ --add-opens=java.base/java.net=ALL-UNNAMED
+▷ -Xbootclasspath/a:/data/user/0/com.movtery.zalithlauncher.v2/files/components/caciocavallo17/cacio-agent.jar:/data/user/0/com.movtery.zalithlauncher.v2/files/components/caciocavallo17/cacio-shared-1.19.1-SNAPSHOT.jar:/data/user/0/com.movtery.zalithlauncher.v2/files/components/caciocavallo17/cacio-tta-1.19.1-SNAPSHOT.jar
+▷ -Dlog4j.configurationFile=/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/versions/1.21.1 NeoForge 21.1.234/log4j2.xml
+▷ -Dminecraft.client.jar=/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/versions/1.21.1 NeoForge 21.1.234/1.21.1 NeoForge 21.1.234.jar
+▷ -Dminecraft.launcher.brand=Zalith Launcher
+▷ -Dminecraft.launcher.version=2.4.9_hotfix1
+▷ -Djava.library.path=/data/app/~~KQAf4OoJ75eBjW6FCyUtUA==/com.fcl.plugin.mobileglues-G_zEHSPPOURyMNDHO70Lrg==/lib/arm64:/data/user/0/com.movtery.zalithlauncher.v2/files/games/runtimes/Internal-21/lib/jli:/data/user/0/com.movtery.zalithlauncher.v2/files/games/runtimes/Internal-21/lib/server:/system/lib64:/vendor/lib64:/vendor/lib64/hw:/system_ext/lib64:/data/user/0/com.movtery.zalithlauncher.v2/files/games/jna_dir/jna:/data/user/0/com.movtery.zalithlauncher.v2/app_runtime_mod:/data/app/~~r94pno3fSVvTFaAhOYEYrw==/com.movtery.zalithlauncher.v2--fP8HWrlFx8eSinzFhbSDQ==/lib/arm64
+▷ -Djna.tmpdir=/data/user/0/com.movtery.zalithlauncher.v2/cache
+▷ -Dorg.lwjgl.system.SharedLibraryExtractPath=/data/user/0/com.movtery.zalithlauncher.v2/cache
+▷ -Dio.netty.native.workdir=/data/user/0/com.movtery.zalithlauncher.v2/cache
+▷ -Dminecraft.launcher.brand=Zalith Launcher
+▷ -Dminecraft.launcher.version=2.4.9_hotfix1
+▷ -cp
+▷ /data/user/0/com.movtery.zalithlauncher.v2/files/components/lwjgl3/lwjgl-glfw-classes.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/com/github/oshi/oshi-core/6.4.10/oshi-core-6.4.10.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/com/google/code/gson/gson/2.10.1/gson-2.10.1.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/com/google/guava/failureaccess/1.0.1/failureaccess-1.0.1.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/com/google/guava/guava/32.1.2-jre/guava-32.1.2-jre.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/com/ibm/icu/icu4j/73.2/icu4j-73.2.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/com/mojang/authlib/6.0.54/authlib-6.0.54.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/com/mojang/blocklist/1.0.10/blocklist-1.0.10.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/com/mojang/brigadier/1.3.10/brigadier-1.3.10.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/com/mojang/datafixerupper/8.0.16/datafixerupper-8.0.16.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/com/mojang/logging/1.2.7/logging-1.2.7.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/com/mojang/patchy/2.2.10/patchy-2.2.10.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/com/mojang/text2speech/1.17.9/text2speech-1.17.9.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/commons-codec/commons-codec/1.16.0/commons-codec-1.16.0.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/commons-io/commons-io/2.15.1/commons-io-2.15.1.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/commons-logging/commons-logging/1.2/commons-logging-1.2.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/io/netty/netty-buffer/4.1.97.Final/netty-buffer-4.1.97.Final.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/io/netty/netty-codec/4.1.97.Final/netty-codec-4.1.97.Final.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/io/netty/netty-common/4.1.97.Final/netty-common-4.1.97.Final.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/io/netty/netty-handler/4.1.97.Final/netty-handler-4.1.97.Final.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/io/netty/netty-resolver/4.1.97.Final/netty-resolver-4.1.97.Final.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/io/netty/netty-transport-classes-epoll/4.1.97.Final/netty-transport-classes-epoll-4.1.97.Final.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/io/netty/netty-transport-native-epoll/4.1.97.Final/netty-transport-native-epoll-4.1.97.Final-linux-aarch_64.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/io/netty/netty-transport-native-epoll/4.1.97.Final/netty-transport-native-epoll-4.1.97.Final-linux-x86_64.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/io/netty/netty-transport-native-unix-common/4.1.97.Final/netty-transport-native-unix-common-4.1.97.Final.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/io/netty/netty-transport/4.1.97.Final/netty-transport-4.1.97.Final.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/it/unimi/dsi/fastutil/8.5.12/fastutil-8.5.12.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/net/java/dev/jna/jna-platform/5.14.0/jna-platform-5.14.0.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/net/java/dev/jna/jna/5.14.0/jna-5.14.0.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/net/sf/jopt-simple/jopt-simple/5.0.4/jopt-simple-5.0.4.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/org/apache/commons/commons-compress/1.26.0/commons-compress-1.26.0.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/org/apache/commons/commons-lang3/3.14.0/commons-lang3-3.14.0.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/org/apache/httpcomponents/httpclient/4.5.13/httpclient-4.5.13.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/org/apache/httpcomponents/httpcore/4.4.16/httpcore-4.4.16.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/org/apache/logging/log4j/log4j-api/2.22.1/log4j-api-2.22.1.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/org/apache/logging/log4j/log4j-core/2.22.1/log4j-core-2.22.1.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/org/apache/logging/log4j/log4j-slf4j2-impl/2.22.1/log4j-slf4j2-impl-2.22.1.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/org/jcraft/jorbis/0.0.17/jorbis-0.0.17.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/org/joml/joml/1.10.5/joml-1.10.5.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/org/lz4/lz4-java/1.8.0/lz4-java-1.8.0.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/org/slf4j/slf4j-api/2.0.9/slf4j-api-2.0.9.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/net/neoforged/fancymodloader/earlydisplay/4.0.42/earlydisplay-4.0.42.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/net/neoforged/fancymodloader/loader/4.0.42/loader-4.0.42.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/net/neoforged/accesstransformers/at-modlauncher/10.0.1/at-modlauncher-10.0.1.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/net/neoforged/accesstransformers/10.0.1/accesstransformers-10.0.1.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/net/neoforged/bus/8.0.5/bus-8.0.5.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/net/neoforged/coremods/7.0.3/coremods-7.0.3.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/cpw/mods/modlauncher/11.0.5/modlauncher-11.0.5.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/net/neoforged/mergetool/2.0.0/mergetool-2.0.0-api.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/com/electronwill/night-config/toml/3.8.3/toml-3.8.3.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/com/electronwill/night-config/core/3.8.3/core-3.8.3.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/net/neoforged/JarJarSelector/0.4.1/JarJarSelector-0.4.1.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/net/neoforged/JarJarMetadata/0.4.1/JarJarMetadata-0.4.1.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/org/apache/maven/maven-artifact/3.8.5/maven-artifact-3.8.5.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/net/jodah/typetools/0.6.3/typetools-0.6.3.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/net/minecrell/terminalconsoleappender/1.3.0/terminalconsoleappender-1.3.0.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/net/fabricmc/sponge-mixin/0.15.2+mixin.0.8.7/sponge-mixin-0.15.2+mixin.0.8.7.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/org/openjdk/nashorn/nashorn-core/15.4/nashorn-core-15.4.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/cpw/mods/bootstraplauncher/2.0.2/bootstraplauncher-2.0.2.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/cpw/mods/securejarhandler/3.0.8/securejarhandler-3.0.8.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/org/ow2/asm/asm-commons/9.8/asm-commons-9.8.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/org/ow2/asm/asm-util/9.8/asm-util-9.8.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/org/ow2/asm/asm-analysis/9.8/asm-analysis-9.8.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/org/ow2/asm/asm-tree/9.8/asm-tree-9.8.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/org/ow2/asm/asm/9.8/asm-9.8.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/net/neoforged/JarJarFileSystems/0.4.1/JarJarFileSystems-0.4.1.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/org/antlr/antlr4-runtime/4.13.1/antlr4-runtime-4.13.1.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/org/jline/jline-reader/3.20.0/jline-reader-3.20.0.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/org/jline/jline-terminal/3.20.0/jline-terminal-3.20.0.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/net/minecraftforge/srgutils/0.4.15/srgutils-0.4.15.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/org/checkerframework/checker-qual/3.33.0/checker-qual-3.33.0.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/com/google/errorprone/error_prone_annotations/2.18.0/error_prone_annotations-2.18.0.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/com/google/j2objc/j2objc-annotations/2.8/j2objc-annotations-2.8.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/org/codehaus/plexus/plexus-utils/3.3.0/plexus-utils-3.3.0.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/com/machinezoo/noexception/noexception/1.7.1/noexception-1.7.1.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/versions/1.21.1 NeoForge 21.1.234/1.21.1 NeoForge 21.1.234.jar
+▷ -Djava.net.preferIPv6Addresses=system
+▷ -DignoreList=client-extra,1.21.1 NeoForge 21.1.234.jar,${primary_jar_name},1.21.1 NeoForge 21.1.234.jar
+▷ -DlibraryDirectory=/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries
+▷ -p
+▷ /storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/cpw/mods/bootstraplauncher/2.0.2/bootstraplauncher-2.0.2.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/cpw/mods/securejarhandler/3.0.8/securejarhandler-3.0.8.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/org/ow2/asm/asm-commons/9.8/asm-commons-9.8.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/org/ow2/asm/asm-util/9.8/asm-util-9.8.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/org/ow2/asm/asm-analysis/9.8/asm-analysis-9.8.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/org/ow2/asm/asm-tree/9.8/asm-tree-9.8.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/org/ow2/asm/asm/9.8/asm-9.8.jar:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/net/neoforged/JarJarFileSystems/0.4.1/JarJarFileSystems-0.4.1.jar
+▷ --add-modules
+▷ ALL-MODULE-PATH
+▷ --add-opens
+▷ java.base/java.util.jar=cpw.mods.securejarhandler
+▷ --add-opens
+▷ java.base/java.lang.invoke=cpw.mods.securejarhandler
+▷ --add-exports
+▷ java.base/sun.security.util=cpw.mods.securejarhandler
+▷ --add-exports
+▷ jdk.naming.dns/com.sun.jndi.dns=java.naming
+▷ --add-exports
+▷ cpw.mods.bootstraplauncher/cpw.mods.bootstraplauncher=ALL-UNNAMED
+▷ cpw.mods.bootstraplauncher.BootstrapLauncher
+▷ --username
+▷ Vergi911
+▷ --version
+▷ 1.21.1 NeoForge 21.1.234
+▷ --gameDir
+▷ /storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/versions/1.21.1 NeoForge 21.1.234
+▷ --assetsDir
+▷ /storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/assets
+▷ --assetIndex
+▷ 17
+▷ --uuid
+▷ d521bfc2ca343b80bba853f534c3ee04
+▷ --accessToken
+▷ ********************
+▷ --clientId
+▷ ${clientid}
+▷ --xuid
+▷ 
+▷ --userType
+▷ msa
+▷ --versionType
+▷ ZalithLauncher2.4.9_hotfix1
+▷ --fml.neoForgeVersion
+▷ 21.1.234
+▷ --fml.fmlVersion
+▷ 4.0.42
+▷ --fml.mcVersion
+▷ 1.21.1
+▷ --fml.neoFormVersion
+▷ 20240808.144430
+▷ --launchTarget
+▷ forgeclient
+[DEBUG] Done processing args
+[DEBUG] Found JLI lib
+[DEBUG] Calling JLI_Launch
+[MioLibPatcher/INFO]: MioPatcher is running!
+ERROR StatusConsoleListener appender Console has no parameter that matches element Policies
+[00:03:21] [main/INFO]: ModLauncher running: args [--username, Vergi911, --version, 1.21.1 NeoForge 21.1.234, --gameDir, /storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/versions/1.21.1 NeoForge 21.1.234, --assetsDir, /storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/assets, --assetIndex, 17, --uuid, d521bfc2ca343b80bba853f534c3ee04, --accessToken, ❄❄❄❄❄❄❄❄, --clientId, ${clientid}, --xuid, , --userType, msa, --versionType, ZalithLauncher2.4.9_hotfix1, --fml.neoForgeVersion, 21.1.234, --fml.fmlVersion, 4.0.42, --fml.mcVersion, 1.21.1, --fml.neoFormVersion, 20240808.144430, --launchTarget, forgeclient]
+[00:03:21] [main/INFO]: JVM identified as Oracle Corporation OpenJDK 64-Bit Server VM 21.0.1-internal-adhoc.runner.openjdk
+[00:03:21] [main/INFO]: ModLauncher 11.0.5+main.901c6ea8 starting: java version 21.0.1-internal by N/A; OS Linux arch aarch64 version Android-16
+[00:03:21] [main/INFO]: Loading ImmediateWindowProvider fmlearlywindow
+[INFO] <Native> Saving JVM environ...
+Registered forkAndExec
+[MioLibPatcher/INFO]: Patch target class: org/lwjgl/system/Library
+[00:03:21] [main/INFO]: Trying GL version 4.6
+EGLBridge: Binding to OpenGL ES
+[00:03:21] [main/INFO]: Requested GL version 4.6 got version 4.0
+[INFO] <NativeInput> Input ready: 1
+[00:03:21] [main/INFO]: SpongePowered MIXIN Subsystem Version=0.8.7 Source=union:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/net/fabricmc/sponge-mixin/0.15.2+mixin.0.8.7/sponge-mixin-0.15.2+mixin.0.8.7.jar%23133!/ Service=ModLauncher Env=CLIENT
+[00:03:21] [pool-2-thread-1/INFO]: GL info: Samsung Xclipse 940) on Vulkan 1.3.279) | ANGLE | Vulkan 1.3.279) | OpenGL ES 3.2 GL version 4.0.0 MobileGlues 1.3.4, Swung0x48, BZLZHH, Tungsten
+[00:03:22] [main/INFO]: Found mod file "client-1.21.1-20240808.144430-srg.jar" [locator: production client provider +net.neoforged:neoforge:21.1.234:client]
+[00:03:22] [main/INFO]: Found mod file "neoforge-21.1.234-universal.jar" [locator: PathBasedLocator[name=neoforge, paths=[/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/net/neoforged/neoforge/21.1.234/neoforge-21.1.234-universal.jar]], reader: mod manifest]
+[Verg Connector] Scanning mods directory for Fabric and Forge mods...
+[Verg Connector] Found Fabric mod: Jade-1.21.1-Fabric-15.10.5.jar
+Exception in thread "main" java.lang.NoClassDefFoundError: net/minecraft/server/packs/resources/PreparableReloadListener
+	at LAYER SERVICE/vergconnector@1.21.1-1.0.0/com.baran3575.vergconnector.FabricJarContentsWrapper.generateVirtualToml(FabricJarContentsWrapper.java:52)
+	at LAYER SERVICE/vergconnector@1.21.1-1.0.0/com.baran3575.vergconnector.FabricJarContentsWrapper.findFile(FabricJarContentsWrapper.java:30)
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.moddiscovery.readers.JarModsDotTomlModFileReader.createModFile(JarModsDotTomlModFileReader.java:42)
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.moddiscovery.readers.JarModsDotTomlModFileReader.read(JarModsDotTomlModFileReader.java:88)
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.moddiscovery.ModDiscoverer$DiscoveryPipeline.addJarContent(ModDiscoverer.java:223)
+	at LAYER SERVICE/vergconnector@1.21.1-1.0.0/com.baran3575.vergconnector.VergConnectorLocator.processJar(VergConnectorLocator.java:49)
+	at LAYER SERVICE/vergconnector@1.21.1-1.0.0/com.baran3575.vergconnector.VergConnectorLocator.lambda$findCandidates$1(VergConnectorLocator.java:31)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(Unknown Source)
+	at java.base/java.util.stream.ReferencePipeline$2$1.accept(Unknown Source)
+	at java.base/java.util.Iterator.forEachRemaining(Unknown Source)
+	at java.base/java.util.Spliterators$IteratorSpliterator.forEachRemaining(Unknown Source)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(Unknown Source)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(Unknown Source)
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(Unknown Source)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(Unknown Source)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(Unknown Source)
+	at java.base/java.util.stream.ReferencePipeline.forEach(Unknown Source)
+	at LAYER SERVICE/vergconnector@1.21.1-1.0.0/com.baran3575.vergconnector.VergConnectorLocator.findCandidates(VergConnectorLocator.java:29)
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.moddiscovery.ModDiscoverer.discoverMods(ModDiscoverer.java:73)
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.FMLLoader.beginModScan(FMLLoader.java:131)
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.FMLServiceProvider.beginScanning(FMLServiceProvider.java:84)
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.TransformationServiceDecorator.runScan(TransformationServiceDecorator.java:97)
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.TransformationServicesHandler.lambda$runScanningTransformationServices$7(TransformationServicesHandler.java:94)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(Unknown Source)
+	at java.base/java.util.HashMap$ValueSpliterator.forEachRemaining(Unknown Source)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(Unknown Source)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(Unknown Source)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(Unknown Source)
+	at java.base/java.util.stream.AbstractPipeline.evaluateToArrayNode(Unknown Source)
+	at java.base/java.util.stream.ReferencePipeline.toArray(Unknown Source)
+	at java.base/java.util.stream.ReferencePipeline.toArray(Unknown Source)
+	at java.base/java.util.stream.ReferencePipeline.toList(Unknown Source)
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.TransformationServicesHandler.runScanningTransformationServices(TransformationServicesHandler.java:96)
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.TransformationServicesHandler.initializeTransformationServices(TransformationServicesHandler.java:50)
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.Launcher.run(Launcher.java:84)
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.Launcher.main(Launcher.java:74)
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:26)
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:23)
+	at cpw.mods.bootstraplauncher@2.0.2/cpw.mods.bootstraplauncher.BootstrapLauncher.run(BootstrapLauncher.java:210)
+	at cpw.mods.bootstraplauncher@2.0.2/cpw.mods.bootstraplauncher.BootstrapLauncher.main(BootstrapLauncher.java:69)
+Caused by: java.lang.ClassNotFoundException: net.minecraft.server.packs.resources.PreparableReloadListener
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(Unknown Source)
+	at java.base/java.lang.ClassLoader.loadClass(Unknown Source)
+	at cpw.mods.securejarhandler/cpw.mods.cl.ModuleClassLoader.loadClass(ModuleClassLoader.java:216)
+	at java.base/java.lang.ClassLoader.loadClass(Unknown Source)
+	at cpw.mods.securejarhandler/cpw.mods.cl.ModuleClassLoader.loadClass(ModuleClassLoader.java:216)
+	at java.base/java.lang.ClassLoader.loadClass(Unknown Source)
+	... 40 more
+[DEBUG] Going to free args
+Java Exit code: 1
+[DEBUG] Free done
+input_bridge nativeSetWindowAttrib() JNI call failed: -1
+input_bridge nativeSetWindowAttrib() JNI call failed: -1
+input_bridge nativeSetWindowAttrib() JNI call failed: -1
+input_bridge nativeSetWindowAttrib() JNI call failed: -1
