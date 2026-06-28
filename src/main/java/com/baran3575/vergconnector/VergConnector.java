@@ -293,6 +293,9 @@ public class VergConnector {
     private static void processEntrypointElement(String elem, java.util.List<String> list) {
         if (elem.startsWith("{")) {
             int valIdx = elem.indexOf("\"value\"");
+            if (valIdx == -1) {
+                valIdx = elem.indexOf("\"config\"");
+            }
             if (valIdx != -1) {
                 int colon = elem.indexOf(":", valIdx);
                 if (colon != -1) {

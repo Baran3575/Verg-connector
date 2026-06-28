@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verg Connector - Mod Compatibility List</title>
+    <meta name="description" content="Check compatibility of Fabric, Forge, and NeoForge mods on NeoForge 1.21.1 with Verg Connector.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="stars-bg"></div>
+    <div class="glowing-orb orb-1"></div>
+    <div class="glowing-orb orb-2"></div>
+
+    <header>
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <i class="fa-solid fa-circle-nodes logo-icon"></i>
+                Verg<span>Connector</span>
+            </a>
+            <div class="nav-links">
+                <a href="https://github.com/Baran3575/Verg-connector" target="_blank" class="nav-btn">
+                    <i class="fa-brands fa-github"></i> GitHub
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero-section">
+            <h1 class="hero-title">Mod Compatibility Hub</h1>
+            <p class="hero-subtitle">Search any Minecraft mod to verify its compatibility status on <strong>NeoForge 1.21.1</strong> using the Verg Connector bridge.</p>
+            
+            <div class="search-wrapper">
+                <div class="search-bar">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" id="search-input" placeholder="Type mod name (e.g. Sodium, Lithium, Jei...)" autocomplete="off">
+                    <button id="clear-btn" class="clear-btn"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+            </div>
+        </section>
+
+        <section class="results-section">
+            <div class="results-header" id="results-meta" style="display: none;">
+                <span class="results-count" id="results-count">Found 0 mods</span>
+                <div class="filter-options">
+                    <span class="active-filter" id="filter-all">All</span>
+                </div>
+            </div>
+
+            <!-- Loader / Spinner -->
+            <div class="loader-wrapper" id="loader" style="display: none;">
+                <div class="spinner"></div>
+                <p>Scanning Modrinth database...</p>
+            </div>
+
+            <!-- Results Grid -->
+            <div class="mods-grid" id="mods-grid">
+                <!-- Welcome Card / Explainer (Default view) -->
+                <div class="welcome-card card">
+                    <div class="welcome-icon-wrapper">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    </div>
+                    <h3>Start Searching</h3>
+                    <p>Enter the name of a Fabric or Forge mod to check if it's supported by Verg Connector on NeoForge. We query Modrinth dynamically to get the latest mod details.</p>
+                    <div class="featured-searches">
+                        <span>Try searching:</span>
+                        <button class="search-tag" onclick="searchMod('sodium')">Sodium</button>
+                        <button class="search-tag" onclick="searchMod('lithium')">Lithium</button>
+                        <button class="search-tag" onclick="searchMod('iris')">Iris Shaders</button>
+                        <button class="search-tag" onclick="searchMod('jei')">JEI</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Verg Connector. Powered by Modrinth API. Created for advanced NeoForge bridging.</p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
