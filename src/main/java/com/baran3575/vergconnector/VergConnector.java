@@ -8,7 +8,7 @@ import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.event.server.ServerStartingEvent;
+import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 
 @Mod(VergConnector.MODID)
@@ -27,7 +27,8 @@ public class VergConnector {
     private void initializeFabricMods() {
         LOGGER.info("[Verg Connector] Initializing Fabric mods state and running main entrypoints...");
 
-        for (net.neoforged.fml.loading.moddiscovery.ModFile modFile : net.neoforged.fml.ModList.get().getModFiles()) {
+        for (net.neoforged.neoforgespi.language.IModFileInfo modFileInfo : net.neoforged.fml.ModList.get().getModFiles()) {
+            net.neoforged.neoforgespi.locating.IModFile modFile = modFileInfo.getFile();
             java.nio.file.Path fabricModJson = modFile.findResource("fabric.mod.json");
             if (java.nio.file.Files.exists(fabricModJson)) {
                 try {

@@ -21,7 +21,8 @@ public class VergConnectorClient {
 
     private void initializeClientFabricMods() {
         VergConnector.LOGGER.info("[Verg Connector Client] Running client-side Fabric entrypoints...");
-        for (net.neoforged.fml.loading.moddiscovery.ModFile modFile : net.neoforged.fml.ModList.get().getModFiles()) {
+        for (net.neoforged.neoforgespi.language.IModFileInfo modFileInfo : net.neoforged.fml.ModList.get().getModFiles()) {
+            net.neoforged.neoforgespi.locating.IModFile modFile = modFileInfo.getFile();
             java.nio.file.Path fabricModJson = modFile.findResource("fabric.mod.json");
             if (java.nio.file.Files.exists(fabricModJson)) {
                 try {
