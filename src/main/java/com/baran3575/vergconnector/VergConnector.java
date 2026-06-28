@@ -22,6 +22,10 @@ public class VergConnector {
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
 
         initializeFabricMods();
+
+        if (net.neoforged.fml.loading.FMLEnvironment.dist == net.neoforged.api.distmarker.Dist.CLIENT) {
+            VergConnectorClient.init(modEventBus);
+        }
     }
 
     private void initializeFabricMods() {
@@ -61,6 +65,24 @@ public class VergConnector {
                             }
                         } catch (Exception e) {
                             LOGGER.error("[Verg Connector] Failed to initialize main entrypoint: {}", entrypoint, e);
+                        }
+                    }
+
+                    // Execute server entrypoints if on dedicated server
+                    if (net.neoforged.fml.loading.FMLEnvironment.dist == net.neoforged.api.distmarker.Dist.DEDICATED_SERVER) {
+                        java.util.List<String> serverEntrypoints = parseEntrypoints(jsonContent, "server");
+                        for (String entrypoint : serverEntrypoints) {
+                            try {
+                                LOGGER.info("[Verg Connector] Loading server entrypoint: {}", entrypoint);
+                                Class<?> clazz = Class.forName(entrypoint);
+                                Object instance = clazz.getDeclaredConstructor().newInstance();
+                                if (instance instanceof net.fabricmc.api.DedicatedServerModInitializer initializer) {
+                                    initializer.onInitializeServer();
+                                    LOGGER.info("[Verg Connector] Successfully initialized server entrypoint: {}", entrypoint);
+                                }
+                            } catch (Exception e) {
+                                LOGGER.error("[Verg Connector] Failed to initialize server entrypoint: {}", entrypoint, e);
+                            }
                         }
                     }
                 } catch (Exception e) {
@@ -131,7 +153,43 @@ public class VergConnector {
     }
 
     @SubscribeEvent
-    public void onServerStarting(ServerStartingEvent event) {
-        LOGGER.info("Verg Connector server starting...");
+    public void onServerAboutToStart(net.neoforged.neoforge.event.server.ServerAboutToStartEvent event) {
+        LOGGER.info("[Verg Connector] Triggering Fabric SERVER_STARTING lifecycle event");
+        for (net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents.ServerStarting handler : net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents.SERVER_STARTING.getHandlers()) {
+            handler.onServerStarting(event.getServer());
+        }
+    }
+
+    @SubscribeEvent
+    public void onServerStarted(net.neoforged.neoforge.event.server.ServerStartedEvent event) {
+        LOGGER.info("[Verg Connector] Triggering Fabric SERVER_STARTED lifecycle event");
+        for (net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents.ServerStarted handler : net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents.SERVER_STARTED.getHandlers()) {
+            handler.onServerStarted(event.getServer());
+        }
+    }
+
+    @SubscribeEvent
+    public void onServerStopping(net.neoforged.neoforge.event.server.ServerStoppingEvent event) {
+        LOGGER.info("[Verg Connector] Triggering Fabric SERVER_STOPPING lifecycle event");
+        for (net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents.ServerStopping handler : net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents.SERVER_STOPPING.getHandlers()) {
+            handler.onServerStopping(event.getServer());
+        }
+    }
+
+    @SubscribeEvent
+    public void onServerStopped(net.neoforged.neoforge.event.server.ServerStoppedEvent event) {
+        LOGGER.info("[Verg Connector] Triggering Fabric SERVER_STOPPED lifecycle event");
+        for (net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents.ServerStopped handler : net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents.SERVER_STOPPED.getHandlers()) {
+            handler.onServerStopped(event.getServer());
+        }
+    }
+
+    @SubscribeEvent
+    public void onAddReloadListener(net.neoforged.neoforge.event.AddReloadListenerEvent event) {
+        LOGGER.info("[Verg Connector] Registering Fabric server resource reload listeners");
+        net.fabricmc.fabric.api.resource.ResourceManagerHelper serverHelper = net.fabricmc.fabric.api.resource.ResourceManagerHelper.get(net.minecraft.server.packs.PackType.SERVER_DATA);
+        for (net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener listener : serverHelper.getListeners()) {
+            event.addListener(listener);
+        }
     }
 }
