@@ -23,7 +23,8 @@ public class FabricJarContentsWrapper implements JarContents {
 
     @Override
     public Optional<URI> findFile(String name) {
-        if (name.equals("META-INF/neoforge.mods.toml") || name.equals("neoforge.mods.toml")) {
+        if (name.equals("META-INF/neoforge.mods.toml") || name.equals("neoforge.mods.toml") ||
+            name.equals("META-INF/mods.toml") || name.equals("mods.toml")) {
             if (tempToml == null) {
                 try {
                     tempToml = generateVirtualToml();
