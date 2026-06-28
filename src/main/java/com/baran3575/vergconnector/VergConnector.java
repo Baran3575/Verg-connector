@@ -18,6 +18,7 @@ public class VergConnector {
 
     public VergConnector(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::commonSetup);
+        modEventBus.addListener(this::onBuildCreativeModeTabContents);
         NeoForge.EVENT_BUS.register(this);
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
 
@@ -25,6 +26,17 @@ public class VergConnector {
 
         if (net.neoforged.fml.loading.FMLEnvironment.dist == net.neoforged.api.distmarker.Dist.CLIENT) {
             VergConnectorClient.init(modEventBus);
+        }
+    }
+
+    private void onBuildCreativeModeTabContents(net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent event) {
+        net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents.Event fabricEvent = 
+            net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents.getEvents().get(event.getTabKey());
+        if (fabricEvent != null) {
+            net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents.Entries entries = event::accept;
+            for (java.util.function.Consumer<net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents.Entries> listener : fabricEvent.getListeners()) {
+                listener.accept(entries);
+            }
         }
     }
 
