@@ -2,6 +2,7 @@ package com.baran3575.vergconnector;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -10,8 +11,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.jar.Manifest;
 import cpw.mods.jarhandling.JarContents;
+import cpw.mods.jarhandling.SecureJar;
 
-public class FabricJarContentsWrapper extends JarContents {
+public class FabricJarContentsWrapper implements JarContents {
     private final JarContents delegate;
     private Path tempToml;
 
@@ -20,7 +22,7 @@ public class FabricJarContentsWrapper extends JarContents {
     }
 
     @Override
-    public Optional<Path> findFile(String name) {
+    public Optional<URI> findFile(String name) {
         if (name.equals("META-INF/neoforge.mods.toml") || name.equals("neoforge.mods.toml")) {
             if (tempToml == null) {
                 try {
@@ -30,19 +32,19 @@ public class FabricJarContentsWrapper extends JarContents {
                     return Optional.empty();
                 }
             }
-            return Optional.of(tempToml);
+            return Optional.of(tempToml.toUri());
         }
         return delegate.findFile(name);
     }
 
     private Path generateVirtualToml() throws IOException {
-        Optional<Path> fabricJsonPath = delegate.findFile("fabric.mod.json");
-        if (fabricJsonPath.isEmpty()) {
+        Optional<URI> fabricJsonUri = delegate.findFile("fabric.mod.json");
+        if (fabricJsonUri.isEmpty()) {
             throw new IOException("fabric.mod.json not found in delegate");
         }
 
         String jsonContent;
-        try (InputStream is = Files.newInputStream(fabricJsonPath.get())) {
+        try (InputStream is = fabricJsonUri.get().toURL().openStream()) {
             jsonContent = new String(is.readAllBytes(), StandardCharsets.UTF_8);
         }
 
@@ -79,7 +81,6 @@ public class FabricJarContentsWrapper extends JarContents {
     }
 
     private String parseJsonString(String json, String key) {
-        // Extremely simple key search for basic metadata
         int idx = json.indexOf("\"" + key + "\"");
         if (idx == -1) return null;
         int colonIdx = json.indexOf(":", idx);
@@ -112,7 +113,7 @@ public class FabricJarContentsWrapper extends JarContents {
     }
 
     @Override
-    public List<String> getMetaInfServices() {
+    public List<SecureJar.Provider> getMetaInfServices() {
         return delegate.getMetaInfServices();
     }
 

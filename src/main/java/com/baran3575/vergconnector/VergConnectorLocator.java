@@ -1,6 +1,7 @@
 package com.baran3575.vergconnector;
 
 import java.io.IOException;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
@@ -41,7 +42,7 @@ public class VergConnectorLocator implements IModFileCandidateLocator {
         JarContents contents = JarContents.of(path);
         boolean success = false;
         try {
-            Optional<Path> fabricModJson = contents.findFile("fabric.mod.json");
+            Optional<URI> fabricModJson = contents.findFile("fabric.mod.json");
             if (fabricModJson.isPresent()) {
                 System.out.println("[Verg Connector] Found Fabric mod: " + path.getFileName());
                 JarContents wrappedContents = new FabricJarContentsWrapper(contents);
