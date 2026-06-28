@@ -1,0 +1,279 @@
+﻿2026-06-28T18:50:41.0867501Z Current runner version: '2.335.1'
+2026-06-28T18:50:41.0892186Z ##[group]Runner Image Provisioner
+2026-06-28T18:50:41.0893249Z Hosted Compute Agent
+2026-06-28T18:50:41.0893867Z Version: 20260611.554
+2026-06-28T18:50:41.0894584Z Commit: 5e0782fdc9014723d3be820dd114dd31555c2bd1
+2026-06-28T18:50:41.0895379Z Build Date: 2026-06-11T21:40:46Z
+2026-06-28T18:50:41.0896073Z Worker ID: {8e9e9e60-9745-419b-9f9e-f3f7b38002ec}
+2026-06-28T18:50:41.0896887Z Azure Region: westcentralus
+2026-06-28T18:50:41.0897565Z ##[endgroup]
+2026-06-28T18:50:41.0899005Z ##[group]Operating System
+2026-06-28T18:50:41.0899696Z Ubuntu
+2026-06-28T18:50:41.0900228Z 24.04.4
+2026-06-28T18:50:41.0900834Z LTS
+2026-06-28T18:50:41.0901555Z ##[endgroup]
+2026-06-28T18:50:41.0902166Z ##[group]Runner Image
+2026-06-28T18:50:41.0902851Z Image: ubuntu-24.04
+2026-06-28T18:50:41.0903442Z Version: 20260622.220.1
+2026-06-28T18:50:41.0904776Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260622.220/images/ubuntu/Ubuntu2404-Readme.md
+2026-06-28T18:50:41.0906360Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260622.220
+2026-06-28T18:50:41.0907425Z ##[endgroup]
+2026-06-28T18:50:41.0908714Z ##[group]GITHUB_TOKEN Permissions
+2026-06-28T18:50:41.0911052Z Contents: read
+2026-06-28T18:50:41.0911695Z Metadata: read
+2026-06-28T18:50:41.0912713Z Packages: read
+2026-06-28T18:50:41.0913309Z ##[endgroup]
+2026-06-28T18:50:41.0915374Z Secret source: Actions
+2026-06-28T18:50:41.0916456Z Prepare workflow directory
+2026-06-28T18:50:41.1292604Z Prepare all required actions
+2026-06-28T18:50:41.1329796Z Getting action download info
+2026-06-28T18:50:41.4245010Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+2026-06-28T18:50:41.4902578Z Download action repository 'actions/setup-java@v4' (SHA:c1e323688fd81a25caa38c78aa6df2d33d3e20d9)
+2026-06-28T18:50:42.3443554Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-06-28T18:50:42.9208445Z Complete job name: build
+2026-06-28T18:50:43.0072965Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-06-28T18:50:43.0084325Z ##[group]Run actions/checkout@v4
+2026-06-28T18:50:43.0085573Z with:
+2026-06-28T18:50:43.0086480Z   repository: Baran3575/Verg-connector
+2026-06-28T18:50:43.0097446Z   token: ***
+2026-06-28T18:50:43.0098397Z   ssh-strict: true
+2026-06-28T18:50:43.0099315Z   ssh-user: git
+2026-06-28T18:50:43.0100237Z   persist-credentials: true
+2026-06-28T18:50:43.0101356Z   clean: true
+2026-06-28T18:50:43.0102284Z   sparse-checkout-cone-mode: true
+2026-06-28T18:50:43.0103370Z   fetch-depth: 1
+2026-06-28T18:50:43.0104271Z   fetch-tags: false
+2026-06-28T18:50:43.0105203Z   show-progress: true
+2026-06-28T18:50:43.0106142Z   lfs: false
+2026-06-28T18:50:43.0107077Z   submodules: false
+2026-06-28T18:50:43.0108014Z   set-safe-directory: true
+2026-06-28T18:50:43.0109255Z ##[endgroup]
+2026-06-28T18:50:43.1160708Z Syncing repository: Baran3575/Verg-connector
+2026-06-28T18:50:43.1163615Z ##[group]Getting Git version info
+2026-06-28T18:50:43.1165138Z Working directory is '/home/runner/work/Verg-connector/Verg-connector'
+2026-06-28T18:50:43.1167796Z [command]/usr/bin/git version
+2026-06-28T18:50:43.1197661Z git version 2.54.0
+2026-06-28T18:50:43.1222388Z ##[endgroup]
+2026-06-28T18:50:43.1237062Z Temporarily overriding HOME='/home/runner/work/_temp/449ab9d1-d005-4477-bfde-3e19f1bfebb7' before making global git config changes
+2026-06-28T18:50:43.1242479Z Adding repository directory to the temporary git global config as a safe directory
+2026-06-28T18:50:43.1247463Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Verg-connector/Verg-connector
+2026-06-28T18:50:43.1293491Z Deleting the contents of '/home/runner/work/Verg-connector/Verg-connector'
+2026-06-28T18:50:43.1298183Z ##[group]Initializing the repository
+2026-06-28T18:50:43.1303175Z [command]/usr/bin/git init /home/runner/work/Verg-connector/Verg-connector
+2026-06-28T18:50:43.1380047Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-06-28T18:50:43.1382358Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-06-28T18:50:43.1384343Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-06-28T18:50:43.1385911Z hint: call:
+2026-06-28T18:50:43.1386793Z hint:
+2026-06-28T18:50:43.1387842Z hint: 	git config --global init.defaultBranch <name>
+2026-06-28T18:50:43.1389153Z hint:
+2026-06-28T18:50:43.1390385Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-06-28T18:50:43.1393208Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-06-28T18:50:43.1395630Z hint:
+2026-06-28T18:50:43.1396877Z hint: 	git branch -m <name>
+2026-06-28T18:50:43.1398354Z hint:
+2026-06-28T18:50:43.1400289Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-06-28T18:50:43.1404717Z Initialized empty Git repository in /home/runner/work/Verg-connector/Verg-connector/.git/
+2026-06-28T18:50:43.1409088Z [command]/usr/bin/git remote add origin https://github.com/Baran3575/Verg-connector
+2026-06-28T18:50:43.1452307Z ##[endgroup]
+2026-06-28T18:50:43.1454339Z ##[group]Disabling automatic garbage collection
+2026-06-28T18:50:43.1456475Z [command]/usr/bin/git config --local gc.auto 0
+2026-06-28T18:50:43.1490433Z ##[endgroup]
+2026-06-28T18:50:43.1492669Z ##[group]Setting up auth
+2026-06-28T18:50:43.1497192Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-06-28T18:50:43.1536269Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-06-28T18:50:43.1856908Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-06-28T18:50:43.1889649Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-06-28T18:50:43.2120009Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-06-28T18:50:43.2156154Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-06-28T18:50:43.2389017Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-06-28T18:50:43.2425365Z ##[endgroup]
+2026-06-28T18:50:43.2427739Z ##[group]Fetching the repository
+2026-06-28T18:50:43.2436767Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +d13d2cef1901b9b189e95799e7a041fd461e5b9c:refs/remotes/origin/main
+2026-06-28T18:50:43.6504939Z From https://github.com/Baran3575/Verg-connector
+2026-06-28T18:50:43.6507771Z  * [new ref]         d13d2cef1901b9b189e95799e7a041fd461e5b9c -> origin/main
+2026-06-28T18:50:43.6540002Z ##[endgroup]
+2026-06-28T18:50:43.6541865Z ##[group]Determining the checkout info
+2026-06-28T18:50:43.6543725Z ##[endgroup]
+2026-06-28T18:50:43.6547681Z [command]/usr/bin/git sparse-checkout disable
+2026-06-28T18:50:43.6589980Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-06-28T18:50:43.6619383Z ##[group]Checking out the ref
+2026-06-28T18:50:43.6622621Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2026-06-28T18:50:43.6717601Z Switched to a new branch 'main'
+2026-06-28T18:50:43.6720113Z branch 'main' set up to track 'origin/main'.
+2026-06-28T18:50:43.6727615Z ##[endgroup]
+2026-06-28T18:50:43.6767252Z [command]/usr/bin/git log -1 --format=%H
+2026-06-28T18:50:43.6791393Z d13d2cef1901b9b189e95799e7a041fd461e5b9c
+2026-06-28T18:50:43.7170258Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-06-28T18:50:43.7175136Z ##[group]Run actions/setup-java@v4
+2026-06-28T18:50:43.7176161Z with:
+2026-06-28T18:50:43.7176958Z   java-version: 21
+2026-06-28T18:50:43.7177833Z   distribution: temurin
+2026-06-28T18:50:43.7178723Z   cache: gradle
+2026-06-28T18:50:43.7179568Z   java-package: jdk
+2026-06-28T18:50:43.7180464Z   check-latest: false
+2026-06-28T18:50:43.7181508Z   server-id: github
+2026-06-28T18:50:43.7182410Z   server-username: GITHUB_ACTOR
+2026-06-28T18:50:43.7183444Z   server-password: GITHUB_TOKEN
+2026-06-28T18:50:43.7184469Z   overwrite-settings: true
+2026-06-28T18:50:43.7185416Z   job-status: success
+2026-06-28T18:50:43.7195590Z   token: ***
+2026-06-28T18:50:43.7267355Z ##[endgroup]
+2026-06-28T18:50:43.8863825Z ##[group]Installed distributions
+2026-06-28T18:50:43.8979613Z Resolved Java 21.0.11+10 from tool-cache
+2026-06-28T18:50:43.8980194Z Setting Java 21.0.11+10 as the default
+2026-06-28T18:50:43.8989986Z (node:2271) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-06-28T18:50:43.8990995Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-06-28T18:50:43.8993665Z Creating toolchains.xml for JDK version 21 from temurin
+2026-06-28T18:50:43.9064712Z Writing to /home/runner/.m2/toolchains.xml
+2026-06-28T18:50:43.9065144Z 
+2026-06-28T18:50:43.9065331Z Java configuration:
+2026-06-28T18:50:43.9065774Z   Distribution: temurin
+2026-06-28T18:50:43.9066191Z   Version: 21.0.11+10
+2026-06-28T18:50:43.9066764Z   Path: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.11-10/x64
+2026-06-28T18:50:43.9067254Z 
+2026-06-28T18:50:43.9067789Z ##[endgroup]
+2026-06-28T18:50:43.9082323Z Creating settings.xml with server-id: github
+2026-06-28T18:50:43.9082948Z Writing to /home/runner/.m2/settings.xml
+2026-06-28T18:50:44.1436574Z Cache hit for: setup-java-Linux-x64-gradle-7cad0f44cf6a9dbca29681db972c05ef45f261a9e583911fa9a18ba7e809798e
+2026-06-28T18:50:44.1534860Z (node:2271) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-06-28T18:50:45.3630181Z Received 41943040 of 545927129 (7.7%), 40.0 MBs/sec
+2026-06-28T18:50:46.3636439Z Received 184549376 of 545927129 (33.8%), 88.0 MBs/sec
+2026-06-28T18:50:47.3662684Z Received 398458880 of 545927129 (73.0%), 126.6 MBs/sec
+2026-06-28T18:50:48.2634241Z Received 545927129 of 545927129 (100.0%), 133.5 MBs/sec
+2026-06-28T18:50:48.2635039Z Cache Size: ~521 MB (545927129 B)
+2026-06-28T18:50:48.2697204Z [command]/usr/bin/tar -xf /home/runner/work/_temp/64645e61-59cd-4047-b8d3-23421b8327e1/cache.tzst -P -C /home/runner/work/Verg-connector/Verg-connector --use-compress-program unzstd
+2026-06-28T18:50:49.2437205Z Cache restored successfully
+2026-06-28T18:50:49.2681770Z Cache restored from key: setup-java-Linux-x64-gradle-7cad0f44cf6a9dbca29681db972c05ef45f261a9e583911fa9a18ba7e809798e
+2026-06-28T18:50:49.2936808Z ##[group]Run chmod +x gradlew
+2026-06-28T18:50:49.2937190Z [36;1mchmod +x gradlew[0m
+2026-06-28T18:50:49.3059007Z shell: /usr/bin/bash -e {0}
+2026-06-28T18:50:49.3059304Z env:
+2026-06-28T18:50:49.3059645Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.11-10/x64
+2026-06-28T18:50:49.3060170Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.11-10/x64
+2026-06-28T18:50:49.3060589Z ##[endgroup]
+2026-06-28T18:50:49.3192515Z ##[group]Run ./gradlew build
+2026-06-28T18:50:49.3193058Z [36;1m./gradlew build[0m
+2026-06-28T18:50:49.3233403Z shell: /usr/bin/bash -e {0}
+2026-06-28T18:50:49.3233799Z env:
+2026-06-28T18:50:49.3234296Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.11-10/x64
+2026-06-28T18:50:49.3235373Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.11-10/x64
+2026-06-28T18:50:49.3236031Z ##[endgroup]
+2026-06-28T18:50:51.8473071Z 
+2026-06-28T18:50:51.8474155Z Welcome to Gradle 9.2.1!
+2026-06-28T18:50:51.8475601Z 
+2026-06-28T18:50:51.8476757Z Here are the highlights of this release:
+2026-06-28T18:50:51.8477896Z  - Windows ARM support
+2026-06-28T18:50:51.8478779Z  - Improved publishing APIs
+2026-06-28T18:50:51.8479898Z  - Better guidance for dependency verification failures
+2026-06-28T18:50:51.8480534Z 
+2026-06-28T18:50:51.8482169Z For more details see https://docs.gradle.org/9.2.1/release-notes.html
+2026-06-28T18:50:51.8482899Z 
+2026-06-28T18:50:52.0467957Z Starting a Gradle Daemon (subsequent builds will be faster)
+2026-06-28T18:50:55.1469251Z Calculating task graph as no cached configuration is available for tasks: build
+2026-06-28T18:50:58.2472551Z 
+2026-06-28T18:50:58.2511934Z > Configure project :
+2026-06-28T18:50:58.2541798Z Creating Minecraft artifacts without recompilation.
+2026-06-28T18:51:05.1491890Z 
+2026-06-28T18:51:05.1492404Z > Task :jarJar NO-SOURCE
+2026-06-28T18:51:05.1493028Z > Task :processTestResources NO-SOURCE
+2026-06-28T18:51:05.7472623Z > Task :generateModMetadata
+2026-06-28T18:51:05.7484840Z > Task :processResources
+2026-06-28T18:51:07.1466858Z 
+2026-06-28T18:51:07.1478075Z > Task :createMinecraftArtifacts
+2026-06-28T18:51:07.1483167Z Loaded 131 artifacts from /home/runner/work/Verg-connector/Verg-connector/build/tmp/createMinecraftArtifacts/nfrt_artifact_manifest.properties
+2026-06-28T18:51:07.1484904Z [1m*** Started working on [4mdownloadJson[0m[0m
+2026-06-28T18:51:07.1486565Z  [1m[92m✓[0m Completed [4mdownloadJson[0m in 0.02s
+2026-06-28T18:51:07.1487511Z [1m*** Started working on [4mdownloadServer[0m[0m
+2026-06-28T18:51:07.1488415Z [1m*** Started working on [4mdownloadClientMappings[0m[0m
+2026-06-28T18:51:07.1489272Z [1m*** Started working on [4mdownloadClient[0m[0m
+2026-06-28T18:51:07.1490145Z  [1m[92m✓[0m Completed [4mdownloadClient[0m in 0.03s
+2026-06-28T18:51:07.1491256Z  [1m[92m✓[0m Completed [4mdownloadServer[0m in 0.03s
+2026-06-28T18:51:07.1514215Z  [1m[92m✓[0m Completed [4mdownloadClientMappings[0m in 0.03s
+2026-06-28T18:51:07.1536437Z [1m*** Started working on [4mmergeMappings[0m[0m
+2026-06-28T18:51:07.1540063Z  [1m[92m♻[0m Used cache of [4mmergeMappings[0m in 0.00s
+2026-06-28T18:51:07.1540533Z [1m*** Started working on [4mstripClient[0m[0m
+2026-06-28T18:51:07.1541167Z  [1m[92m♻[0m Used cache of [4mstripClient[0m in 0.00s
+2026-06-28T18:51:07.1551623Z [1m*** Started working on [4mextractServer[0m[0m
+2026-06-28T18:51:07.1552438Z  [1m[92m♻[0m Used cache of [4mextractServer[0m in 0.00s
+2026-06-28T18:51:07.1553116Z [1m*** Started working on [4mstripServer[0m[0m
+2026-06-28T18:51:07.1553767Z  [1m[92m♻[0m Used cache of [4mstripServer[0m in 0.00s
+2026-06-28T18:51:07.1554423Z [1m*** Started working on [4mmerge[0m[0m
+2026-06-28T18:51:07.1555021Z  [1m[92m♻[0m Used cache of [4mmerge[0m in 0.00s
+2026-06-28T18:51:07.1555607Z [1m*** Started working on [4mrename[0m[0m
+2026-06-28T18:51:07.1556193Z  [1m[92m♻[0m Used cache of [4mrename[0m in 0.00s
+2026-06-28T18:51:07.1556780Z [1m*** Started working on [4mbinaryPatch[0m[0m
+2026-06-28T18:51:07.1557412Z  [1m[92m♻[0m Used cache of [4mbinaryPatch[0m in 0.00s
+2026-06-28T18:51:07.1558121Z [1m*** Started working on [4mcopyUnpatchedClasses[0m[0m
+2026-06-28T18:51:07.1558856Z  [1m[92m♻[0m Used cache of [4mcopyUnpatchedClasses[0m in 0.00s
+2026-06-28T18:51:07.1559507Z [1m*** Started working on [4mapplyDevTransforms[0m[0m
+2026-06-28T18:51:07.1560363Z  [1m[92m♻[0m Used cache of [4mapplyDevTransforms[0m in 0.00s
+2026-06-28T18:51:07.1560793Z [1m*** Started working on [4mbinaryWithNeoForge[0m[0m
+2026-06-28T18:51:07.1561532Z  [1m[92m♻[0m Used cache of [4mbinaryWithNeoForge[0m in 0.00s
+2026-06-28T18:51:07.1561874Z Total runtime: 1.41s
+2026-06-28T18:51:07.1562204Z 
+2026-06-28T18:51:10.0493034Z /home/runner/work/Verg-connector/Verg-connector/src/main/java/com/baran3575/vergconnector/VergConnectorClient.java:41: error: cannot find symbol
+2026-06-28T18:51:10.0493992Z 
+2026-06-28T18:51:10.0512218Z                     java.util.List<String> clientEntrypoints = VergConnector.parseEntrypoints(jsonContent, "client");
+2026-06-28T18:51:10.0513180Z > Task :compileJava
+2026-06-28T18:51:10.0541550Z                                                                             ^
+2026-06-28T18:51:10.0542179Z   symbol:   method parseEntrypoints(String,String)
+2026-06-28T18:51:10.0542737Z   location: class VergConnector
+2026-06-28T18:51:10.2472445Z Note: Some input files use unchecked or unsafe operations.
+2026-06-28T18:51:10.2472979Z Note: Recompile with -Xlint:unchecked for details.
+2026-06-28T18:51:10.2473371Z 1 error
+2026-06-28T18:51:10.2473491Z 
+2026-06-28T18:51:10.2475266Z > Task :compileJava FAILED
+2026-06-28T18:51:10.3471636Z 
+2026-06-28T18:51:10.3471665Z 
+2026-06-28T18:51:10.3482655Z [Incubating] Problems report is available at: file:///home/runner/work/Verg-connector/Verg-connector/build/reports/problems/problems-report.html
+2026-06-28T18:51:10.3484221Z 
+2026-06-28T18:51:10.3486948Z Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+2026-06-28T18:51:10.3487868Z 
+2026-06-28T18:51:10.3488781Z You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+2026-06-28T18:51:10.3489838Z 
+2026-06-28T18:51:10.3491215Z For more on this, please refer to https://docs.gradle.org/9.2.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+2026-06-28T18:51:10.3492419Z FAILURE: Build failed with an exception.
+2026-06-28T18:51:10.3493104Z 4 actionable tasks: 4 executed
+2026-06-28T18:51:10.3493728Z Configuration cache entry stored.
+2026-06-28T18:51:10.3521567Z 
+2026-06-28T18:51:10.3547879Z * What went wrong:
+2026-06-28T18:51:10.3548212Z Execution failed for task ':compileJava'.
+2026-06-28T18:51:10.3548584Z > Compilation failed; see the compiler output below.
+2026-06-28T18:51:10.3548959Z   Note: Recompile with -Xlint:unchecked for details.
+2026-06-28T18:51:10.3549392Z   Note: Some input files use unchecked or unsafe operations.
+2026-06-28T18:51:10.3550554Z   /home/runner/work/Verg-connector/Verg-connector/src/main/java/com/baran3575/vergconnector/VergConnectorClient.java:41: error: cannot find symbol
+2026-06-28T18:51:10.3552428Z                       java.util.List<String> clientEntrypoints = VergConnector.parseEntrypoints(jsonContent, "client");
+2026-06-28T18:51:10.3553318Z                                                                               ^
+2026-06-28T18:51:10.3553937Z     symbol:   method parseEntrypoints(String,String)
+2026-06-28T18:51:10.3581978Z     location: class VergConnector
+2026-06-28T18:51:10.3591489Z   1 error
+2026-06-28T18:51:10.3591674Z 
+2026-06-28T18:51:10.3591782Z * Try:
+2026-06-28T18:51:10.3592333Z > Check your code and dependencies to fix the compilation error(s)
+2026-06-28T18:51:10.3592945Z > Run with --scan to generate a Build Scan (powered by Develocity).
+2026-06-28T18:51:10.3593608Z 
+2026-06-28T18:51:10.3593925Z BUILD FAILED in 19s
+2026-06-28T18:51:10.7011770Z ##[error]Process completed with exit code 1.
+2026-06-28T18:51:10.7153490Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-06-28T18:51:10.7154674Z Post job cleanup.
+2026-06-28T18:51:10.8424043Z (node:2561) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-06-28T18:51:10.8424782Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-06-28T18:51:10.8599418Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-06-28T18:51:10.8600794Z Post job cleanup.
+2026-06-28T18:51:10.9486526Z [command]/usr/bin/git version
+2026-06-28T18:51:10.9528391Z git version 2.54.0
+2026-06-28T18:51:10.9565110Z Temporarily overriding HOME='/home/runner/work/_temp/0ec1d401-a365-4df1-959c-fa4f30f77520' before making global git config changes
+2026-06-28T18:51:10.9566579Z Adding repository directory to the temporary git global config as a safe directory
+2026-06-28T18:51:10.9571601Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Verg-connector/Verg-connector
+2026-06-28T18:51:10.9609975Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-06-28T18:51:10.9646473Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-06-28T18:51:10.9935976Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-06-28T18:51:10.9961726Z http.https://github.com/.extraheader
+2026-06-28T18:51:10.9972520Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-06-28T18:51:11.0003919Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-06-28T18:51:11.0235896Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-06-28T18:51:11.0266310Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-06-28T18:51:11.0637145Z Cleaning up orphan processes
+2026-06-28T18:51:11.0953409Z Terminate orphan process: pid (2327) (java)
+2026-06-28T18:51:11.0987512Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-java@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

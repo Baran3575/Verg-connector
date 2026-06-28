@@ -38,7 +38,7 @@ public class VergConnectorClient {
             if (java.nio.file.Files.exists(fabricModJson)) {
                 try {
                     String jsonContent = java.nio.file.Files.readString(fabricModJson, java.nio.charset.StandardCharsets.UTF_8);
-                    java.util.List<String> clientEntrypoints = VergConnector.parseEntrypoints(jsonContent, "client");
+                    java.util.List<String> clientEntrypoints = VergConnector.parseTopLevelEntrypoints(jsonContent, "client");
                     for (String entrypoint : clientEntrypoints) {
                         try {
                             VergConnector.LOGGER.info("[Verg Connector Client] Loading client entrypoint: {}", entrypoint);
