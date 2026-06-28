@@ -20,7 +20,7 @@ jobs:
         cache: gradle
 
     - name: Validate Config Files (TOML & JSON)
-      uses: kehoe/validate-configs-action@v4.0.1
+      uses: kehoecj/validate-configs-action@v4.0.1
       with:
         search-paths: "."
         exclude-dirs: ".gradle,build"
