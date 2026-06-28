@@ -434,6 +434,9 @@ header {
 .mod-card.status-supported::before {
     background: var(--success);
 }
+.mod-card.status-native::before {
+    background: #00c8b4;
+}
 .mod-card.status-recommended::before {
     background: var(--warning);
 }
@@ -538,10 +541,17 @@ header {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
 }
 
-.status-supported .status-badge {
+.status-supported .status-badge,
+.status-native .status-badge {
     background: var(--success-glow);
     border: 1px solid var(--success);
     color: var(--success);
+}
+
+.status-native .status-badge {
+    background: rgba(0, 200, 180, 0.1);
+    border-color: #00c8b4;
+    color: #00c8b4;
 }
 
 .status-recommended .status-badge {

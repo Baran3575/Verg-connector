@@ -134,6 +134,13 @@ public class VergConnector {
                     com.baran3575.vergconnector.fabric.FabricLoaderImpl.INSTANCE.registerMod(id, container);
                     LOGGER.info("[Verg Connector] Registered Fabric mod: {} ({})", name, version);
 
+                    // ─── Mixin conflict detection ──────────────────────────────────────
+                    java.util.List<String> mixinConfigs = parseTopLevelEntrypoints(jsonContent, "mixins");
+                    if (!mixinConfigs.isEmpty()) {
+                        com.baran3575.vergconnector.mixin.MixinConfigHandler.processMixinConfigs(
+                            id, modFile.getFilePath(), mixinConfigs);
+                    }
+
                     // ─── Register ALL entrypoint keys (main, client, server, jade, modmenu, …) ───
                     // Extract the raw "entrypoints" object from the JSON
                     java.util.Map<String, java.util.List<String>> allEntrypoints = parseAllEntrypoints(jsonContent);
@@ -514,6 +521,151 @@ public class VergConnector {
         net.fabricmc.fabric.api.resource.ResourceManagerHelper serverHelper = net.fabricmc.fabric.api.resource.ResourceManagerHelper.get(net.minecraft.server.packs.PackType.SERVER_DATA);
         for (net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener listener : serverHelper.getListeners()) {
             event.addListener(listener);
+        }
+    }
+
+    // ─── Fabric ServerTickEvents bridge ───────────────────────────────────────
+    @SubscribeEvent
+    public void onServerTickStart(net.neoforged.neoforge.event.tick.ServerTickEvent.Pre event) {
+        for (net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents.StartTick h : net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents.START_SERVER_TICK.getHandlers()) {
+            try { h.onStartTick(event.getServer()); } catch (Exception e) { LOGGER.warn("[Verg] START_SERVER_TICK handler error", e); }
+        }
+    }
+
+    @SubscribeEvent
+    public void onServerTickEnd(net.neoforged.neoforge.event.tick.ServerTickEvent.Post event) {
+        for (net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents.EndTick h : net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents.END_SERVER_TICK.getHandlers()) {
+            try { h.onEndTick(event.getServer()); } catch (Exception e) { LOGGER.warn("[Verg] END_SERVER_TICK handler error", e); }
+        }
+    }
+
+    @SubscribeEvent
+    public void onLevelTickStart(net.neoforged.neoforge.event.tick.LevelTickEvent.Pre event) {
+        if (event.getLevel() instanceof net.minecraft.server.level.ServerLevel sl) {
+            for (net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents.StartWorldTick h : net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents.START_WORLD_TICK.getHandlers()) {
+                try { h.onStartTick(sl); } catch (Exception e) { LOGGER.warn("[Verg] START_WORLD_TICK handler error", e); }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onLevelTickEnd(net.neoforged.neoforge.event.tick.LevelTickEvent.Post event) {
+        if (event.getLevel() instanceof net.minecraft.server.level.ServerLevel sl) {
+            for (net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents.EndWorldTick h : net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents.END_WORLD_TICK.getHandlers()) {
+                try { h.onEndTick(sl); } catch (Exception e) { LOGGER.warn("[Verg] END_WORLD_TICK handler error", e); }
+            }
+        }
+    }
+
+    // ─── Fabric ServerWorldEvents bridge ──────────────────────────────────────
+    @SubscribeEvent
+    public void onLevelLoad(net.neoforged.neoforge.event.level.LevelEvent.Load event) {
+        if (event.getLevel() instanceof net.minecraft.server.level.ServerLevel sl) {
+            net.minecraft.server.MinecraftServer srv = sl.getServer();
+            for (net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents.Load h : net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents.LOAD.getHandlers()) {
+                try { h.onWorldLoad(srv, sl); } catch (Exception e) { LOGGER.warn("[Verg] WORLD_LOAD handler error", e); }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onLevelUnload(net.neoforged.neoforge.event.level.LevelEvent.Unload event) {
+        if (event.getLevel() instanceof net.minecraft.server.level.ServerLevel sl) {
+            net.minecraft.server.MinecraftServer srv = sl.getServer();
+            for (net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents.Unload h : net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents.UNLOAD.getHandlers()) {
+                try { h.onWorldUnload(srv, sl); } catch (Exception e) { LOGGER.warn("[Verg] WORLD_UNLOAD handler error", e); }
+            }
+        }
+    }
+
+    // ─── Fabric ServerEntityEvents bridge ─────────────────────────────────────
+    @SubscribeEvent
+    public void onEntityJoinLevel(net.neoforged.neoforge.event.entity.EntityJoinLevelEvent event) {
+        if (event.getLevel() instanceof net.minecraft.server.level.ServerLevel sl) {
+            for (net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents.EntityLoad h : net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents.ENTITY_LOAD.getHandlers()) {
+                try { h.onLoad(event.getEntity(), sl); } catch (Exception e) { LOGGER.warn("[Verg] ENTITY_LOAD handler error", e); }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onEntityLeaveLevel(net.neoforged.neoforge.event.entity.EntityLeaveLevelEvent event) {
+        if (event.getLevel() instanceof net.minecraft.server.level.ServerLevel sl) {
+            for (net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents.EntityUnload h : net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents.ENTITY_UNLOAD.getHandlers()) {
+                try { h.onUnload(event.getEntity(), sl); } catch (Exception e) { LOGGER.warn("[Verg] ENTITY_UNLOAD handler error", e); }
+            }
+        }
+    }
+
+    // ─── Fabric ServerPlayConnectionEvents bridge ──────────────────────────────
+    @SubscribeEvent
+    public void onPlayerJoin(net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent event) {
+        if (event.getEntity() instanceof net.minecraft.server.level.ServerPlayer sp && sp.getServer() != null) {
+            for (net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents.Join h : net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents.JOIN.getHandlers()) {
+                try { h.onPlayReady(sp.connection, sp.getServer()); } catch (Exception e) { LOGGER.warn("[Verg] PLAY_JOIN handler error", e); }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onPlayerLeave(net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent event) {
+        if (event.getEntity() instanceof net.minecraft.server.level.ServerPlayer sp && sp.getServer() != null) {
+            for (net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents.Disconnect h : net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents.DISCONNECT.getHandlers()) {
+                try { h.onPlayDisconnect(sp.connection, sp.getServer()); } catch (Exception e) { LOGGER.warn("[Verg] PLAY_DISCONNECT handler error", e); }
+            }
+        }
+    }
+
+    // ─── Fabric Player Interaction Callbacks bridge ────────────────────────────
+    @SubscribeEvent
+    public void onPlayerRightClickBlock(net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.RightClickBlock event) {
+        for (net.fabricmc.fabric.api.event.player.UseBlockCallback.Event h : net.fabricmc.fabric.api.event.player.UseBlockCallback.EVENT.getHandlers()) {
+            try {
+                net.minecraft.world.InteractionResult result = h.interact(event.getEntity(), event.getLevel(), event.getHand(), event.getHitVec());
+                if (result != net.minecraft.world.InteractionResult.PASS) {
+                    event.setCanceled(true);
+                    event.setUseBlock(net.neoforged.neoforge.common.util.TriState.FALSE);
+                    break;
+                }
+            } catch (Exception e) { LOGGER.warn("[Verg] USE_BLOCK handler error", e); }
+        }
+    }
+
+    @SubscribeEvent
+    public void onPlayerRightClickItem(net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.RightClickItem event) {
+        for (net.fabricmc.fabric.api.event.player.UseItemCallback.Event h : net.fabricmc.fabric.api.event.player.UseItemCallback.EVENT.getHandlers()) {
+            try {
+                net.minecraft.world.InteractionResultHolder<net.minecraft.world.item.ItemStack> result =
+                    h.interact(event.getEntity(), event.getLevel(), event.getHand());
+                if (result.getResult() != net.minecraft.world.InteractionResult.PASS) {
+                    event.setCanceled(true);
+                    break;
+                }
+            } catch (Exception e) { LOGGER.warn("[Verg] USE_ITEM handler error", e); }
+        }
+    }
+
+    @SubscribeEvent
+    public void onPlayerAttackEntity(net.neoforged.neoforge.event.entity.player.AttackEntityEvent event) {
+        for (net.fabricmc.fabric.api.event.player.AttackEntityCallback.Event h : net.fabricmc.fabric.api.event.player.AttackEntityCallback.EVENT.getHandlers()) {
+            try {
+                net.minecraft.world.InteractionResult result = h.interact(
+                    event.getEntity(), event.getEntity().level(),
+                    net.minecraft.world.InteractionHand.MAIN_HAND, event.getTarget(), java.util.Optional.empty());
+                if (result == net.minecraft.world.InteractionResult.FAIL) {
+                    event.setCanceled(true);
+                    break;
+                }
+            } catch (Exception e) { LOGGER.warn("[Verg] ATTACK_ENTITY handler error", e); }
+        }
+    }
+
+    // ─── Fabric CommandRegistrationCallback bridge ─────────────────────────────
+    @SubscribeEvent
+    public void onRegisterCommands(net.neoforged.neoforge.event.RegisterCommandsEvent event) {
+        for (net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback.Event h : net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback.EVENT.getHandlers()) {
+            try { h.register(event.getDispatcher(), event.getBuildContext(), event.getCommandSelection()); }
+            catch (Exception e) { LOGGER.warn("[Verg] COMMAND_REGISTRATION handler error", e); }
         }
     }
 }
