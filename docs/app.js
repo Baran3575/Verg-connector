@@ -191,13 +191,13 @@ function evaluateCompatibility(hit) {
         };
     }
 
-    // 1. Check specific problematic mods
+    // 1. Core Optimization & Heavy Rendering Overrides
     if (id === 'sodium' || title.includes('sodium')) {
         return {
             statusText: 'Native Port Recommended',
             cardClass: 'status-recommended',
             iconClass: 'fa-solid fa-shuffle',
-            note: 'Official Fabric <strong>Sodium</strong> uses deep ASM/Mixin modifications that conflict with NeoForge\'s window configuration and early loading screen. Use <strong>Embeddium</strong> (the optimized NeoForge port of Sodium) in your mods folder instead for 100% bug-free performance!'
+            note: 'Fabric <strong>Sodium</strong> utilizes low-level rendering modifications that conflict with NeoForge\'s window configuration and graphics pipeline. Use <strong>Embeddium</strong> (the optimized NeoForge port of Sodium) instead for 100% stable performance.'
         };
     }
     
@@ -219,48 +219,88 @@ function evaluateCompatibility(hit) {
         };
     }
 
+    // 2. Official APIs & Built-in Libraries
     if (id === 'fabric-api' || id === 'fabric-language-kotlin') {
         return {
             statusText: 'Built-in Support',
             cardClass: 'status-supported',
             iconClass: 'fa-solid fa-circle-check',
-            note: 'Verg Connector includes built-in shims for the <strong>Fabric API</strong> (including Custom Packet Networking, Block Colors, Creative Tabs, and Lifecycle Events).'
+            note: 'Verg Connector includes built-in shims for the <strong>Fabric API</strong> (including Custom Packet Networking, Block Colors, Creative Tabs, and Lifecycle Events) and supports Kotlin-based entrypoints natively.'
         };
     }
 
-    // 2. Check if a native NeoForge/Forge version exists
-    if (hasNativeNeoForge || hasNativeForge) {
+    if (id.includes('cardinal-components')) {
         return {
             statusText: 'Fully Supported',
             cardClass: 'status-supported',
             iconClass: 'fa-solid fa-circle-check',
-            note: `This mod has a native <strong>${hasNativeNeoForge ? 'NeoForge' : 'Forge'}</strong> version available. For the best stability, run the native version directly in your mods folder.`
+            note: '<strong>Cardinal Components API</strong> is fully supported via our Fabric API event shims and entity tracking redirects.'
         };
     }
 
-    // 3. Fabric-only mods
-    if (supportsFabric && !hasNativeNeoForge && !hasNativeForge) {
-        // Certain heavy rendering optimization categories might be partial
-        const isRenderOptimization = id.includes('c2me') || id.includes('lithium') || id.includes('sodium-extra') || id.includes('phosphor') || id.includes('krypton');
-        
-        if (isRenderOptimization) {
-            return {
-                statusText: 'Partial / Testing',
-                cardClass: 'status-partial',
-                iconClass: 'fa-solid fa-triangle-exclamation',
-                note: 'Low-level performance/chunk optimization mods might require custom mixin configs. Verg Connector supports most Fabric mods, but optimization mods should be verified individually.'
-            };
-        }
+    if (id === 'modmenu' || id.includes('mod-menu')) {
+        return {
+            statusText: 'Supported (UI Redundant)',
+            cardClass: 'status-supported',
+            iconClass: 'fa-solid fa-circle-check',
+            note: 'ModMenu can load, but its settings button and list are redundant since NeoForge has a built-in mod configuration UI. Use the native NeoForge mod screen to edit mod options.'
+        };
+    }
 
+    // 3. Native Overrides Recommended for Libraries
+    if (hasNativeNeoForge || hasNativeForge) {
+        const isLibrary = id.includes('architectury') || id.includes('cloth-config') || id.includes('geckolib') || id.includes('patchouli');
+        
+        return {
+            statusText: isLibrary ? 'Native Version Strongly Recommended' : 'Fully Supported',
+            cardClass: 'status-supported',
+            iconClass: 'fa-solid fa-circle-check',
+            note: isLibrary 
+                ? `This library has a native <strong>${hasNativeNeoForge ? 'NeoForge' : 'Forge'}</strong> version available. You must install the native version directly to prevent dependency conflicts with other mods.`
+                : `This mod has a native <strong>${hasNativeNeoForge ? 'NeoForge' : 'Forge'}</strong> version available. For best stability, run the native version directly in your mods folder.`
+        };
+    }
+
+    // 4. Accessory / Item Layer APIs
+    if (id === 'trinkets' || id === 'accessory') {
+        return {
+            statusText: 'Native Equivalent Available',
+            cardClass: 'status-recommended',
+            iconClass: 'fa-solid fa-shuffle',
+            note: 'Fabric <strong>Trinkets</strong> is supported, but we recommend using <strong>Curios API</strong> or mods compiled for Curios on NeoForge as it is the native Forge/NeoForge counterpart.'
+        };
+    }
+
+    // 5. Low-level Optimization Mods
+    if (id === 'lithium' || title.includes('lithium')) {
         return {
             statusText: 'Supported via Bridge',
             cardClass: 'status-supported',
             iconClass: 'fa-solid fa-circle-check',
-            note: 'This is a Fabric-only mod. Verg Connector will load it dynamically, generating virtual mod metadata and bridging its API endpoints.'
+            note: '<strong>Lithium</strong> runs CPU math/physics optimizations. It is fully compatible with Verg Connector\'s lifecycle and runs successfully.'
         };
     }
 
-    // 4. Default fallback
+    if (id === 'c2me' || id === 'krypton' || id === 'ferritecore') {
+        return {
+            statusText: 'Partial / Testing',
+            cardClass: 'status-partial',
+            iconClass: 'fa-solid fa-triangle-exclamation',
+            note: 'Low-level network or memory layout optimization mods (like Krypton or FerriteCore) overlap with NeoForge\'s internal memory/packet loops. Verify compatibility individually in your modpack.'
+        };
+    }
+
+    // 6. Gameplay, Content, & Cosmetic Mods
+    if (supportsFabric && !hasNativeNeoForge && !hasNativeForge) {
+        return {
+            statusText: 'Supported via Bridge',
+            cardClass: 'status-supported',
+            iconClass: 'fa-solid fa-circle-check',
+            note: 'Fabric-only content/cosmetic mod. Verg Connector will load it dynamically, generate virtual mod metadata, and redirect block/item registries.'
+        };
+    }
+
+    // 7. Default fallback
     return {
         statusText: 'Supported',
         cardClass: 'status-supported',
