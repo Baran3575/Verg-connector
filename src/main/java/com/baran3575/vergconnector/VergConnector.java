@@ -134,8 +134,19 @@ public class VergConnector {
                     com.baran3575.vergconnector.fabric.FabricLoaderImpl.INSTANCE.registerMod(id, container);
                     LOGGER.info("[Verg Connector] Registered Fabric mod: {} ({})", name, version);
 
-                    // Execute main entrypoints
-                    java.util.List<String> mainEntrypoints = parseTopLevelEntrypoints(jsonContent, "main");
+                    // ─── Register ALL entrypoint keys (main, client, server, jade, modmenu, …) ───
+                    // Extract the raw "entrypoints" object from the JSON
+                    java.util.Map<String, java.util.List<String>> allEntrypoints = parseAllEntrypoints(jsonContent);
+                    for (java.util.Map.Entry<String, java.util.List<String>> entry : allEntrypoints.entrySet()) {
+                        String epKey = entry.getKey();
+                        for (String className : entry.getValue()) {
+                            com.baran3575.vergconnector.fabric.FabricLoaderImpl.INSTANCE.registerEntrypoint(epKey, className, container);
+                            LOGGER.debug("[Verg Connector] Registered entrypoint: key='{}', class='{}'", epKey, className);
+                        }
+                    }
+
+                    // Execute main entrypoints immediately
+                    java.util.List<String> mainEntrypoints = allEntrypoints.getOrDefault("main", java.util.List.of());
                     for (String entrypoint : mainEntrypoints) {
                         try {
                             LOGGER.info("[Verg Connector] Loading main entrypoint: {}", entrypoint);
@@ -152,7 +163,7 @@ public class VergConnector {
 
                     // Execute server entrypoints if on dedicated server
                     if (net.neoforged.fml.loading.FMLEnvironment.dist == net.neoforged.api.distmarker.Dist.DEDICATED_SERVER) {
-                        java.util.List<String> serverEntrypoints = parseTopLevelEntrypoints(jsonContent, "server");
+                        java.util.List<String> serverEntrypoints = allEntrypoints.getOrDefault("server", java.util.List.of());
                         for (String entrypoint : serverEntrypoints) {
                             try {
                                 LOGGER.info("[Verg Connector] Loading server entrypoint: {}", entrypoint);
@@ -172,6 +183,154 @@ public class VergConnector {
                 }
             }
         }
+    }
+
+    /**
+     * Parse all entrypoint keys and their class lists from the full fabric.mod.json.
+     * Handles the "entrypoints" object which maps keys to arrays of strings or
+     * adapter objects like {"adapter":"kotlin","value":"com.example.MyClass"}.
+     */
+    public static java.util.Map<String, java.util.List<String>> parseAllEntrypoints(String json) {
+        java.util.Map<String, java.util.List<String>> result = new java.util.LinkedHashMap<>();
+        // Find the "entrypoints" key at depth 1
+        int depth = 0;
+        boolean inQuote = false;
+        StringBuilder keyBuilder = new StringBuilder();
+        int i = 0;
+        while (i < json.length()) {
+            char c = json.charAt(i);
+            if (c == '\\' && inQuote) {
+                i += 2;
+                continue;
+            }
+            if (c == '"') {
+                inQuote = !inQuote;
+                if (inQuote) {
+                    keyBuilder.setLength(0);
+                } else {
+                    if (depth == 1 && keyBuilder.toString().equals("entrypoints")) {
+                        // Skip past the colon
+                        i++;
+                        while (i < json.length() && json.charAt(i) != '{') i++;
+                        if (i >= json.length()) break;
+                        // Now parse the entire entrypoints object
+                        int epStart = i;
+                        int braceDepth = 0;
+                        for (int j = epStart; j < json.length(); j++) {
+                            char d = json.charAt(j);
+                            if (d == '{') braceDepth++;
+                            else if (d == '}') {
+                                braceDepth--;
+                                if (braceDepth == 0) {
+                                    String epBlock = json.substring(epStart + 1, j);
+                                    parseEntrypointBlock(epBlock, result);
+                                    break;
+                                }
+                            }
+                        }
+                        break;
+                    }
+                }
+            } else if (inQuote) {
+                keyBuilder.append(c);
+            } else {
+                if (c == '{') depth++;
+                else if (c == '}') depth--;
+            }
+            i++;
+        }
+        return result;
+    }
+
+    /**
+     * Parse the inner block of the "entrypoints" JSON object.
+     * Keys are entrypoint names; values are arrays of string or object entries.
+     */
+    private static void parseEntrypointBlock(String block, java.util.Map<String, java.util.List<String>> result) {
+        int i = 0;
+        while (i < block.length()) {
+            // Find next key
+            int keyStart = block.indexOf('"', i);
+            if (keyStart == -1) break;
+            int keyEnd = block.indexOf('"', keyStart + 1);
+            if (keyEnd == -1) break;
+            String key = block.substring(keyStart + 1, keyEnd);
+            i = keyEnd + 1;
+            // Find the colon then the array
+            int colon = block.indexOf(':', i);
+            if (colon == -1) break;
+            i = colon + 1;
+            while (i < block.length() && Character.isWhitespace(block.charAt(i))) i++;
+            if (i >= block.length() || block.charAt(i) != '[') continue;
+            // Parse the array
+            int arrStart = i + 1;
+            int bracketDepth = 1;
+            int j = arrStart;
+            while (j < block.length() && bracketDepth > 0) {
+                char c = block.charAt(j);
+                if (c == '[') bracketDepth++;
+                else if (c == ']') bracketDepth--;
+                j++;
+            }
+            String arrContent = block.substring(arrStart, j - 1);
+            java.util.List<String> classes = parseEntrypointArray(arrContent);
+            if (!classes.isEmpty()) {
+                result.put(key, classes);
+            }
+            i = j;
+        }
+    }
+
+    /**
+     * Parse an entrypoint array value. Each element can be:
+     * - "com.example.MyClass" (plain string)
+     * - {"adapter":"kotlin","value":"com.example.MyClass"} (object with value field)
+     */
+    private static java.util.List<String> parseEntrypointArray(String arr) {
+        java.util.List<String> list = new java.util.ArrayList<>();
+        int i = 0;
+        while (i < arr.length()) {
+            while (i < arr.length() && (Character.isWhitespace(arr.charAt(i)) || arr.charAt(i) == ',')) i++;
+            if (i >= arr.length()) break;
+            char c = arr.charAt(i);
+            if (c == '"') {
+                // Plain string
+                int end = arr.indexOf('"', i + 1);
+                if (end != -1) {
+                    list.add(arr.substring(i + 1, end));
+                    i = end + 1;
+                } else {
+                    break;
+                }
+            } else if (c == '{') {
+                // Object: find the "value" field
+                int close = arr.indexOf('}', i);
+                if (close != -1) {
+                    String obj = arr.substring(i + 1, close);
+                    // Extract the "value" key
+                    int valIdx = obj.indexOf("\"value\"");
+                    if (valIdx == -1) valIdx = obj.indexOf("\"class\"");
+                    if (valIdx != -1) {
+                        int colonIdx = obj.indexOf(':', valIdx);
+                        if (colonIdx != -1) {
+                            int qStart = obj.indexOf('"', colonIdx + 1);
+                            if (qStart != -1) {
+                                int qEnd = obj.indexOf('"', qStart + 1);
+                                if (qEnd != -1) {
+                                    list.add(obj.substring(qStart + 1, qEnd));
+                                }
+                            }
+                        }
+                    }
+                    i = close + 1;
+                } else {
+                    break;
+                }
+            } else {
+                i++;
+            }
+        }
+        return list;
     }
 
     public static String parseTopLevelJsonString(String json, String key) {

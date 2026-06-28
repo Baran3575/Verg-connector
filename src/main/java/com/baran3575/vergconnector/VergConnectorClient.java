@@ -38,7 +38,27 @@ public class VergConnectorClient {
             if (java.nio.file.Files.exists(fabricModJson)) {
                 try {
                     String jsonContent = java.nio.file.Files.readString(fabricModJson, java.nio.charset.StandardCharsets.UTF_8);
-                    java.util.List<String> clientEntrypoints = VergConnector.parseTopLevelEntrypoints(jsonContent, "client");
+                    java.util.Map<String, java.util.List<String>> allEntrypoints = VergConnector.parseAllEntrypoints(jsonContent);
+                    
+                    // Get container from FabricLoaderImpl for this mod
+                    String modId = VergConnector.parseTopLevelJsonString(jsonContent, "id");
+                    net.fabricmc.loader.api.ModContainer container = modId != null
+                        ? com.baran3575.vergconnector.fabric.FabricLoaderImpl.INSTANCE.getModContainer(modId).orElse(null)
+                        : null;
+
+                    // Register all entrypoints from client-side keys (client, jade:client, etc.)
+                    for (java.util.Map.Entry<String, java.util.List<String>> entry : allEntrypoints.entrySet()) {
+                        String epKey = entry.getKey();
+                        for (String className : entry.getValue()) {
+                            // Only re-register if not already done (VergConnector.initializeFabricMods ran first)
+                            if (container != null) {
+                                com.baran3575.vergconnector.fabric.FabricLoaderImpl.INSTANCE.registerEntrypoint(epKey, className, container);
+                            }
+                        }
+                    }
+
+                    // Execute client entrypoints
+                    java.util.List<String> clientEntrypoints = allEntrypoints.getOrDefault("client", java.util.List.of());
                     for (String entrypoint : clientEntrypoints) {
                         try {
                             VergConnector.LOGGER.info("[Verg Connector Client] Loading client entrypoint: {}", entrypoint);

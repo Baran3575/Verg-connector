@@ -14,5 +14,13 @@ public interface ModContainer {
     default Path getPath(String path) {
         return getRootPath().resolve(path);
     }
+    default Optional<Path> findPath(String path) {
+        try {
+            Path p = getRootPath().resolve(path.startsWith("/") ? path.substring(1) : path);
+            return java.nio.file.Files.exists(p) ? Optional.of(p) : Optional.empty();
+        } catch (Exception e) {
+            return Optional.empty();
+        }
+    }
     Optional<ModContainer> getContainingMod();
 }

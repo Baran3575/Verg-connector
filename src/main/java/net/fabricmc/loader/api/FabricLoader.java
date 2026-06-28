@@ -23,4 +23,10 @@ public interface FabricLoader {
     EnvType getEnvironmentType();
 
     boolean isDevelopmentEnvironment();
+
+    <T> java.util.List<T> getEntrypoints(String key, Class<T> type);
+
+    <T> java.util.List<EntrypointContainer<T>> getEntrypointContainers(String key, Class<T> type);
+
+    ObjectShare getObjectShare();
 }
