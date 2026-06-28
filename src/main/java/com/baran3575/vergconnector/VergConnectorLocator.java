@@ -6,14 +6,14 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.jar.Manifest;
-import net.neoforged.neoforgespi.locating.IModLocator;
-import net.neoforged.neoforgespi.locating.IModFile;
+import net.neoforged.neoforgespi.locating.IModFileCandidateLocator;
+import net.neoforged.neoforgespi.locating.ILaunchContext;
+import net.neoforged.neoforgespi.locating.IDiscoveryPipeline;
 
-public class VergConnectorLocator implements IModLocator {
+public class VergConnectorLocator implements IModFileCandidateLocator {
     @Override
-    public List<IModFile> scanMods() {
-        System.out.println("[Verg Connector] Scanning for Fabric and Forge mods...");
-        return List.of();
+    public void findCandidates(ILaunchContext context, IDiscoveryPipeline pipeline) {
+        System.out.println("[Verg Connector] Finding Fabric and Forge mods...");
     }
 
     @Override
@@ -24,20 +24,5 @@ public class VergConnectorLocator implements IModLocator {
     @Override
     public void initArguments(Map<String, ?> arguments) {
         // No-op
-    }
-
-    @Override
-    public Path findPath(IModFile modFile, String... path) {
-        return null;
-    }
-
-    @Override
-    public void scanFile(IModFile modFile, Consumer<Path> pathConsumer) {
-        // No-op
-    }
-
-    @Override
-    public Optional<Manifest> findManifest(Path file) {
-        return Optional.empty();
     }
 }
