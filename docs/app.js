@@ -162,11 +162,34 @@ function evaluateCompatibility(hit) {
     const id = hit.slug ? hit.slug.toLowerCase() : '';
     const title = hit.title ? hit.title.toLowerCase() : '';
     
+    // Check supported game versions on Modrinth (must include 1.21.1 or 1.21)
+    const versions = hit.versions || [];
+    const supportsTargetVersion = versions.some(v => v === '1.21.1' || v === '1.21');
+
+    if (!supportsTargetVersion) {
+        return {
+            statusText: 'Unsupported Version',
+            cardClass: 'status-unsupported',
+            iconClass: 'fa-solid fa-circle-xmark',
+            note: `This mod does not support Minecraft 1.21.1 (reported versions: ${versions.slice(0, 3).join(', ') || 'none'}). Verg Connector is specifically built for Minecraft 1.21.1.`
+        };
+    }
+
     // Check if the mod supports neoforge/forge natively on Modrinth
     const modLoaders = hit.categories || [];
     const hasNativeNeoForge = modLoaders.includes('neoforge');
     const hasNativeForge = modLoaders.includes('forge');
     const supportsFabric = modLoaders.includes('fabric');
+
+    // Filter out content that is not a mod or has unsupported loader types
+    if (!supportsFabric && !hasNativeNeoForge && !hasNativeForge) {
+        return {
+            statusText: 'Unsupported Loader',
+            cardClass: 'status-unsupported',
+            iconClass: 'fa-solid fa-circle-xmark',
+            note: 'This project does not support Fabric, NeoForge, or Forge mod loaders. Verg Connector is only designed to bridge Fabric and Forge mods to NeoForge.'
+        };
+    }
 
     // 1. Check specific problematic mods
     if (id === 'sodium' || title.includes('sodium')) {
