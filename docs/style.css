@@ -27,13 +27,28 @@
     box-sizing: border-box;
 }
 
+html, body {
+    width: 100%;
+    overflow-x: hidden;
+}
+
 body {
     background-color: var(--bg-color);
     color: var(--text-primary);
     font-family: var(--font-sans);
     min-height: 100vh;
-    overflow-x: hidden;
     position: relative;
+}
+
+.bg-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -10;
+    pointer-events: none;
 }
 
 /* Background Gradients and Stars */
@@ -628,6 +643,10 @@ footer {
 
 /* Responsive design */
 @media (max-width: 768px) {
+    .nav-container {
+        padding: 1rem 1.25rem;
+    }
+
     .container {
         padding: 2.5rem 1.25rem;
     }
@@ -685,6 +704,15 @@ footer {
 }
 
 @media (max-width: 576px) {
+    .logo {
+        font-size: 1.3rem;
+    }
+    
+    .nav-btn {
+        padding: 0.5rem 0.8rem;
+        font-size: 0.85rem;
+    }
+
     .mod-title-row {
         flex-direction: column;
         align-items: flex-start;
