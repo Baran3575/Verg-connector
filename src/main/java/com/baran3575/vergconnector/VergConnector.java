@@ -68,7 +68,7 @@ public class VergConnector {
     }
 
     @SuppressWarnings("unchecked")
-    private <T extends CustomPacketPayload> void registerServerChannel(PayloadRegistrar registrar, CustomPacketPayload.Type<T> type, StreamCodec<? super FriendlyByteBuf, T> codec) {
+    private <T extends CustomPacketPayload> void registerServerChannel(PayloadRegistrar registrar, CustomPacketPayload.Type<T> type, StreamCodec<? super net.minecraft.network.RegistryFriendlyByteBuf, T> codec) {
         registrar.playToServer(type, codec, (payload, context) -> {
             ServerPlayNetworking.PlayPayloadHandler<T> handler = (ServerPlayNetworking.PlayPayloadHandler<T>) ServerPlayNetworking.getReceivers().get(type);
             if (handler != null) {
@@ -84,7 +84,7 @@ public class VergConnector {
     }
 
     @SuppressWarnings("unchecked")
-    private <T extends CustomPacketPayload> void registerClientChannel(PayloadRegistrar registrar, CustomPacketPayload.Type<T> type, StreamCodec<? super FriendlyByteBuf, T> codec) {
+    private <T extends CustomPacketPayload> void registerClientChannel(PayloadRegistrar registrar, CustomPacketPayload.Type<T> type, StreamCodec<? super net.minecraft.network.RegistryFriendlyByteBuf, T> codec) {
         registrar.playToClient(type, codec, (payload, context) -> {
             ClientPlayNetworking.PlayPayloadHandler<T> handler = (ClientPlayNetworking.PlayPayloadHandler<T>) ClientPlayNetworking.getReceivers().get(type);
             if (handler != null) {
