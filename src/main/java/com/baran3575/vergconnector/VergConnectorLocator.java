@@ -8,7 +8,7 @@ import java.util.function.Consumer;
 import java.util.jar.Manifest;
 import net.neoforged.neoforgespi.locating.IModFileCandidateLocator;
 import net.neoforged.neoforgespi.locating.IDiscoveryPipeline;
-import cpw.mods.modlauncher.api.ILaunchContext;
+import net.neoforged.fml.loading.ILaunchContext;
 
 public class VergConnectorLocator implements IModFileCandidateLocator {
     @Override
