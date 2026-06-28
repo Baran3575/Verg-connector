@@ -6,6 +6,7 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -64,18 +65,24 @@ public class FabricJarContentsWrapper implements JarContents {
         // Escape values for TOML
         description = description.replace("\"", "\\\"");
 
-        String toml = "modLoader=\"javafml\"\n" +
-                "loaderVersion=\"[4,)\"\n" +
-                "license=\"" + license + "\"\n" +
-                "\n" +
-                "[[mods]]\n" +
-                "modId=\"" + id + "\"\n" +
-                "version=\"" + version + "\"\n" +
-                "displayName=\"" + name + "\"\n" +
-                "description=\"" + description + "\"\n";
+        StringBuilder tomlBuilder = new StringBuilder();
+        tomlBuilder.append("modLoader=\"javafml\"\n")
+                   .append("loaderVersion=\"[4,)\"\n")
+                   .append("license=\"").append(license).append("\"\n\n")
+                   .append("[[mods]]\n")
+                   .append("modId=\"").append(id).append("\"\n")
+                   .append("version=\"").append(version).append("\"\n")
+                   .append("displayName=\"").append(name).append("\"\n")
+                   .append("description=\"").append(description).append("\"\n\n");
+
+        List<String> mixins = parseMixins(jsonContent);
+        for (String mixin : mixins) {
+            tomlBuilder.append("[[mixins]]\n")
+                       .append("config=\"").append(mixin).append("\"\n\n");
+        }
 
         Path tempFile = Files.createTempFile("neoforge_mods_", ".toml");
-        Files.writeString(tempFile, toml);
+        Files.writeString(tempFile, tomlBuilder.toString());
         tempFile.toFile().deleteOnExit();
         return tempFile;
     }
@@ -90,6 +97,43 @@ public class FabricJarContentsWrapper implements JarContents {
         int quoteEnd = json.indexOf("\"", quoteStart + 1);
         if (quoteEnd == -1) return null;
         return json.substring(quoteStart + 1, quoteEnd);
+    }
+
+    private List<String> parseMixins(String json) {
+        List<String> list = new ArrayList<>();
+        int idx = json.indexOf("\"mixins\"");
+        if (idx == -1) return list;
+        int colonIdx = json.indexOf(":", idx);
+        if (colonIdx == -1) return list;
+        int arrayStart = json.indexOf("[", colonIdx);
+        int arrayEnd = json.indexOf("]", colonIdx);
+        if (arrayStart == -1 || arrayEnd == -1 || arrayStart > arrayEnd) {
+            return list;
+        }
+
+        String arrayContent = json.substring(arrayStart + 1, arrayEnd);
+        String[] elements = arrayContent.split(",");
+        for (String element : elements) {
+            element = element.trim();
+            if (element.startsWith("{")) {
+                int configIdx = element.indexOf("\"config\"");
+                if (configIdx != -1) {
+                    int valColon = element.indexOf(":", configIdx);
+                    if (valColon != -1) {
+                        int qStart = element.indexOf("\"", valColon);
+                        if (qStart != -1) {
+                            int qEnd = element.indexOf("\"", qStart + 1);
+                            if (qEnd != -1) {
+                                list.add(element.substring(qStart + 1, qEnd));
+                            }
+                        }
+                    }
+                }
+            } else if (element.startsWith("\"") && element.endsWith("\"")) {
+                list.add(element.substring(1, element.length() - 1));
+            }
+        }
+        return list;
     }
 
     @Override

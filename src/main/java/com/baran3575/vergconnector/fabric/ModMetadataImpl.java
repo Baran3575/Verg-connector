@@ -3,19 +3,20 @@ package com.baran3575.vergconnector.fabric;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
+import net.fabricmc.loader.api.Version;
 import net.fabricmc.loader.api.metadata.ContactInformation;
 import net.fabricmc.loader.api.metadata.ModMetadata;
 import net.fabricmc.loader.api.metadata.Person;
 
 public class ModMetadataImpl implements ModMetadata {
     private final String id;
-    private final String version;
+    private final Version version;
     private final String name;
     private final String description;
 
     public ModMetadataImpl(String id, String version, String name, String description) {
         this.id = id;
-        this.version = version;
+        this.version = new VersionImpl(version != null ? version : "1.0.0");
         this.name = name;
         this.description = description;
     }
@@ -26,7 +27,7 @@ public class ModMetadataImpl implements ModMetadata {
     }
 
     @Override
-    public String getVersion() {
+    public Version getVersion() {
         return version;
     }
 
