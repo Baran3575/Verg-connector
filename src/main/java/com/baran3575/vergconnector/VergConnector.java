@@ -19,7 +19,6 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
-import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ClientPlayNetworking;
 
@@ -56,44 +55,48 @@ public class VergConnector {
         PayloadRegistrar registrar = event.registrar(MODID);
 
         // Register Server Receivers (C2S)
-        PayloadTypeRegistry.Impl playC2S = (PayloadTypeRegistry.Impl) PayloadTypeRegistry.playC2S();
+        net.fabricmc.fabric.impl.networking.PayloadTypeRegistryImpl playC2S = net.fabricmc.fabric.impl.networking.PayloadTypeRegistryImpl.PLAY_C2S;
         for (Map.Entry<CustomPacketPayload.Type<?>, StreamCodec<? super FriendlyByteBuf, ?>> entry : playC2S.getCodecs().entrySet()) {
-            CustomPacketPayload.Type type = entry.getKey();
-            StreamCodec codec = entry.getValue();
-
-            registrar.playToServer(type, codec, (payload, context) -> {
-                ServerPlayNetworking.PlayPayloadHandler handler = ServerPlayNetworking.getReceivers().get(type);
-                if (handler != null) {
-                    context.enqueueWork(() -> handler.receive(payload, new ServerPlayNetworking.Context() {
-                        @Override
-                        public ServerPlayer player() {
-                            return (ServerPlayer) context.player();
-                        }
-                    }));
-                }
-            });
-            LOGGER.info("[Verg Connector] Registered Fabric C2S channel: {}", type.id());
+            registerServerChannel(registrar, (CustomPacketPayload.Type) entry.getKey(), (StreamCodec) entry.getValue());
         }
 
         // Register Client Receivers (S2C)
-        PayloadTypeRegistry.Impl playS2C = (PayloadTypeRegistry.Impl) PayloadTypeRegistry.playS2C();
+        net.fabricmc.fabric.impl.networking.PayloadTypeRegistryImpl playS2C = net.fabricmc.fabric.impl.networking.PayloadTypeRegistryImpl.PLAY_S2C;
         for (Map.Entry<CustomPacketPayload.Type<?>, StreamCodec<? super FriendlyByteBuf, ?>> entry : playS2C.getCodecs().entrySet()) {
-            CustomPacketPayload.Type type = entry.getKey();
-            StreamCodec codec = entry.getValue();
-
-            registrar.playToClient(type, codec, (payload, context) -> {
-                ClientPlayNetworking.PlayPayloadHandler handler = ClientPlayNetworking.getReceivers().get(type);
-                if (handler != null) {
-                    context.enqueueWork(() -> handler.receive(payload, new ClientPlayNetworking.Context() {
-                        @Override
-                        public LocalPlayer player() {
-                            return (LocalPlayer) context.player();
-                        }
-                    }));
-                }
-            });
-            LOGGER.info("[Verg Connector] Registered Fabric S2C channel: {}", type.id());
+            registerClientChannel(registrar, (CustomPacketPayload.Type) entry.getKey(), (StreamCodec) entry.getValue());
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T extends CustomPacketPayload> void registerServerChannel(PayloadRegistrar registrar, CustomPacketPayload.Type<T> type, StreamCodec<? super FriendlyByteBuf, T> codec) {
+        registrar.playToServer(type, codec, (payload, context) -> {
+            ServerPlayNetworking.PlayPayloadHandler<T> handler = (ServerPlayNetworking.PlayPayloadHandler<T>) ServerPlayNetworking.getReceivers().get(type);
+            if (handler != null) {
+                context.enqueueWork(() -> handler.receive(payload, new ServerPlayNetworking.Context() {
+                    @Override
+                    public ServerPlayer player() {
+                        return (ServerPlayer) context.player();
+                    }
+                }));
+            }
+        });
+        LOGGER.info("[Verg Connector] Registered Fabric C2S channel: {}", type.id());
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T extends CustomPacketPayload> void registerClientChannel(PayloadRegistrar registrar, CustomPacketPayload.Type<T> type, StreamCodec<? super FriendlyByteBuf, T> codec) {
+        registrar.playToClient(type, codec, (payload, context) -> {
+            ClientPlayNetworking.PlayPayloadHandler<T> handler = (ClientPlayNetworking.PlayPayloadHandler<T>) ClientPlayNetworking.getReceivers().get(type);
+            if (handler != null) {
+                context.enqueueWork(() -> handler.receive(payload, new ClientPlayNetworking.Context() {
+                    @Override
+                    public LocalPlayer player() {
+                        return (LocalPlayer) context.player();
+                    }
+                }));
+            }
+        });
+        LOGGER.info("[Verg Connector] Registered Fabric S2C channel: {}", type.id());
     }
 
     private void onBuildCreativeModeTabContents(net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent event) {
