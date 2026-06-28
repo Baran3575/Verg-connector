@@ -2,7 +2,7 @@ package com.baran3575.vergconnector.fabric;
 
 import java.nio.file.Path;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.Map;
 import java.util.Optional;
 import net.fabricmc.api.EnvType;
@@ -15,7 +15,7 @@ import net.neoforged.fml.loading.FMLEnvironment;
 public class FabricLoaderImpl implements FabricLoader {
     public static final FabricLoaderImpl INSTANCE = new FabricLoaderImpl();
 
-    private final Map<String, ModContainer> mods = new HashMap<>();
+    private final Map<String, ModContainer> mods = new ConcurrentHashMap<>();
 
     private FabricLoaderImpl() {
         // Populated dynamically

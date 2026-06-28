@@ -2,6 +2,12 @@ package com.baran3575.vergconnector;
 
 import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
+import java.util.Map;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.client.player.LocalPlayer;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
@@ -10,22 +16,83 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.registries.RegisterEvent;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.ClientPlayNetworking;
 
 @Mod(VergConnector.MODID)
 public class VergConnector {
     public static final String MODID = "vergconnector";
     public static final Logger LOGGER = LogUtils.getLogger();
+    
+    private boolean initialized = false;
 
     public VergConnector(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::onBuildCreativeModeTabContents);
+        modEventBus.addListener(this::onRegister);
+        modEventBus.addListener(this::registerPayloads);
         NeoForge.EVENT_BUS.register(this);
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
 
-        initializeFabricMods();
-
         if (net.neoforged.fml.loading.FMLEnvironment.dist == net.neoforged.api.distmarker.Dist.CLIENT) {
             VergConnectorClient.init(modEventBus);
+        }
+    }
+
+    private void onRegister(RegisterEvent event) {
+        if (!initialized && event.getRegistryKey().equals(net.minecraft.core.registries.Registries.BLOCK)) {
+            initialized = true;
+            initializeFabricMods();
+        }
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    private void registerPayloads(RegisterPayloadHandlersEvent event) {
+        LOGGER.info("[Verg Connector] Registering Fabric custom payload networking channels to NeoForge...");
+        PayloadRegistrar registrar = event.registrar(MODID);
+
+        // Register Server Receivers (C2S)
+        PayloadTypeRegistry.Impl playC2S = (PayloadTypeRegistry.Impl) PayloadTypeRegistry.playC2S();
+        for (Map.Entry<CustomPacketPayload.Type<?>, StreamCodec<? super FriendlyByteBuf, ?>> entry : playC2S.getCodecs().entrySet()) {
+            CustomPacketPayload.Type type = entry.getKey();
+            StreamCodec codec = entry.getValue();
+
+            registrar.playToServer(type, codec, (payload, context) -> {
+                ServerPlayNetworking.PlayPayloadHandler handler = ServerPlayNetworking.getReceivers().get(type);
+                if (handler != null) {
+                    context.enqueueWork(() -> handler.receive(payload, new ServerPlayNetworking.Context() {
+                        @Override
+                        public ServerPlayer player() {
+                            return (ServerPlayer) context.player();
+                        }
+                    }));
+                }
+            });
+            LOGGER.info("[Verg Connector] Registered Fabric C2S channel: {}", type.id());
+        }
+
+        // Register Client Receivers (S2C)
+        PayloadTypeRegistry.Impl playS2C = (PayloadTypeRegistry.Impl) PayloadTypeRegistry.playS2C();
+        for (Map.Entry<CustomPacketPayload.Type<?>, StreamCodec<? super FriendlyByteBuf, ?>> entry : playS2C.getCodecs().entrySet()) {
+            CustomPacketPayload.Type type = entry.getKey();
+            StreamCodec codec = entry.getValue();
+
+            registrar.playToClient(type, codec, (payload, context) -> {
+                ClientPlayNetworking.PlayPayloadHandler handler = ClientPlayNetworking.getReceivers().get(type);
+                if (handler != null) {
+                    context.enqueueWork(() -> handler.receive(payload, new ClientPlayNetworking.Context() {
+                        @Override
+                        public LocalPlayer player() {
+                            return (LocalPlayer) context.player();
+                        }
+                    }));
+                }
+            });
+            LOGGER.info("[Verg Connector] Registered Fabric S2C channel: {}", type.id());
         }
     }
 
@@ -49,10 +116,10 @@ public class VergConnector {
             if (java.nio.file.Files.exists(fabricModJson)) {
                 try {
                     String jsonContent = java.nio.file.Files.readString(fabricModJson, java.nio.charset.StandardCharsets.UTF_8);
-                    String id = parseJsonString(jsonContent, "id");
-                    String version = parseJsonString(jsonContent, "version");
-                    String name = parseJsonString(jsonContent, "name");
-                    String description = parseJsonString(jsonContent, "description");
+                    String id = parseTopLevelJsonString(jsonContent, "id");
+                    String version = parseTopLevelJsonString(jsonContent, "version");
+                    String name = parseTopLevelJsonString(jsonContent, "name");
+                    String description = parseTopLevelJsonString(jsonContent, "description");
 
                     if (id == null) id = "unknown";
                     if (version == null) version = "1.0.0";
@@ -65,7 +132,7 @@ public class VergConnector {
                     LOGGER.info("[Verg Connector] Registered Fabric mod: {} ({})", name, version);
 
                     // Execute main entrypoints
-                    java.util.List<String> mainEntrypoints = parseEntrypoints(jsonContent, "main");
+                    java.util.List<String> mainEntrypoints = parseTopLevelEntrypoints(jsonContent, "main");
                     for (String entrypoint : mainEntrypoints) {
                         try {
                             LOGGER.info("[Verg Connector] Loading main entrypoint: {}", entrypoint);
@@ -82,7 +149,7 @@ public class VergConnector {
 
                     // Execute server entrypoints if on dedicated server
                     if (net.neoforged.fml.loading.FMLEnvironment.dist == net.neoforged.api.distmarker.Dist.DEDICATED_SERVER) {
-                        java.util.List<String> serverEntrypoints = parseEntrypoints(jsonContent, "server");
+                        java.util.List<String> serverEntrypoints = parseTopLevelEntrypoints(jsonContent, "server");
                         for (String entrypoint : serverEntrypoints) {
                             try {
                                 LOGGER.info("[Verg Connector] Loading server entrypoint: {}", entrypoint);
@@ -104,60 +171,140 @@ public class VergConnector {
         }
     }
 
-    public static String parseJsonString(String json, String key) {
-        int idx = json.indexOf("\"" + key + "\"");
-        if (idx == -1) return null;
-        int colonIdx = json.indexOf(":", idx);
-        if (colonIdx == -1) return null;
-        int quoteStart = json.indexOf("\"", colonIdx);
-        if (quoteStart == -1) return null;
-        int quoteEnd = json.indexOf("\"", quoteStart + 1);
-        if (quoteEnd == -1) return null;
-        return json.substring(quoteStart + 1, quoteEnd);
+    public static String parseTopLevelJsonString(String json, String key) {
+        int depth = 0;
+        boolean inQuote = false;
+        StringBuilder keyBuilder = new StringBuilder();
+        int i = 0;
+        while (i < json.length()) {
+            char c = json.charAt(i);
+            if (c == '"') {
+                inQuote = !inQuote;
+                if (inQuote) {
+                    keyBuilder.setLength(0);
+                } else {
+                    if (depth == 1 && keyBuilder.toString().equals(key)) {
+                        i++;
+                        while (i < json.length() && json.charAt(i) != ':') {
+                            i++;
+                        }
+                        i++;
+                        while (i < json.length() && json.charAt(i) != '"') {
+                            if (json.charAt(i) == '[' || json.charAt(i) == '{') {
+                                return null;
+                            }
+                            i++;
+                        }
+                        i++;
+                        StringBuilder valBuilder = new StringBuilder();
+                        while (i < json.length() && json.charAt(i) != '"') {
+                            valBuilder.append(json.charAt(i));
+                            i++;
+                        }
+                        return valBuilder.toString();
+                    }
+                }
+            } else if (inQuote) {
+                keyBuilder.append(c);
+            } else {
+                if (c == '{') depth++;
+                else if (c == '}') depth--;
+            }
+            i++;
+        }
+        return null;
     }
 
-    public static java.util.List<String> parseEntrypoints(String json, String key) {
+    public static java.util.List<String> parseTopLevelEntrypoints(String json, String key) {
         java.util.List<String> list = new java.util.ArrayList<>();
-        int idx = json.indexOf("\"" + key + "\"");
-        if (idx == -1) return list;
-        int colonIdx = json.indexOf(":", idx);
-        if (colonIdx == -1) return list;
-        int arrayStart = json.indexOf("[", colonIdx);
-        int arrayEnd = json.indexOf("]", colonIdx);
-        if (arrayStart == -1 || arrayEnd == -1 || arrayStart > arrayEnd) {
-            int quoteStart = json.indexOf("\"", colonIdx);
-            if (quoteStart != -1 && (arrayStart == -1 || quoteStart < arrayStart)) {
-                int quoteEnd = json.indexOf("\"", quoteStart + 1);
-                if (quoteEnd != -1) {
-                    list.add(json.substring(quoteStart + 1, quoteEnd));
-                }
-            }
-            return list;
-        }
-
-        String arrayContent = json.substring(arrayStart + 1, arrayEnd);
-        String[] elements = arrayContent.split(",");
-        for (String element : elements) {
-            element = element.trim();
-            if (element.startsWith("{")) {
-                int valueIdx = element.indexOf("\"value\"");
-                if (valueIdx != -1) {
-                    int valColon = element.indexOf(":", valueIdx);
-                    if (valColon != -1) {
-                        int qStart = element.indexOf("\"", valColon);
-                        if (qStart != -1) {
-                            int qEnd = element.indexOf("\"", qStart + 1);
-                            if (qEnd != -1) {
-                                list.add(element.substring(qStart + 1, qEnd));
+        int depth = 0;
+        boolean inQuote = false;
+        StringBuilder keyBuilder = new StringBuilder();
+        int i = 0;
+        while (i < json.length()) {
+            char c = json.charAt(i);
+            if (c == '"') {
+                inQuote = !inQuote;
+                if (inQuote) {
+                    keyBuilder.setLength(0);
+                } else {
+                    if (depth == 1 && keyBuilder.toString().equals(key)) {
+                        i++;
+                        while (i < json.length() && json.charAt(i) != ':') {
+                            i++;
+                        }
+                        i++;
+                        while (i < json.length() && json.charAt(i) != '"' && json.charAt(i) != '[' && json.charAt(i) != '{') {
+                            i++;
+                        }
+                        if (json.charAt(i) == '"') {
+                            i++;
+                            StringBuilder valBuilder = new StringBuilder();
+                            while (i < json.length() && json.charAt(i) != '"') {
+                                valBuilder.append(json.charAt(i));
+                                i++;
                             }
+                            list.add(valBuilder.toString());
+                            return list;
+                        } else if (json.charAt(i) == '[') {
+                            i++;
+                            int arrayDepth = 1;
+                            StringBuilder elementBuilder = new StringBuilder();
+                            while (i < json.length() && arrayDepth > 0) {
+                                char ac = json.charAt(i);
+                                if (ac == '[') arrayDepth++;
+                                else if (ac == ']') {
+                                    arrayDepth--;
+                                    if (arrayDepth == 0) {
+                                        String elem = elementBuilder.toString().trim();
+                                        if (!elem.isEmpty()) {
+                                            processEntrypointElement(elem, list);
+                                        }
+                                        break;
+                                    }
+                                } else if (ac == ',' && arrayDepth == 1) {
+                                    String elem = elementBuilder.toString().trim();
+                                    processEntrypointElement(elem, list);
+                                    elementBuilder.setLength(0);
+                                    i++;
+                                    continue;
+                                }
+                                elementBuilder.append(ac);
+                                i++;
+                            }
+                            return list;
                         }
                     }
                 }
-            } else if (element.startsWith("\"") && element.endsWith("\"")) {
-                list.add(element.substring(1, element.length() - 1));
+            } else if (inQuote) {
+                keyBuilder.append(c);
+            } else {
+                if (c == '{') depth++;
+                else if (c == '}') depth--;
             }
+            i++;
         }
         return list;
+    }
+
+    private static void processEntrypointElement(String elem, java.util.List<String> list) {
+        if (elem.startsWith("{")) {
+            int valIdx = elem.indexOf("\"value\"");
+            if (valIdx != -1) {
+                int colon = elem.indexOf(":", valIdx);
+                if (colon != -1) {
+                    int qStart = elem.indexOf("\"", colon);
+                    if (qStart != -1) {
+                        int qEnd = elem.indexOf("\"", qStart + 1);
+                        if (qEnd != -1) {
+                            list.add(elem.substring(qStart + 1, qEnd));
+                        }
+                    }
+                }
+            }
+        } else if (elem.startsWith("\"") && elem.endsWith("\"")) {
+            list.add(elem.substring(1, elem.length() - 1));
+        }
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {

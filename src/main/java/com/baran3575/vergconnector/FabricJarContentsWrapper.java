@@ -6,7 +6,6 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -49,12 +48,11 @@ public class FabricJarContentsWrapper implements JarContents {
             jsonContent = new String(is.readAllBytes(), StandardCharsets.UTF_8);
         }
 
-        // Minimal JSON parsing without external dependencies
-        String id = parseJsonString(jsonContent, "id");
-        String version = parseJsonString(jsonContent, "version");
-        String name = parseJsonString(jsonContent, "name");
-        String description = parseJsonString(jsonContent, "description");
-        String license = parseJsonString(jsonContent, "license");
+        String id = VergConnector.parseTopLevelJsonString(jsonContent, "id");
+        String version = VergConnector.parseTopLevelJsonString(jsonContent, "version");
+        String name = VergConnector.parseTopLevelJsonString(jsonContent, "name");
+        String description = VergConnector.parseTopLevelJsonString(jsonContent, "description");
+        String license = VergConnector.parseTopLevelJsonString(jsonContent, "license");
 
         if (id == null) id = "unknown";
         if (version == null) version = "1.0.0";
@@ -75,7 +73,7 @@ public class FabricJarContentsWrapper implements JarContents {
                    .append("displayName=\"").append(name).append("\"\n")
                    .append("description=\"").append(description).append("\"\n\n");
 
-        List<String> mixins = parseMixins(jsonContent);
+        List<String> mixins = VergConnector.parseTopLevelEntrypoints(jsonContent, "mixins");
         for (String mixin : mixins) {
             tomlBuilder.append("[[mixins]]\n")
                        .append("config=\"").append(mixin).append("\"\n\n");
@@ -85,55 +83,6 @@ public class FabricJarContentsWrapper implements JarContents {
         Files.writeString(tempFile, tomlBuilder.toString());
         tempFile.toFile().deleteOnExit();
         return tempFile;
-    }
-
-    private String parseJsonString(String json, String key) {
-        int idx = json.indexOf("\"" + key + "\"");
-        if (idx == -1) return null;
-        int colonIdx = json.indexOf(":", idx);
-        if (colonIdx == -1) return null;
-        int quoteStart = json.indexOf("\"", colonIdx);
-        if (quoteStart == -1) return null;
-        int quoteEnd = json.indexOf("\"", quoteStart + 1);
-        if (quoteEnd == -1) return null;
-        return json.substring(quoteStart + 1, quoteEnd);
-    }
-
-    private List<String> parseMixins(String json) {
-        List<String> list = new ArrayList<>();
-        int idx = json.indexOf("\"mixins\"");
-        if (idx == -1) return list;
-        int colonIdx = json.indexOf(":", idx);
-        if (colonIdx == -1) return list;
-        int arrayStart = json.indexOf("[", colonIdx);
-        int arrayEnd = json.indexOf("]", colonIdx);
-        if (arrayStart == -1 || arrayEnd == -1 || arrayStart > arrayEnd) {
-            return list;
-        }
-
-        String arrayContent = json.substring(arrayStart + 1, arrayEnd);
-        String[] elements = arrayContent.split(",");
-        for (String element : elements) {
-            element = element.trim();
-            if (element.startsWith("{")) {
-                int configIdx = element.indexOf("\"config\"");
-                if (configIdx != -1) {
-                    int valColon = element.indexOf(":", configIdx);
-                    if (valColon != -1) {
-                        int qStart = element.indexOf("\"", valColon);
-                        if (qStart != -1) {
-                            int qEnd = element.indexOf("\"", qStart + 1);
-                            if (qEnd != -1) {
-                                list.add(element.substring(qStart + 1, qEnd));
-                            }
-                        }
-                    }
-                }
-            } else if (element.startsWith("\"") && element.endsWith("\"")) {
-                list.add(element.substring(1, element.length() - 1));
-            }
-        }
-        return list;
     }
 
     @Override
