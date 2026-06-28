@@ -1,0 +1,9 @@
+{
+  "vergconnector.configuration.title": "Verg Connector Configs",
+  "vergconnector.configuration.section.vergconnector.common.toml": "Verg Connector Configs",
+  "vergconnector.configuration.section.vergconnector.common.toml.title": "Verg Connector Configs",
+  "vergconnector.configuration.items": "Item List",
+  "vergconnector.configuration.logDirtBlock": "Log Dirt Block",
+  "vergconnector.configuration.magicNumberIntroduction": "Magic Number Text",
+  "vergconnector.configuration.magicNumber": "Magic Number"
+}
