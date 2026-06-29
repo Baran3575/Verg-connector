@@ -73,7 +73,7 @@ public class VergConnectorLocator implements IModFileCandidateLocator {
                 Path remappedPath = cacheDir.resolve(path.getFileName().toString());
                 boolean needsRemap = !Files.exists(remappedPath);
                 
-                String currentVer = "v6"; // Invalidate cache when remapping logic updates
+                String currentVer = "v7"; // Invalidate cache when remapping logic updates
                 Path verFile = cacheDir.resolve(".remapper_version");
                 
                 if (!needsRemap) {
@@ -86,32 +86,32 @@ public class VergConnectorLocator implements IModFileCandidateLocator {
                     }
                 }
                 
+                boolean versionMatch = false;
                 if (Files.exists(verFile)) {
                     try {
                         String savedVer = Files.readString(verFile).trim();
-                        if (!currentVer.equals(savedVer)) {
-                            System.out.println("[Verg Connector] Remapper version changed (" + savedVer + " -> " + currentVer + "). Invalidating cache...");
-                            try (Stream<Path> s = Files.list(cacheDir)) {
-                                s.filter(p -> !p.getFileName().toString().equals(".remapper_version")).forEach(p -> {
-                                    try {
-                                        if (Files.isDirectory(p)) {
-                                            // Handle cache dir directories if any
-                                        } else {
-                                            Files.deleteIfExists(p);
-                                        }
-                                    } catch (Exception ignored) {}
-                                });
-                            }
-                            needsRemap = true;
+                        if (currentVer.equals(savedVer)) {
+                            versionMatch = true;
                         }
-                    } catch (Exception e) {
-                        needsRemap = true;
-                    }
-                } else {
-                    needsRemap = true;
+                    } catch (IOException e) {}
                 }
                 
-                Files.writeString(verFile, currentVer);
+                if (!versionMatch) {
+                    System.out.println("[Verg Connector] Remapper version changed or missing. Invalidating cache...");
+                    try (Stream<Path> s = Files.list(cacheDir)) {
+                        s.filter(p -> !p.getFileName().toString().equals(".remapper_version")).forEach(p -> {
+                            try {
+                                if (!Files.isDirectory(p)) {
+                                    Files.deleteIfExists(p);
+                                }
+                            } catch (IOException e) {}
+                        });
+                    } catch (IOException e) {}
+                    try {
+                        Files.writeString(verFile, currentVer);
+                    } catch (IOException e) {}
+                    needsRemap = true;
+                }
                 
                 if (needsRemap) {
                     com.baran3575.vergconnector.remapper.JarRemapper.remapJar(path, remappedPath, mappings);
