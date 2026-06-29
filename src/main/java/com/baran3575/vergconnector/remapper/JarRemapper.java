@@ -69,6 +69,15 @@ public class JarRemapper {
             remapper.finish();
         }
         
+        System.out.println("[Verg Connector] Running ASM String Replacer on " + outputJar.getFileName());
+        try {
+            Map<String, String> stringMap = MappingManager.getIntermediaryToMojmap();
+            ASMStringReplacer.processJar(outputJar, stringMap);
+        } catch (Exception e) {
+            System.err.println("[Verg Connector] ASM String Replacer failed: " + e.getMessage());
+            e.printStackTrace();
+        }
+        
         System.out.println("[Verg Connector] Remapping complete for: " + outputJar.getFileName());
     }
 

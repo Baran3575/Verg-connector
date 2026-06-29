@@ -99,4 +99,63 @@ public class MappingManager {
             Files.copy(in, destination, StandardCopyOption.REPLACE_EXISTING);
         }
     }
+
+    private static Map<String, String> stringMappingsCache = null;
+
+    public static Map<String, String> getIntermediaryToMojmap() throws IOException {
+        if (stringMappingsCache != null) {
+            return stringMappingsCache;
+        }
+        
+        System.out.println("[Verg Connector] Building ASM String Replacer mapping cache...");
+        Path mappingsFile = getMappingsFile();
+        MemoryMappingTree tree = new MemoryMappingTree();
+        try {
+            MappingReader.read(mappingsFile, tree);
+        } catch (Exception e) {
+            throw new IOException("Failed to read mapping tree for string replacements", e);
+        }
+        
+        Map<String, String> map = new java.util.HashMap<>();
+        for (net.fabricmc.mappingio.tree.MappingTree.ClassMapping c : tree.getClasses()) {
+            String interClass = c.getName("intermediary");
+            String namedClass = c.getName("named");
+            if (interClass != null && namedClass != null) {
+                // For class references
+                map.put(interClass, namedClass);
+                map.put(interClass.replace('/', '.'), namedClass.replace('/', '.'));
+                map.put("L" + interClass + ";", "L" + namedClass + ";");
+            }
+            
+            for (net.fabricmc.mappingio.tree.MappingTree.MethodMapping m : c.getMethods()) {
+                String interMethod = m.getName("intermediary");
+                String namedMethod = m.getName("named");
+                if (interMethod != null && namedMethod != null) {
+                    map.put(interMethod, namedMethod);
+                }
+            }
+            
+            for (net.fabricmc.mappingio.tree.MappingTree.FieldMapping f : c.getFields()) {
+                String interField = f.getName("intermediary");
+                String namedField = f.getName("named");
+                if (interField != null && namedField != null) {
+                    map.put(interField, namedField);
+                }
+            }
+        }
+        
+        stringMappingsCache = map;
+        System.out.println("[Verg Connector] Cached " + map.size() + " mapping strings for ASM.");
+        return stringMappingsCache;
+    }
+
+    public static boolean isMappedString(String s) {
+        if (stringMappingsCache == null) return false;
+        return stringMappingsCache.containsKey(s);
+    }
+
+    public static String getMappedString(String s) {
+        if (stringMappingsCache == null) return s;
+        return stringMappingsCache.getOrDefault(s, s);
+    }
 }
