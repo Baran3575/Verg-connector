@@ -121,27 +121,28 @@ public class JarRemapper {
             }
         }
 
-        // 2. Scan Libraries folder as fallback
+        // 2. Scan entire .minecraft folder (libraries and versions)
         Path gameDir = FMLPaths.GAMEDIR.get();
-        Path libs = gameDir.resolve("libraries");
-        if (!java.nio.file.Files.exists(libs) && gameDir.getParent() != null) {
-            libs = gameDir.getParent().resolve("libraries");
-            if (!java.nio.file.Files.exists(libs) && gameDir.getParent().getParent() != null) {
-                libs = gameDir.getParent().getParent().resolve("libraries");
-            }
+        Path minecraftDir = gameDir;
+        if (gameDir.getParent() != null && gameDir.getParent().getParent() != null) {
+            minecraftDir = gameDir.getParent().getParent();
         }
         
-        if (java.nio.file.Files.exists(libs)) {
-            try (Stream<Path> stream = java.nio.file.Files.walk(libs)) {
+        if (java.nio.file.Files.exists(minecraftDir)) {
+            try (Stream<Path> stream = java.nio.file.Files.walk(minecraftDir, 8)) {
                 stream.filter(p -> p.toString().endsWith(".jar"))
                       .filter(p -> {
+                          String pathStr = p.toString().replace('\\', '/').toLowerCase();
+                          // Exclude mods, cache, and remapper files to prevent loops
+                          if (pathStr.contains("/mods/") || pathStr.contains("/cache/") || pathStr.contains("/.vergconnector/")) {
+                              return false;
+                          }
                           String name = p.getFileName().toString().toLowerCase();
-                          // Only add core minecraft and neoforge jars to avoid loading too many unnecessary jars
-                          return (name.contains("minecraft") && name.contains("client")) || name.contains("neoforge-21");
+                          return name.contains("client") || name.contains("neoforge") || name.contains("minecraft");
                       })
                       .forEach(jars::add);
             } catch (Exception e) {
-                System.err.println("[Verg Connector] Failed to scan libraries: " + e.getMessage());
+                System.err.println("[Verg Connector] Failed to scan minecraft dir: " + e.getMessage());
             }
         }
         
