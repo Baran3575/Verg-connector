@@ -2,6 +2,7 @@ plugins {
     id 'java-library'
     id 'maven-publish'
     id 'net.neoforged.moddev' version '2.0.141'
+    id 'com.gradleup.shadow' version '8.3.6'
     id 'idea'
 }
 
@@ -116,12 +117,14 @@ neoForge {
 // "optional", meaning it will not be pulled by dependents of this mod.
 configurations {
     runtimeClasspath.extendsFrom localRuntime
+    compileClasspath.extendsFrom shadow
+    runtimeClasspath.extendsFrom shadow
 }
 
 dependencies {
     // Bytecode Remapping for Fabric Mods
-    implementation 'net.fabricmc:tiny-remapper:0.10.3'
-    implementation 'net.fabricmc:mapping-io:0.6.1'
+    shadow 'net.fabricmc:tiny-remapper:0.10.3'
+    shadow 'net.fabricmc:mapping-io:0.6.1'
     // Example optional mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
     // compileOnly "mezz.jei:jei-${mc_version}-common-api:${jei_version}"
@@ -144,6 +147,18 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 }
+
+shadowJar {
+    archiveClassifier = ''
+    configurations = [project.configurations.shadow]
+    relocate 'net.fabricmc.tinyremapper', 'com.baran3575.vergconnector.shadow.tinyremapper'
+    relocate 'net.fabricmc.mappingio', 'com.baran3575.vergconnector.shadow.mappingio'
+    dependencies {
+        exclude(dependency('org.ow2.asm:.*'))
+    }
+}
+
+tasks.build.dependsOn tasks.shadowJar
 
 // This block of code expands all declared replace properties in the specified resource targets.
 // A missing property will result in an error. Properties are expanded using ${} Groovy notation.
