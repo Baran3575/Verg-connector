@@ -150,6 +150,7 @@ dependencies {
 
 shadowJar {
     archiveClassifier = ''
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     configurations = [project.configurations.shadow]
     relocate 'net.fabricmc.tinyremapper', 'com.baran3575.vergconnector.shadow.tinyremapper'
     relocate 'net.fabricmc.mappingio', 'com.baran3575.vergconnector.shadow.mappingio'
