@@ -13,6 +13,7 @@ import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.event.ScreenEvent;
+import net.neoforged.neoforge.client.event.RenderGuiEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistryImpl;
@@ -36,6 +37,7 @@ public class VergConnectorClient {
         // Register Forge Bus Events (for ScreenEvents, etc)
         NeoForge.EVENT_BUS.addListener(VergConnectorClient::onScreenInitPost);
         NeoForge.EVENT_BUS.addListener(VergConnectorClient::onScreenRenderPost);
+        NeoForge.EVENT_BUS.addListener(VergConnectorClient::onHudRenderPost);
     }
 
     private static void initializeClientFabricMods() {
@@ -161,6 +163,13 @@ public class VergConnectorClient {
             event.getMouseX(),
             event.getMouseY(),
             0.0f // Safe fallback for tickDelta to avoid API change issues in 1.21
+        );
+    }
+
+    private static void onHudRenderPost(RenderGuiEvent.Post event) {
+        net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback.EVENT.invoker().onHudRender(
+            event.getGuiGraphics(),
+            0.0f // Safe fallback for tickDelta
         );
     }
 }
