@@ -11,6 +11,9 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
+import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
+import net.neoforged.neoforge.client.event.ScreenEvent;
+import net.neoforged.neoforge.common.NeoForge;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistryImpl;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
@@ -28,6 +31,11 @@ public class VergConnectorClient {
         modEventBus.addListener(VergConnectorClient::onRegisterItemColors);
         modEventBus.addListener(VergConnectorClient::onRegisterRenderers);
         modEventBus.addListener(VergConnectorClient::onRegisterReloadListeners);
+        modEventBus.addListener(VergConnectorClient::onRegisterKeyMappings);
+
+        // Register Forge Bus Events (for ScreenEvents, etc)
+        NeoForge.EVENT_BUS.addListener(VergConnectorClient::onScreenInitPost);
+        NeoForge.EVENT_BUS.addListener(VergConnectorClient::onScreenRenderPost);
     }
 
     private static void initializeClientFabricMods() {
@@ -128,5 +136,31 @@ public class VergConnectorClient {
         for (IdentifiableResourceReloadListener listener : clientHelper.getListeners()) {
             event.registerReloadListener(listener);
         }
+    }
+
+    private static void onRegisterKeyMappings(RegisterKeyMappingsEvent event) {
+        VergConnector.LOGGER.info("[Verg Connector Client] Registering Fabric keybindings...");
+        for (net.minecraft.client.KeyMapping keyMapping : net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper.getPending()) {
+            event.register(keyMapping);
+        }
+    }
+
+    private static void onScreenInitPost(ScreenEvent.Init.Post event) {
+        net.fabricmc.fabric.api.client.screen.v1.ScreenEvents.AFTER_INIT.invoker().afterInit(
+            net.minecraft.client.Minecraft.getInstance(),
+            event.getScreen(),
+            event.getScreen().width,
+            event.getScreen().height
+        );
+    }
+
+    private static void onScreenRenderPost(ScreenEvent.Render.Post event) {
+        net.fabricmc.fabric.api.client.screen.v1.ScreenEvents.AFTER_RENDER.invoker().afterRender(
+            event.getScreen(),
+            event.getGuiGraphics(),
+            event.getMouseX(),
+            event.getMouseY(),
+            0.0f // Safe fallback for tickDelta to avoid API change issues in 1.21
+        );
     }
 }

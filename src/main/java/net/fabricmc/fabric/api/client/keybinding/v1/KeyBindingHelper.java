@@ -1,9 +1,13 @@
 package net.fabricmc.fabric.api.client.keybinding.v1;
 
 import net.minecraft.client.KeyMapping;
-// Note: VergConnector automatically delegates to NeoForge's RegisterKeyMappingsEvent
+import java.util.List;
+import java.util.ArrayList;
+
 public final class KeyBindingHelper {
     
+    private static final List<KeyMapping> PENDING_KEYBINDINGS = new ArrayList<>();
+
     private KeyBindingHelper() {}
 
     /**
@@ -12,9 +16,12 @@ public final class KeyBindingHelper {
      * @return the registered keybinding
      */
     public static KeyMapping registerKeyBinding(KeyMapping keyBinding) {
-        // In a complete implementation, this would queue the keybinding for NeoForge's 
-        // RegisterKeyMappingsEvent. For now, it serves as a stub to prevent ClassNotFoundExceptions.
-        System.out.println("[Verg Connector API] Registered KeyBinding: " + keyBinding.getName());
+        PENDING_KEYBINDINGS.add(keyBinding);
+        System.out.println("[Verg Connector API] Queued KeyBinding for registration: " + keyBinding.getName());
         return keyBinding;
+    }
+    
+    public static List<KeyMapping> getPending() {
+        return PENDING_KEYBINDINGS;
     }
 }
