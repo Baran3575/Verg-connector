@@ -227,76 +227,42 @@ multidrawMode = Auto
 [DEBUG] Calling JLI_Launch
 [MioLibPatcher/INFO]: MioPatcher is running!
 ERROR StatusConsoleListener appender Console has no parameter that matches element Policies
-[00:03:21] [main/INFO]: ModLauncher running: args [--username, Vergi911, --version, 1.21.1 NeoForge 21.1.234, --gameDir, /storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/versions/1.21.1 NeoForge 21.1.234, --assetsDir, /storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/assets, --assetIndex, 17, --uuid, d521bfc2ca343b80bba853f534c3ee04, --accessToken, ❄❄❄❄❄❄❄❄, --clientId, ${clientid}, --xuid, , --userType, msa, --versionType, ZalithLauncher2.4.9_hotfix1, --fml.neoForgeVersion, 21.1.234, --fml.fmlVersion, 4.0.42, --fml.mcVersion, 1.21.1, --fml.neoFormVersion, 20240808.144430, --launchTarget, forgeclient]
-[00:03:21] [main/INFO]: JVM identified as Oracle Corporation OpenJDK 64-Bit Server VM 21.0.1-internal-adhoc.runner.openjdk
-[00:03:21] [main/INFO]: ModLauncher 11.0.5+main.901c6ea8 starting: java version 21.0.1-internal by N/A; OS Linux arch aarch64 version Android-16
-[00:03:21] [main/INFO]: Loading ImmediateWindowProvider fmlearlywindow
-[INFO] <Native> Saving JVM environ...
-Registered forkAndExec
-[MioLibPatcher/INFO]: Patch target class: org/lwjgl/system/Library
-[00:03:21] [main/INFO]: Trying GL version 4.6
-EGLBridge: Binding to OpenGL ES
-[00:03:21] [main/INFO]: Requested GL version 4.6 got version 4.0
-[INFO] <NativeInput> Input ready: 1
-[00:03:21] [main/INFO]: SpongePowered MIXIN Subsystem Version=0.8.7 Source=union:/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/net/fabricmc/sponge-mixin/0.15.2+mixin.0.8.7/sponge-mixin-0.15.2+mixin.0.8.7.jar%23133!/ Service=ModLauncher Env=CLIENT
-[00:03:21] [pool-2-thread-1/INFO]: GL info: Samsung Xclipse 940) on Vulkan 1.3.279) | ANGLE | Vulkan 1.3.279) | OpenGL ES 3.2 GL version 4.0.0 MobileGlues 1.3.4, Swung0x48, BZLZHH, Tungsten
-[00:03:22] [main/INFO]: Found mod file "client-1.21.1-20240808.144430-srg.jar" [locator: production client provider +net.neoforged:neoforge:21.1.234:client]
-[00:03:22] [main/INFO]: Found mod file "neoforge-21.1.234-universal.jar" [locator: PathBasedLocator[name=neoforge, paths=[/storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/libraries/net/neoforged/neoforge/21.1.234/neoforge-21.1.234-universal.jar]], reader: mod manifest]
-[Verg Connector] Scanning mods directory for Fabric and Forge mods...
-[Verg Connector] Found Fabric mod: Jade-1.21.1-Fabric-15.10.5.jar
-Exception in thread "main" java.lang.NoClassDefFoundError: net/minecraft/server/packs/resources/PreparableReloadListener
-	at LAYER SERVICE/vergconnector@1.21.1-1.0.0/com.baran3575.vergconnector.FabricJarContentsWrapper.generateVirtualToml(FabricJarContentsWrapper.java:52)
-	at LAYER SERVICE/vergconnector@1.21.1-1.0.0/com.baran3575.vergconnector.FabricJarContentsWrapper.findFile(FabricJarContentsWrapper.java:30)
-	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.moddiscovery.readers.JarModsDotTomlModFileReader.createModFile(JarModsDotTomlModFileReader.java:42)
-	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.moddiscovery.readers.JarModsDotTomlModFileReader.read(JarModsDotTomlModFileReader.java:88)
-	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.moddiscovery.ModDiscoverer$DiscoveryPipeline.addJarContent(ModDiscoverer.java:223)
-	at LAYER SERVICE/vergconnector@1.21.1-1.0.0/com.baran3575.vergconnector.VergConnectorLocator.processJar(VergConnectorLocator.java:49)
-	at LAYER SERVICE/vergconnector@1.21.1-1.0.0/com.baran3575.vergconnector.VergConnectorLocator.lambda$findCandidates$1(VergConnectorLocator.java:31)
-	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(Unknown Source)
-	at java.base/java.util.stream.ReferencePipeline$2$1.accept(Unknown Source)
-	at java.base/java.util.Iterator.forEachRemaining(Unknown Source)
-	at java.base/java.util.Spliterators$IteratorSpliterator.forEachRemaining(Unknown Source)
-	at java.base/java.util.stream.AbstractPipeline.copyInto(Unknown Source)
-	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(Unknown Source)
-	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(Unknown Source)
-	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(Unknown Source)
-	at java.base/java.util.stream.AbstractPipeline.evaluate(Unknown Source)
-	at java.base/java.util.stream.ReferencePipeline.forEach(Unknown Source)
-	at LAYER SERVICE/vergconnector@1.21.1-1.0.0/com.baran3575.vergconnector.VergConnectorLocator.findCandidates(VergConnectorLocator.java:29)
-	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.moddiscovery.ModDiscoverer.discoverMods(ModDiscoverer.java:73)
-	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.FMLLoader.beginModScan(FMLLoader.java:131)
-	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.FMLServiceProvider.beginScanning(FMLServiceProvider.java:84)
-	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.TransformationServiceDecorator.runScan(TransformationServiceDecorator.java:97)
-	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.TransformationServicesHandler.lambda$runScanningTransformationServices$7(TransformationServicesHandler.java:94)
-	at java.base/java.util.stream.ReferencePipeline$3$1.accept(Unknown Source)
-	at java.base/java.util.HashMap$ValueSpliterator.forEachRemaining(Unknown Source)
-	at java.base/java.util.stream.AbstractPipeline.copyInto(Unknown Source)
-	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(Unknown Source)
-	at java.base/java.util.stream.AbstractPipeline.evaluate(Unknown Source)
-	at java.base/java.util.stream.AbstractPipeline.evaluateToArrayNode(Unknown Source)
-	at java.base/java.util.stream.ReferencePipeline.toArray(Unknown Source)
-	at java.base/java.util.stream.ReferencePipeline.toArray(Unknown Source)
-	at java.base/java.util.stream.ReferencePipeline.toList(Unknown Source)
-	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.TransformationServicesHandler.runScanningTransformationServices(TransformationServicesHandler.java:96)
-	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.TransformationServicesHandler.initializeTransformationServices(TransformationServicesHandler.java:50)
-	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.Launcher.run(Launcher.java:84)
+[11:27:28] [main/INFO]: ModLauncher running: args [--username, Vergi911, --version, 1.21.1 NeoForge 21.1.234, --gameDir, /storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/versions/1.21.1 NeoForge 21.1.234, --assetsDir, /storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/assets, --assetIndex, 17, --uuid, d521bfc2ca343b80bba853f534c3ee04, --accessToken, ❄❄❄❄❄❄❄❄, --clientId, ${clientid}, --xuid, , --userType, msa, --versionType, ZalithLauncher2.4.9_hotfix1, --fml.neoForgeVersion, 21.1.234, --fml.fmlVersion, 4.0.42, --fml.mcVersion, 1.21.1, --fml.neoFormVersion, 20240808.144430, --launchTarget, forgeclient]
+[11:27:28] [main/INFO]: JVM identified as Oracle Corporation OpenJDK 64-Bit Server VM 21.0.1-internal-adhoc.runner.openjdk
+[11:27:28] [main/INFO]: ModLauncher 11.0.5+main.901c6ea8 starting: java version 21.0.1-internal by N/A; OS Linux arch aarch64 version Android-16
+[11:27:28] [main/ERROR]: Error while resolving modules.
+java.lang.module.ResolutionException: Module vergconnector contains package cpw.mods.jarhandling.impl, module cpw.mods.securejarhandler exports package cpw.mods.jarhandling.impl to vergconnector
+	at java.base/java.lang.module.Resolver.resolveFail(Unknown Source) ~[?:?]
+	at java.base/java.lang.module.Resolver.failTwoSuppliers(Unknown Source) ~[?:?]
+	at java.base/java.lang.module.Resolver.checkExportSuppliers(Unknown Source) ~[?:?]
+	at java.base/java.lang.module.Resolver.finish(Unknown Source) ~[?:?]
+	at java.base/java.lang.module.Configuration.<init>(Unknown Source) ~[?:?]
+	at java.base/java.lang.module.Configuration.resolveAndBind(Unknown Source) ~[?:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.ModuleLayerHandler.buildLayer(ModuleLayerHandler.java:81) [modlauncher-11.0.5.jar%23124!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.ModuleLayerHandler.buildLayer(ModuleLayerHandler.java:99) [modlauncher-11.0.5.jar%23124!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.TransformationServicesHandler.discoverServices(TransformationServicesHandler.java:124) [modlauncher-11.0.5.jar%23124!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.Launcher.run(Launcher.java:83) [modlauncher-11.0.5.jar%23124!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.Launcher.main(Launcher.java:74) [modlauncher-11.0.5.jar%23124!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:26) [modlauncher-11.0.5.jar%23124!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:23) [modlauncher-11.0.5.jar%23124!/:?]
+	at cpw.mods.bootstraplauncher@2.0.2/cpw.mods.bootstraplauncher.BootstrapLauncher.run(BootstrapLauncher.java:210) [bootstraplauncher-2.0.2.jar:?]
+	at cpw.mods.bootstraplauncher@2.0.2/cpw.mods.bootstraplauncher.BootstrapLauncher.main(BootstrapLauncher.java:69) [bootstraplauncher-2.0.2.jar:?]
+Exception in thread "main" java.lang.module.ResolutionException: Module vergconnector contains package cpw.mods.jarhandling.impl, module cpw.mods.securejarhandler exports package cpw.mods.jarhandling.impl to vergconnector
+	at java.base/java.lang.module.Resolver.resolveFail(Unknown Source)
+	at java.base/java.lang.module.Resolver.failTwoSuppliers(Unknown Source)
+	at java.base/java.lang.module.Resolver.checkExportSuppliers(Unknown Source)
+	at java.base/java.lang.module.Resolver.finish(Unknown Source)
+	at java.base/java.lang.module.Configuration.<init>(Unknown Source)
+	at java.base/java.lang.module.Configuration.resolveAndBind(Unknown Source)
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.ModuleLayerHandler.buildLayer(ModuleLayerHandler.java:81)
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.ModuleLayerHandler.buildLayer(ModuleLayerHandler.java:99)
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.TransformationServicesHandler.discoverServices(TransformationServicesHandler.java:124)
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.Launcher.run(Launcher.java:83)
 	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.Launcher.main(Launcher.java:74)
 	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:26)
 	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:23)
 	at cpw.mods.bootstraplauncher@2.0.2/cpw.mods.bootstraplauncher.BootstrapLauncher.run(BootstrapLauncher.java:210)
 	at cpw.mods.bootstraplauncher@2.0.2/cpw.mods.bootstraplauncher.BootstrapLauncher.main(BootstrapLauncher.java:69)
-Caused by: java.lang.ClassNotFoundException: net.minecraft.server.packs.resources.PreparableReloadListener
-	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(Unknown Source)
-	at java.base/java.lang.ClassLoader.loadClass(Unknown Source)
-	at cpw.mods.securejarhandler/cpw.mods.cl.ModuleClassLoader.loadClass(ModuleClassLoader.java:216)
-	at java.base/java.lang.ClassLoader.loadClass(Unknown Source)
-	at cpw.mods.securejarhandler/cpw.mods.cl.ModuleClassLoader.loadClass(ModuleClassLoader.java:216)
-	at java.base/java.lang.ClassLoader.loadClass(Unknown Source)
-	... 40 more
 [DEBUG] Going to free args
 Java Exit code: 1
 [DEBUG] Free done
-input_bridge nativeSetWindowAttrib() JNI call failed: -1
-input_bridge nativeSetWindowAttrib() JNI call failed: -1
-input_bridge nativeSetWindowAttrib() JNI call failed: -1
-input_bridge nativeSetWindowAttrib() JNI call failed: -1
