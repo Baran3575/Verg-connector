@@ -79,7 +79,6 @@ config="vergconnector.mixins.json"
     # Side this dependency is applied on - BOTH, CLIENT, or SERVER
     side="BOTH"
 
-# Here's another dependency
 [[dependencies."${mod_id}"]]
     modId="minecraft"
     type="required"
@@ -87,6 +86,14 @@ config="vergconnector.mixins.json"
     versionRange="${minecraft_version_range}"
     ordering="NONE"
     side="BOTH"
+
+[[dependencies."${mod_id}"]]
+    modId="vfa"
+    type="required"
+    versionRange="[1.0.0,)"
+    ordering="BEFORE"
+    side="BOTH"
+
 
 # Features are specific properties of the game environment, that you may want to declare you require. This example declares
 # that your mod requires GL version 3.2 or higher. Other features will be added. They are side aware so declaring this won't
