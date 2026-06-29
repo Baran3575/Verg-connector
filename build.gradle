@@ -118,6 +118,9 @@ configurations {
 }
 
 dependencies {
+    // Bytecode Remapping for Fabric Mods
+    implementation 'net.fabricmc:tiny-remapper:0.10.3'
+    implementation 'net.fabricmc:mapping-io:0.6.1'
     // Example optional mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
     // compileOnly "mezz.jei:jei-${mc_version}-common-api:${jei_version}"
