@@ -20,9 +20,9 @@ public class ASMStringReplacer {
             String match = m.group();
             String replacement = replacements.get(match);
             if (replacement != null) {
-                m.appendReplacement(sb, replacement);
+                m.appendReplacement(sb, Matcher.quoteReplacement(replacement));
             } else {
-                m.appendReplacement(sb, match);
+                m.appendReplacement(sb, Matcher.quoteReplacement(match));
             }
         }
         m.appendTail(sb);
@@ -33,7 +33,11 @@ public class ASMStringReplacer {
         System.out.println("[Verg Connector] ASMStringReplacer: Processing jar " + jarFile.getFileName());
         try (FileSystem fs = FileSystems.newFileSystem(java.net.URI.create("jar:" + jarFile.toUri()), Collections.singletonMap("create", "false"))) {
             for (Path root : fs.getRootDirectories()) {
-                Files.walk(root).filter(p -> p.toString().endsWith(".class")).forEach(p -> {
+                List<Path> classFiles = Files.walk(root)
+                        .filter(p -> p.toString().endsWith(".class"))
+                        .collect(java.util.stream.Collectors.toList());
+                
+                for (Path p : classFiles) {
                     try {
                         byte[] bytes = Files.readAllBytes(p);
                         ClassReader cr = new ClassReader(bytes);
@@ -84,7 +88,7 @@ public class ASMStringReplacer {
                     } catch (Exception e) {
                         System.err.println("[Verg Connector] ASMStringReplacer Error processing class " + p + ": " + e.getMessage());
                     }
-                });
+                }
             }
         }
     }
