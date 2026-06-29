@@ -1,5 +1,6 @@
-package cpw.mods.jarhandling.impl;
+package com.baran3575.vergconnector.jarhandling;
 
+import cpw.mods.jarhandling.impl.JarContentsImpl;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;

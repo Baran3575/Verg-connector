@@ -40,9 +40,9 @@ public class VergConnectorLocator implements IModFileCandidateLocator {
 
     private void processJar(Path path, IDiscoveryPipeline pipeline) throws Exception {
         boolean success = false;
-        cpw.mods.jarhandling.impl.FabricJarContentsWrapper wrappedContents = null;
+        com.baran3575.vergconnector.jarhandling.FabricJarContentsWrapper wrappedContents = null;
         try {
-            wrappedContents = new cpw.mods.jarhandling.impl.FabricJarContentsWrapper(path);
+            wrappedContents = new com.baran3575.vergconnector.jarhandling.FabricJarContentsWrapper(path);
             Optional<URI> fabricModJson = wrappedContents.findFile("fabric.mod.json");
             if (fabricModJson.isPresent()) {
                 System.out.println("[Verg Connector] Found Fabric mod: " + path.getFileName());
