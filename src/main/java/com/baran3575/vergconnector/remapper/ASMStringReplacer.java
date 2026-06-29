@@ -33,60 +33,71 @@ public class ASMStringReplacer {
         System.out.println("[Verg Connector] ASMStringReplacer: Processing jar " + jarFile.getFileName());
         try (FileSystem fs = FileSystems.newFileSystem(java.net.URI.create("jar:" + jarFile.toUri()), Collections.singletonMap("create", "false"))) {
             for (Path root : fs.getRootDirectories()) {
-                List<Path> classFiles = Files.walk(root)
-                        .filter(p -> p.toString().endsWith(".class"))
+                List<Path> files = Files.walk(root)
+                        .filter(p -> {
+                            String s = p.toString();
+                            return s.endsWith(".class") || s.endsWith(".json");
+                        })
                         .collect(java.util.stream.Collectors.toList());
                 
-                for (Path p : classFiles) {
+                for (Path p : files) {
                     try {
-                        byte[] bytes = Files.readAllBytes(p);
-                        ClassReader cr = new ClassReader(bytes);
-                        ClassWriter cw = new ClassWriter(0);
-                        ClassVisitor cv = new ClassVisitor(Opcodes.ASM9, cw) {
-                            @Override
-                            public MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
-                                MethodVisitor mv = super.visitMethod(access, name, descriptor, signature, exceptions);
-                                return new MethodVisitor(Opcodes.ASM9, mv) {
-                                    @Override
-                                    public void visitLdcInsn(Object value) {
-                                        if (value instanceof String) {
-                                            String str = (String) value;
-                                            String replaced = replaceIntermediary(str, replacements);
-                                            super.visitLdcInsn(replaced);
-                                        } else {
-                                            super.visitLdcInsn(value);
+                        if (p.toString().endsWith(".class")) {
+                            byte[] bytes = Files.readAllBytes(p);
+                            ClassReader cr = new ClassReader(bytes);
+                            ClassWriter cw = new ClassWriter(0);
+                            ClassVisitor cv = new ClassVisitor(Opcodes.ASM9, cw) {
+                                @Override
+                                public MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
+                                    MethodVisitor mv = super.visitMethod(access, name, descriptor, signature, exceptions);
+                                    return new MethodVisitor(Opcodes.ASM9, mv) {
+                                        @Override
+                                        public void visitLdcInsn(Object value) {
+                                            if (value instanceof String) {
+                                                String str = (String) value;
+                                                String replaced = replaceIntermediary(str, replacements);
+                                                super.visitLdcInsn(replaced);
+                                            } else {
+                                                super.visitLdcInsn(value);
+                                            }
                                         }
-                                    }
-                                    
-                                    @Override
-                                    public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
-                                        return new AnnotationReplacer(super.visitAnnotation(descriptor, visible), replacements);
-                                    }
-                                };
+                                        
+                                        @Override
+                                        public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
+                                            return new AnnotationReplacer(super.visitAnnotation(descriptor, visible), replacements);
+                                        }
+                                    };
+                                }
+                                
+                                @Override
+                                public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
+                                    return new AnnotationReplacer(super.visitAnnotation(descriptor, visible), replacements);
+                                }
+                                
+                                @Override
+                                public FieldVisitor visitField(int access, String name, String descriptor, String signature, Object value) {
+                                    return new FieldVisitor(Opcodes.ASM9, super.visitField(access, name, descriptor, signature, value)) {
+                                        @Override
+                                        public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
+                                            return new AnnotationReplacer(super.visitAnnotation(descriptor, visible), replacements);
+                                        }
+                                    };
+                                }
+                            };
+                            cr.accept(cv, 0);
+                            byte[] newBytes = cw.toByteArray();
+                            if (!Arrays.equals(bytes, newBytes)) {
+                                Files.write(p, newBytes, StandardOpenOption.TRUNCATE_EXISTING);
                             }
-                            
-                            @Override
-                            public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
-                                return new AnnotationReplacer(super.visitAnnotation(descriptor, visible), replacements);
+                        } else if (p.toString().endsWith(".json")) {
+                            String original = Files.readString(p, java.nio.charset.StandardCharsets.UTF_8);
+                            String replaced = replaceIntermediary(original, replacements);
+                            if (!original.equals(replaced)) {
+                                Files.writeString(p, replaced, java.nio.charset.StandardCharsets.UTF_8, StandardOpenOption.TRUNCATE_EXISTING);
                             }
-                            
-                            @Override
-                            public FieldVisitor visitField(int access, String name, String descriptor, String signature, Object value) {
-                                return new FieldVisitor(Opcodes.ASM9, super.visitField(access, name, descriptor, signature, value)) {
-                                    @Override
-                                    public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
-                                        return new AnnotationReplacer(super.visitAnnotation(descriptor, visible), replacements);
-                                    }
-                                };
-                            }
-                        };
-                        cr.accept(cv, 0);
-                        byte[] newBytes = cw.toByteArray();
-                        if (!Arrays.equals(bytes, newBytes)) {
-                            Files.write(p, newBytes, StandardOpenOption.TRUNCATE_EXISTING);
                         }
                     } catch (Exception e) {
-                        System.err.println("[Verg Connector] ASMStringReplacer Error processing class " + p + ": " + e.getMessage());
+                        System.err.println("[Verg Connector] ASMStringReplacer Error processing file " + p + ": " + e.getMessage());
                     }
                 }
             }
