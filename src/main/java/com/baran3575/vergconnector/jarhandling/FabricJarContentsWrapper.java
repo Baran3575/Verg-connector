@@ -603,11 +603,5 @@ public class FabricJarContentsWrapper {
         return "[" + semver + ",)";
     }
 
-    @Override
-    public void close() throws IOException {
-        super.close();
-        if (tempToml != null) {
-            try { Files.deleteIfExists(tempToml); } catch (IOException ignored) {}
-        }
-    }
+
 }
