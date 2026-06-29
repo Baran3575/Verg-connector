@@ -6,6 +6,20 @@ const resultsMeta = document.getElementById('results-meta');
 const resultsCount = document.getElementById('results-count');
 
 let debounceTimer;
+let evaluationMode = 'standard';
+
+function setEvaluationMode(mode) {
+    evaluationMode = mode;
+    const btnStandard = document.getElementById('mode-standard');
+    const btnBridge = document.getElementById('mode-bridge');
+    if (btnStandard) btnStandard.classList.toggle('active', mode === 'standard');
+    if (btnBridge) btnBridge.classList.toggle('active', mode === 'bridge');
+    
+    const query = searchInput.value.trim();
+    if (query.length > 0) {
+        performSearch(query);
+    }
+}
 
 searchInput.addEventListener('input', () => {
     const query = searchInput.value.trim();
@@ -161,7 +175,7 @@ function evaluateCompatibility(hit) {
     }
 
     // ── Check 3: Already native NeoForge/Forge — just use it directly ─────────
-    if (supportsNeoForge || supportsForge) {
+    if ((supportsNeoForge || supportsForge) && (evaluationMode !== 'bridge' || !supportsFabric)) {
         const nativeLoader = supportsNeoForge ? 'NeoForge' : 'Forge';
         const nativeAlternative = HAS_NATIVE_PORT[id];
         const isLibrary = categories.includes('library') || categories.includes('utility');
@@ -343,7 +357,13 @@ function renderResults(hits) {
         const compat = evaluateCompatibility(hit);
         const downloadsFormatted = new Intl.NumberFormat().format(hit.downloads);
         const icon = hit.icon_url || 'https://placehold.co/64x64/10101a/a855f7?text=Mod';
-        const categoriesHtml = (hit.categories || []).slice(0, 3)
+        
+        const allCategories = hit.categories || [];
+        const loaders = allCategories.filter(c => ['fabric', 'neoforge', 'forge', 'quilt'].includes(c));
+        const tags = allCategories.filter(c => !['fabric', 'neoforge', 'forge', 'quilt'].includes(c));
+
+        const loadersHtml = loaders.map(l => `<span class="loader-badge ${l}">${l}</span>`).join('');
+        const categoriesHtml = tags.slice(0, 3)
             .map(cat => `<span class="category-tag">${cat}</span>`).join('');
 
         const noteHtml = compat.note ? `
@@ -358,8 +378,9 @@ function renderResults(hits) {
                      onerror="this.src='https://placehold.co/64x64/10101a/a855f7?text=Mod'">
                 <div class="mod-info-wrapper">
                     <div class="mod-title-row">
-                        <div>
+                        <div class="title-with-loaders">
                             <h3 class="mod-title">${hit.title} <span class="mod-author">by ${hit.author}</span></h3>
+                            <div class="loader-tags">${loadersHtml}</div>
                         </div>
                         <span class="status-badge">
                             <i class="${compat.iconClass}"></i> ${compat.statusText}

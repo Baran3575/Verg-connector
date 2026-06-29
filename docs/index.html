@@ -42,8 +42,19 @@
             <div class="search-wrapper">
                 <div class="search-bar">
                     <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                    <input type="text" id="search-input" placeholder="Type mod name (e.g. Sodium, Lithium, Jei...)" autocomplete="off">
+                    <input type="text" id="search-input" placeholder="Type mod name (e.g. Sodium, Lithium, Jade...)" autocomplete="off">
                     <button id="clear-btn" class="clear-btn"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div class="evaluation-mode-selector">
+                    <span class="selector-label">Preferred Evaluation:</span>
+                    <div class="selector-options">
+                        <button class="selector-btn active" id="mode-standard" onclick="setEvaluationMode('standard')">
+                            <i class="fa-solid fa-bolt"></i> Auto (Recommend Native)
+                        </button>
+                        <button class="selector-btn" id="mode-bridge" onclick="setEvaluationMode('bridge')">
+                            <i class="fa-solid fa-bridge"></i> Force Fabric Bridge
+                        </button>
+                    </div>
                 </div>
             </div>
         </section>
