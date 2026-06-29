@@ -1,0 +1,10 @@
+name: GitHub Pages
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Manual Pages Deployment"
