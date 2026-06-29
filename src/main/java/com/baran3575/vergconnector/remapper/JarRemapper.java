@@ -3,8 +3,12 @@ package com.baran3575.vergconnector.remapper;
 import net.fabricmc.tinyremapper.TinyRemapper;
 import net.fabricmc.tinyremapper.OutputConsumerPath;
 import net.fabricmc.tinyremapper.NonClassCopyMode;
+import net.fabricmc.tinyremapper.extension.mixin.MixinExtension;
 import java.nio.file.Path;
 import java.io.IOException;
+import net.fabricmc.tinyremapper.IMappingProvider;
+import net.fabricmc.tinyremapper.TinyUtils;
+import java.io.File;
 
 public class JarRemapper {
     
@@ -18,10 +22,12 @@ public class JarRemapper {
     public static void remapJar(Path inputJar, Path outputJar, Path mappingsFile) throws IOException {
         System.out.println("[Verg Connector] Remapping Fabric Mod: " + inputJar.getFileName());
 
-        // TODO: Load mappings from mapping-io and configure TinyRemapper
-        /*
+        IMappingProvider provider = TinyUtils.createTinyMappingProvider(mappingsFile, "intermediary", "named");
+
         TinyRemapper remapper = TinyRemapper.newRemapper()
-                .withMappings(...) // Read from mappingsFile
+                .withMappings(provider)
+                .ignoreConflicts(true)
+                .extension(new MixinExtension())
                 .build();
                 
         try (OutputConsumerPath outputConsumer = new OutputConsumerPath.Builder(outputJar).build()) {
@@ -31,7 +37,6 @@ public class JarRemapper {
         } finally {
             remapper.finish();
         }
-        */
         
         System.out.println("[Verg Connector] Remapping complete for: " + outputJar.getFileName());
     }

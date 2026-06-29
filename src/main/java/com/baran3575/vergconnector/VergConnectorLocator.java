@@ -55,10 +55,35 @@ public class VergConnectorLocator implements IModFileCandidateLocator {
     }
 
     private void processJar(Path path, IDiscoveryPipeline pipeline) throws Exception {
-        cpw.mods.jarhandling.JarContents contents = com.baran3575.vergconnector.jarhandling.FabricJarContentsWrapper.createJarContents(path);
-        if (contents != null) {
+        boolean isFabric = false;
+        try (java.util.zip.ZipFile zip = new java.util.zip.ZipFile(path.toFile())) {
+            if (zip.getEntry("fabric.mod.json") != null) {
+                isFabric = true;
+            }
+        }
+        
+        Path finalPath = path;
+        if (isFabric) {
             System.out.println("[Verg Connector] Found Fabric mod: " + path.getFileName());
-            pipeline.addJarContent(contents, ModFileDiscoveryAttributes.DEFAULT.withLocator(this), IncompatibleFileReporting.IGNORE);
+            try {
+                Path mappings = com.baran3575.vergconnector.remapper.MappingManager.getMappingsFile();
+                Path cacheDir = FMLPaths.GAMEDIR.get().resolve(".vergconnector").resolve("remapped");
+                if (!Files.exists(cacheDir)) Files.createDirectories(cacheDir);
+                
+                Path remappedPath = cacheDir.resolve(path.getFileName().toString());
+                if (!Files.exists(remappedPath)) {
+                    com.baran3575.vergconnector.remapper.JarRemapper.remapJar(path, remappedPath, mappings);
+                }
+                finalPath = remappedPath;
+            } catch (Exception e) {
+                System.err.println("[Verg Connector] Failed to remap Fabric mod " + path.getFileName() + ": " + e.getMessage());
+                // Fallback to unremapped
+            }
+            
+            cpw.mods.jarhandling.JarContents contents = com.baran3575.vergconnector.jarhandling.FabricJarContentsWrapper.createJarContents(finalPath);
+            if (contents != null) {
+                pipeline.addJarContent(contents, ModFileDiscoveryAttributes.DEFAULT.withLocator(this), IncompatibleFileReporting.IGNORE);
+            }
         }
     }
 }
