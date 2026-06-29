@@ -1,0 +1,122 @@
+---- Minecraft Crash Report ----
+// Ooh. Shiny.
+
+Time: 2026-06-29 11:04:02
+Description: Mod loading failures have occurred; consult the issue messages for more details
+
+net.neoforged.neoforge.logging.CrashReportExtender$ModLoadingCrashException: Mod loading has failed
+
+
+A detailed walkthrough of the error, its code path and all known details is as follows:
+---------------------------------------------------------------------------------------
+
+-- Head --
+Thread: Render thread
+Stacktrace:
+	at cpw.mods.securejarhandler/cpw.mods.jarhandling.SecureJar.from(SecureJar.java:47) ~[securejarhandler-3.0.8.jar:?] {}
+-- Mod loading issue --
+Details:
+	Mod file: <No mod information provided>
+	Failure message: File mods/Jade-1.21.1-Fabric-15.10.5.jar is not a valid mod file
+	Mod version: <No mod information provided>
+	Mod issues URL: <No issues URL found>
+	Exception message: java.lang.ClassCastException: class com.baran3575.vergconnector.FabricJarContentsWrapper cannot be cast to class cpw.mods.jarhandling.impl.JarContentsImpl (com.baran3575.vergconnector.FabricJarContentsWrapper is in module vergconnector@1.21.1-1.0.0 of loader 'LAYER SERVICE' @750fe12e; cpw.mods.jarhandling.impl.JarContentsImpl is in module cpw.mods.securejarhandler of loader 'app')
+Stacktrace:
+	at cpw.mods.securejarhandler/cpw.mods.jarhandling.SecureJar.from(SecureJar.java:47) ~[securejarhandler-3.0.8.jar:?] {}
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.moddiscovery.readers.JarModsDotTomlModFileReader.createModFile(JarModsDotTomlModFileReader.java:45) ~[loader-4.0.42.jar%23119!/:4.0] {}
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.moddiscovery.readers.JarModsDotTomlModFileReader.read(JarModsDotTomlModFileReader.java:88) ~[loader-4.0.42.jar%23119!/:4.0] {}
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.moddiscovery.ModDiscoverer$DiscoveryPipeline.addJarContent(ModDiscoverer.java:223) ~[loader-4.0.42.jar%23119!/:4.0] {}
+	at LAYER SERVICE/vergconnector@1.21.1-1.0.0/com.baran3575.vergconnector.VergConnectorLocator.processJar(VergConnectorLocator.java:49) ~[vergconnector-1.21.1-1.0.0.jar%23148!/:?] {}
+	at LAYER SERVICE/vergconnector@1.21.1-1.0.0/com.baran3575.vergconnector.VergConnectorLocator.lambda$findCandidates$1(VergConnectorLocator.java:31) ~[vergconnector-1.21.1-1.0.0.jar%23148!/:?] {}
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(Unknown Source) ~[?:?] {}
+	at java.base/java.util.stream.ReferencePipeline$2$1.accept(Unknown Source) ~[?:?] {}
+	at java.base/java.util.Iterator.forEachRemaining(Unknown Source) ~[?:?] {}
+	at java.base/java.util.Spliterators$IteratorSpliterator.forEachRemaining(Unknown Source) ~[?:?] {}
+	at java.base/java.util.stream.AbstractPipeline.copyInto(Unknown Source) ~[?:?] {}
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(Unknown Source) ~[?:?] {}
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(Unknown Source) ~[?:?] {}
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(Unknown Source) ~[?:?] {}
+	at java.base/java.util.stream.AbstractPipeline.evaluate(Unknown Source) ~[?:?] {}
+	at java.base/java.util.stream.ReferencePipeline.forEach(Unknown Source) ~[?:?] {}
+	at LAYER SERVICE/vergconnector@1.21.1-1.0.0/com.baran3575.vergconnector.VergConnectorLocator.findCandidates(VergConnectorLocator.java:29) ~[vergconnector-1.21.1-1.0.0.jar%23148!/:?] {}
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.moddiscovery.ModDiscoverer.discoverMods(ModDiscoverer.java:73) ~[loader-4.0.42.jar%23119!/:4.0] {}
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.FMLLoader.beginModScan(FMLLoader.java:131) ~[loader-4.0.42.jar%23119!/:4.0] {}
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.FMLServiceProvider.beginScanning(FMLServiceProvider.java:84) ~[loader-4.0.42.jar%23119!/:4.0] {}
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.TransformationServiceDecorator.runScan(TransformationServiceDecorator.java:97) ~[modlauncher-11.0.5.jar%23124!/:?] {}
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.TransformationServicesHandler.lambda$runScanningTransformationServices$7(TransformationServicesHandler.java:94) ~[modlauncher-11.0.5.jar%23124!/:?] {}
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(Unknown Source) ~[?:?] {}
+	at java.base/java.util.HashMap$ValueSpliterator.forEachRemaining(Unknown Source) ~[?:?] {}
+	at java.base/java.util.stream.AbstractPipeline.copyInto(Unknown Source) ~[?:?] {}
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(Unknown Source) ~[?:?] {}
+	at java.base/java.util.stream.AbstractPipeline.evaluate(Unknown Source) ~[?:?] {}
+	at java.base/java.util.stream.AbstractPipeline.evaluateToArrayNode(Unknown Source) ~[?:?] {}
+	at java.base/java.util.stream.ReferencePipeline.toArray(Unknown Source) ~[?:?] {}
+	at java.base/java.util.stream.ReferencePipeline.toArray(Unknown Source) ~[?:?] {}
+	at java.base/java.util.stream.ReferencePipeline.toList(Unknown Source) ~[?:?] {}
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.TransformationServicesHandler.runScanningTransformationServices(TransformationServicesHandler.java:96) ~[modlauncher-11.0.5.jar%23124!/:?] {}
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.TransformationServicesHandler.initializeTransformationServices(TransformationServicesHandler.java:50) ~[modlauncher-11.0.5.jar%23124!/:?] {}
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.Launcher.run(Launcher.java:84) [modlauncher-11.0.5.jar%23124!/:?] {}
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.Launcher.main(Launcher.java:74) [modlauncher-11.0.5.jar%23124!/:?] {}
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:26) [modlauncher-11.0.5.jar%23124!/:?] {}
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:23) [modlauncher-11.0.5.jar%23124!/:?] {}
+	at cpw.mods.bootstraplauncher@2.0.2/cpw.mods.bootstraplauncher.BootstrapLauncher.run(BootstrapLauncher.java:210) [bootstraplauncher-2.0.2.jar:?] {}
+	at cpw.mods.bootstraplauncher@2.0.2/cpw.mods.bootstraplauncher.BootstrapLauncher.main(BootstrapLauncher.java:69) [bootstraplauncher-2.0.2.jar:?] {}
+
+
+-- Mod loading issue --
+Details:
+	Mod file: <No mod information provided>
+	Failure message: File mods/Jade-1.21.1-Fabric-15.10.5.jar is a Fabric mod and cannot be loaded
+	Mod version: <No mod information provided>
+	Mod issues URL: <No issues URL found>
+	Exception message: <No associated exception found>
+
+-- System Details --
+Details:
+	Minecraft Version: 1.21.1
+	Minecraft Version ID: 1.21.1
+	Operating System: Linux (aarch64) version Android-16
+	Java Version: 21.0.1-internal, N/A
+	Java VM Version: OpenJDK 64-Bit Server VM (mixed mode), Oracle Corporation
+	Memory: 1908605792 bytes (1820 MiB) / 2705326080 bytes (2580 MiB) up to 2705326080 bytes (2580 MiB)
+	CPUs: 10
+	Processor Vendor: 0x41
+	Processor Name: 
+	Identifier: 0x41 Family 8 Model 0xd82 Stepping r0p1
+	Microarchitecture: unknown
+	Frequency (GHz): -0.00
+	Number of physical packages: 1
+	Number of physical CPUs: 4
+	Number of logical CPUs: 10
+	Graphics card #0 name: unknown
+	Graphics card #0 vendor: unknown
+	Graphics card #0 VRAM (MiB): 0.00
+	Graphics card #0 deviceId: unknown
+	Graphics card #0 versionInfo: unknown
+	Virtual memory max (MiB): 7508.16
+	Virtual memory used (MiB): 8766.19
+	Swap memory total (MiB): 4096.00
+	Swap memory used (MiB): 2872.37
+	Space in storage for jna.tmpdir (MiB): available: 43506.05, total: 229710.00
+	Space in storage for org.lwjgl.system.SharedLibraryExtractPath (MiB): available: 43506.05, total: 229710.00
+	Space in storage for io.netty.native.workdir (MiB): available: 43506.05, total: 229710.00
+	Space in storage for java.io.tmpdir (MiB): available: 43506.05, total: 229710.00
+	Space in storage for workdir (MiB): available: 43506.05, total: 229710.00
+	JVM Flags: 4 total; -Xms2579M -Xmx2579M -XX:ActiveProcessorCount=10 -Xbootclasspath/a:/data/user/0/com.movtery.zalithlauncher.v2/files/components/caciocavallo17/cacio-agent.jar:/data/user/0/com.movtery.zalithlauncher.v2/files/components/caciocavallo17/cacio-shared-1.19.1-SNAPSHOT.jar:/data/user/0/com.movtery.zalithlauncher.v2/files/components/caciocavallo17/cacio-tta-1.19.1-SNAPSHOT.jar
+	ModLauncher: 11.0.5+main.901c6ea8
+	ModLauncher launch target: forgeclient
+	ModLauncher services: 
+		sponge-mixin-0.15.2+mixin.0.8.7.jar mixin PLUGINSERVICE 
+		loader-4.0.42.jar slf4jfixer PLUGINSERVICE 
+		loader-4.0.42.jar runtime_enum_extender PLUGINSERVICE 
+		at-modlauncher-10.0.1.jar accesstransformer PLUGINSERVICE 
+		loader-4.0.42.jar runtimedistcleaner PLUGINSERVICE 
+		modlauncher-11.0.5.jar mixin TRANSFORMATIONSERVICE 
+		modlauncher-11.0.5.jar fml TRANSFORMATIONSERVICE 
+	FML Language Providers: 
+		javafml@4.0
+		lowcodefml@4.0
+		minecraft@4.0
+	Mod List: 
+		client-1.21.1-20240808.144430-srg.jar             |Minecraft                     |minecraft                     |1.21.1              |Manifest: a1:d4:5e:04:4f:d3:d6:e0:7b:37:97:cf:77:b0:de:ad:4a:47:ce:8c:96:49:5f:0a:cf:8c:ae:b2:6d:4b:8a:3f
+		neoforge-21.1.234-universal.jar                   |NeoForge                      |neoforge                      |21.1.234            |Manifest: NOSIGNATURE
