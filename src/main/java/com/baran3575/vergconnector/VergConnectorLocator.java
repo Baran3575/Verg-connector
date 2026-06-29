@@ -73,7 +73,7 @@ public class VergConnectorLocator implements IModFileCandidateLocator {
                 Path remappedPath = cacheDir.resolve(path.getFileName().toString());
                 boolean needsRemap = !Files.exists(remappedPath);
                 
-                String currentVer = "v8"; // Invalidate cache when remapping logic updates
+                String currentVer = "v9"; // Invalidate cache when remapping logic updates
                 Path verFile = cacheDir.resolve(".remapper_version");
                 
                 if (!needsRemap) {

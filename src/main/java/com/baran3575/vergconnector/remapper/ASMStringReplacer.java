@@ -7,7 +7,7 @@ import java.util.*;
 import java.util.regex.*;
 
 public class ASMStringReplacer {
-    private static final Pattern INTERMEDIARY_PATTERN = Pattern.compile("(?:Lnet/minecraft/class_\\d+;|net[/.]minecraft[/.]class_\\d+|class_\\d+|method_\\d+|field_\\d+)");
+    private static final Pattern INTERMEDIARY_PATTERN = Pattern.compile("(?:Lnet/minecraft/class_\\d+(?:\\$class_\\d+)*;|net[/.]minecraft[/.]class_\\d+(?:\\$class_\\d+)*|class_\\d+|method_\\d+|field_\\d+)");
 
     public static String replaceIntermediary(String input, Map<String, String> replacements) {
         if (input == null || input.isEmpty()) return input;
