@@ -1,0 +1,461 @@
+﻿2026-06-29T12:54:26.1349661Z Current runner version: '2.335.1'
+2026-06-29T12:54:26.1384415Z ##[group]Runner Image Provisioner
+2026-06-29T12:54:26.1385634Z Hosted Compute Agent
+2026-06-29T12:54:26.1387028Z Version: 20260611.554
+2026-06-29T12:54:26.1387989Z Commit: 5e0782fdc9014723d3be820dd114dd31555c2bd1
+2026-06-29T12:54:26.1389089Z Build Date: 2026-06-11T21:40:46Z
+2026-06-29T12:54:26.1390339Z Worker ID: {de3ede94-0b5d-4094-a46f-8cde3703e863}
+2026-06-29T12:54:26.1391500Z Azure Region: eastus2
+2026-06-29T12:54:26.1392586Z ##[endgroup]
+2026-06-29T12:54:26.1394812Z ##[group]Operating System
+2026-06-29T12:54:26.1395755Z Ubuntu
+2026-06-29T12:54:26.1396920Z 24.04.4
+2026-06-29T12:54:26.1397703Z LTS
+2026-06-29T12:54:26.1398629Z ##[endgroup]
+2026-06-29T12:54:26.1399489Z ##[group]Runner Image
+2026-06-29T12:54:26.1400394Z Image: ubuntu-24.04
+2026-06-29T12:54:26.1401408Z Version: 20260622.220.1
+2026-06-29T12:54:26.1404152Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260622.220/images/ubuntu/Ubuntu2404-Readme.md
+2026-06-29T12:54:26.1406957Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260622.220
+2026-06-29T12:54:26.1408687Z ##[endgroup]
+2026-06-29T12:54:26.1410639Z ##[group]GITHUB_TOKEN Permissions
+2026-06-29T12:54:26.1413525Z Contents: read
+2026-06-29T12:54:26.1414403Z Metadata: read
+2026-06-29T12:54:26.1415410Z Packages: read
+2026-06-29T12:54:26.1416519Z ##[endgroup]
+2026-06-29T12:54:26.1419596Z Secret source: Actions
+2026-06-29T12:54:26.1420833Z Prepare workflow directory
+2026-06-29T12:54:26.1883805Z Prepare all required actions
+2026-06-29T12:54:26.1938159Z Getting action download info
+2026-06-29T12:54:26.4002520Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+2026-06-29T12:54:26.4944595Z Download action repository 'actions/setup-java@v4' (SHA:c1e323688fd81a25caa38c78aa6df2d33d3e20d9)
+2026-06-29T12:54:26.7805084Z Download action repository 'kehoecj/validate-configs-action@v4.0.1' (SHA:55242af1509991b2b18e2cf120eb4083a33e5c4b)
+2026-06-29T12:54:26.9725571Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-06-29T12:54:27.1948369Z Complete job name: build
+2026-06-29T12:54:27.2436265Z ##[group]Build container for action use: '/home/runner/work/_actions/kehoecj/validate-configs-action/v4.0.1/Dockerfile'.
+2026-06-29T12:54:27.2620469Z ##[command]/usr/bin/docker build -t 4e7406:ef17e5a7a46a432aac5d3968b1339205 -f "/home/runner/work/_actions/kehoecj/validate-configs-action/v4.0.1/Dockerfile" "/home/runner/work/_actions/kehoecj/validate-configs-action/v4.0.1"
+2026-06-29T12:54:30.4182787Z #0 building with "default" instance using docker driver
+2026-06-29T12:54:30.4183285Z 
+2026-06-29T12:54:30.4183465Z #1 [internal] load build definition from Dockerfile
+2026-06-29T12:54:30.4183873Z #1 transferring dockerfile: 651B 0.0s done
+2026-06-29T12:54:30.4184378Z #1 DONE 0.0s
+2026-06-29T12:54:30.4184707Z 
+2026-06-29T12:54:30.4185030Z #2 [auth] library/alpine:pull token for registry-1.docker.io
+2026-06-29T12:54:30.4185726Z #2 DONE 0.0s
+2026-06-29T12:54:30.4186232Z 
+2026-06-29T12:54:30.4187007Z #3 [internal] load metadata for docker.io/library/alpine:3.20@sha256:0a4eaa0eecf5f8c050e5bba433f58c052be7587ee8af3e8b3910ef9ab5fbe9f5
+2026-06-29T12:54:30.6452674Z #3 DONE 0.4s
+2026-06-29T12:54:30.7668035Z 
+2026-06-29T12:54:30.7669341Z #4 [internal] load .dockerignore
+2026-06-29T12:54:30.7670837Z #4 transferring context: 2B done
+2026-06-29T12:54:30.7672205Z #4 DONE 0.0s
+2026-06-29T12:54:30.7672866Z 
+2026-06-29T12:54:30.7673263Z #5 [internal] load build context
+2026-06-29T12:54:30.7673876Z #5 transferring context: 679B done
+2026-06-29T12:54:30.7674979Z #5 DONE 0.0s
+2026-06-29T12:54:30.7675277Z 
+2026-06-29T12:54:30.7676176Z #6 [1/3] FROM docker.io/library/alpine:3.20@sha256:0a4eaa0eecf5f8c050e5bba433f58c052be7587ee8af3e8b3910ef9ab5fbe9f5
+2026-06-29T12:54:30.7677902Z #6 resolve docker.io/library/alpine:3.20@sha256:0a4eaa0eecf5f8c050e5bba433f58c052be7587ee8af3e8b3910ef9ab5fbe9f5 done
+2026-06-29T12:54:30.7679284Z #6 extracting sha256:c6a83fedfae6ed8a4f5f7cbb6a7b6f1c1ec3d86fea8cb9e5ba2e5e6673fde9f6
+2026-06-29T12:54:30.8715636Z #6 extracting sha256:c6a83fedfae6ed8a4f5f7cbb6a7b6f1c1ec3d86fea8cb9e5ba2e5e6673fde9f6 0.1s done
+2026-06-29T12:54:30.8717150Z #6 sha256:324bc02ae1231fd9255658c128086395d3fa0aedd5a41ab6b034fd649d1a9260 1.47kB / 1.47kB done
+2026-06-29T12:54:30.8718519Z #6 sha256:c6a83fedfae6ed8a4f5f7cbb6a7b6f1c1ec3d86fea8cb9e5ba2e5e6673fde9f6 3.62MB / 3.62MB 0.1s done
+2026-06-29T12:54:30.8719997Z #6 sha256:0a4eaa0eecf5f8c050e5bba433f58c052be7587ee8af3e8b3910ef9ab5fbe9f5 1.85kB / 1.85kB done
+2026-06-29T12:54:30.8721390Z #6 sha256:eddacbc7e24bf8799a4ed3cdcfa50d4b88a323695ad80f317b6629883b2c2a78 528B / 528B done
+2026-06-29T12:54:30.8722132Z #6 DONE 0.2s
+2026-06-29T12:54:31.0255503Z 
+2026-06-29T12:54:31.0256685Z #7 [2/3] COPY entrypoint.sh /entrypoint.sh
+2026-06-29T12:54:31.0257536Z #7 DONE 0.0s
+2026-06-29T12:54:31.0257784Z 
+2026-06-29T12:54:31.0260273Z #8 [3/3] RUN apk --no-cache add curl tar &&   curl https://github.com/Boeing/config-file-validator/releases/download/v1.7.1/validator-v1.7.1-linux-386.tar.gz   -o /tmp/validator-v1.7.1-linux-386.tar.gz  -s -L &&   tar -xvf /tmp/validator-v1.7.1-linux-386.tar.gz -C /tmp &&   mv /tmp/validator /usr/local/bin &&   rm -rf /tmp/* &&   chmod 0755 /usr/local/bin/validator &&   chmod 0755 /entrypoint.sh
+2026-06-29T12:54:31.0263176Z #8 0.132 fetch https://dl-cdn.alpinelinux.org/alpine/v3.20/main/x86_64/APKINDEX.tar.gz
+2026-06-29T12:54:31.2456266Z #8 0.352 fetch https://dl-cdn.alpinelinux.org/alpine/v3.20/community/x86_64/APKINDEX.tar.gz
+2026-06-29T12:54:31.5203163Z #8 0.627 (1/12) Installing ca-certificates (20260413-r0)
+2026-06-29T12:54:31.6252163Z #8 0.658 (2/12) Installing brotli-libs (1.1.0-r2)
+2026-06-29T12:54:31.6252686Z #8 0.679 (3/12) Installing c-ares (1.33.1-r0)
+2026-06-29T12:54:31.6253275Z #8 0.693 (4/12) Installing libunistring (1.2-r0)
+2026-06-29T12:54:31.6253848Z #8 0.717 (5/12) Installing libidn2 (2.3.7-r0)
+2026-06-29T12:54:31.6254276Z #8 0.732 (6/12) Installing nghttp2-libs (1.62.1-r0)
+2026-06-29T12:54:31.7337821Z #8 0.747 (7/12) Installing libpsl (0.21.5-r1)
+2026-06-29T12:54:31.7338452Z #8 0.759 (8/12) Installing zstd-libs (1.5.6-r0)
+2026-06-29T12:54:31.7339404Z #8 0.778 (9/12) Installing libcurl (8.14.1-r2)
+2026-06-29T12:54:31.7340149Z #8 0.796 (10/12) Installing curl (8.14.1-r2)
+2026-06-29T12:54:31.7340721Z #8 0.811 (11/12) Installing libacl (2.3.2-r0)
+2026-06-29T12:54:31.7341324Z #8 0.823 (12/12) Installing tar (1.35-r2)
+2026-06-29T12:54:31.7341920Z #8 0.841 Executing busybox-1.36.1-r29.trigger
+2026-06-29T12:54:31.9258711Z #8 0.846 Executing ca-certificates-20260413-r0.trigger
+2026-06-29T12:54:31.9259308Z #8 0.882 OK: 14 MiB in 26 packages
+2026-06-29T12:54:32.1275993Z #8 1.234 LICENSE
+2026-06-29T12:54:32.3677947Z #8 1.234 README.md
+2026-06-29T12:54:32.3678820Z #8 1.235 validator
+2026-06-29T12:54:32.3679382Z #8 DONE 1.3s
+2026-06-29T12:54:32.3679628Z 
+2026-06-29T12:54:32.3679961Z #9 exporting to image
+2026-06-29T12:54:32.3680498Z #9 exporting layers
+2026-06-29T12:54:33.0062113Z #9 exporting layers 0.8s done
+2026-06-29T12:54:33.0256260Z #9 writing image sha256:f04f385b36089bcb7898f6d6e8731e14a228897099bd0fa6fea38d66646cd4ab done
+2026-06-29T12:54:33.0257428Z #9 naming to docker.io/library/4e7406:ef17e5a7a46a432aac5d3968b1339205 done
+2026-06-29T12:54:33.0258568Z #9 DONE 0.8s
+2026-06-29T12:54:33.0497924Z ##[endgroup]
+2026-06-29T12:54:33.0791477Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-06-29T12:54:33.0800146Z ##[group]Run actions/checkout@v4
+2026-06-29T12:54:33.0800690Z with:
+2026-06-29T12:54:33.0801038Z   repository: Baran3575/Verg-connector
+2026-06-29T12:54:33.0804348Z   token: ***
+2026-06-29T12:54:33.0804693Z   ssh-strict: true
+2026-06-29T12:54:33.0805125Z   ssh-user: git
+2026-06-29T12:54:33.0805481Z   persist-credentials: true
+2026-06-29T12:54:33.0806254Z   clean: true
+2026-06-29T12:54:33.0806675Z   sparse-checkout-cone-mode: true
+2026-06-29T12:54:33.0807060Z   fetch-depth: 1
+2026-06-29T12:54:33.0807451Z   fetch-tags: false
+2026-06-29T12:54:33.0807815Z   show-progress: true
+2026-06-29T12:54:33.0808154Z   lfs: false
+2026-06-29T12:54:33.0808645Z   submodules: false
+2026-06-29T12:54:33.0808975Z   set-safe-directory: true
+2026-06-29T12:54:33.0809690Z ##[endgroup]
+2026-06-29T12:54:33.1860441Z Syncing repository: Baran3575/Verg-connector
+2026-06-29T12:54:33.1862166Z ##[group]Getting Git version info
+2026-06-29T12:54:33.1862614Z Working directory is '/home/runner/work/Verg-connector/Verg-connector'
+2026-06-29T12:54:33.1863237Z [command]/usr/bin/git version
+2026-06-29T12:54:33.1863495Z git version 2.54.0
+2026-06-29T12:54:33.1912704Z ##[endgroup]
+2026-06-29T12:54:33.1926415Z Temporarily overriding HOME='/home/runner/work/_temp/319ee452-fa69-4231-8474-f92b991845e6' before making global git config changes
+2026-06-29T12:54:33.1927675Z Adding repository directory to the temporary git global config as a safe directory
+2026-06-29T12:54:33.1931878Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Verg-connector/Verg-connector
+2026-06-29T12:54:33.1972779Z Deleting the contents of '/home/runner/work/Verg-connector/Verg-connector'
+2026-06-29T12:54:33.1976915Z ##[group]Initializing the repository
+2026-06-29T12:54:33.1981157Z [command]/usr/bin/git init /home/runner/work/Verg-connector/Verg-connector
+2026-06-29T12:54:33.2053972Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-06-29T12:54:33.2054648Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-06-29T12:54:33.2055218Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-06-29T12:54:33.2055990Z hint: call:
+2026-06-29T12:54:33.2056298Z hint:
+2026-06-29T12:54:33.2056703Z hint: 	git config --global init.defaultBranch <name>
+2026-06-29T12:54:33.2057194Z hint:
+2026-06-29T12:54:33.2057702Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-06-29T12:54:33.2058549Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-06-29T12:54:33.2059216Z hint:
+2026-06-29T12:54:33.2059553Z hint: 	git branch -m <name>
+2026-06-29T12:54:33.2059917Z hint:
+2026-06-29T12:54:33.2060368Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-06-29T12:54:33.2061326Z Initialized empty Git repository in /home/runner/work/Verg-connector/Verg-connector/.git/
+2026-06-29T12:54:33.2069170Z [command]/usr/bin/git remote add origin https://github.com/Baran3575/Verg-connector
+2026-06-29T12:54:33.2109199Z ##[endgroup]
+2026-06-29T12:54:33.2109683Z ##[group]Disabling automatic garbage collection
+2026-06-29T12:54:33.2112921Z [command]/usr/bin/git config --local gc.auto 0
+2026-06-29T12:54:33.2141989Z ##[endgroup]
+2026-06-29T12:54:33.2142427Z ##[group]Setting up auth
+2026-06-29T12:54:33.2148818Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-06-29T12:54:33.2181049Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-06-29T12:54:33.2489784Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-06-29T12:54:33.2521142Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-06-29T12:54:33.2751356Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-06-29T12:54:33.2785335Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-06-29T12:54:33.3023223Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-06-29T12:54:33.3060691Z ##[endgroup]
+2026-06-29T12:54:33.3061145Z ##[group]Fetching the repository
+2026-06-29T12:54:33.3070133Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +3c1a282eb882b4fd0fcf67fc58612f1ad06348c8:refs/remotes/origin/main
+2026-06-29T12:54:33.6660462Z From https://github.com/Baran3575/Verg-connector
+2026-06-29T12:54:33.6677128Z  * [new ref]         3c1a282eb882b4fd0fcf67fc58612f1ad06348c8 -> origin/main
+2026-06-29T12:54:33.6690532Z ##[endgroup]
+2026-06-29T12:54:33.6691111Z ##[group]Determining the checkout info
+2026-06-29T12:54:33.6694188Z ##[endgroup]
+2026-06-29T12:54:33.6700035Z [command]/usr/bin/git sparse-checkout disable
+2026-06-29T12:54:33.6744755Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-06-29T12:54:33.6774172Z ##[group]Checking out the ref
+2026-06-29T12:54:33.6778512Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2026-06-29T12:54:33.6883173Z Switched to a new branch 'main'
+2026-06-29T12:54:33.6885649Z branch 'main' set up to track 'origin/main'.
+2026-06-29T12:54:33.6892116Z ##[endgroup]
+2026-06-29T12:54:33.6943281Z [command]/usr/bin/git log -1 --format=%H
+2026-06-29T12:54:33.6969947Z 3c1a282eb882b4fd0fcf67fc58612f1ad06348c8
+2026-06-29T12:54:33.7239300Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-06-29T12:54:33.7241012Z ##[group]Run actions/setup-java@v4
+2026-06-29T12:54:33.7241286Z with:
+2026-06-29T12:54:33.7241490Z   java-version: 21
+2026-06-29T12:54:33.7241713Z   distribution: temurin
+2026-06-29T12:54:33.7241939Z   cache: gradle
+2026-06-29T12:54:33.7242159Z   java-package: jdk
+2026-06-29T12:54:33.7242383Z   check-latest: false
+2026-06-29T12:54:33.7242618Z   server-id: github
+2026-06-29T12:54:33.7242834Z   server-username: GITHUB_ACTOR
+2026-06-29T12:54:33.7243107Z   server-password: GITHUB_TOKEN
+2026-06-29T12:54:33.7243360Z   overwrite-settings: true
+2026-06-29T12:54:33.7243593Z   job-status: success
+2026-06-29T12:54:33.7246601Z   token: ***
+2026-06-29T12:54:33.7246853Z ##[endgroup]
+2026-06-29T12:54:33.8834126Z ##[group]Installed distributions
+2026-06-29T12:54:33.8983662Z Resolved Java 21.0.11+10 from tool-cache
+2026-06-29T12:54:33.8984196Z Setting Java 21.0.11+10 as the default
+2026-06-29T12:54:33.8994022Z (node:2446) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-06-29T12:54:33.8994865Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-06-29T12:54:33.8997597Z Creating toolchains.xml for JDK version 21 from temurin
+2026-06-29T12:54:33.9066369Z Writing to /home/runner/.m2/toolchains.xml
+2026-06-29T12:54:33.9067035Z 
+2026-06-29T12:54:33.9067194Z Java configuration:
+2026-06-29T12:54:33.9067569Z   Distribution: temurin
+2026-06-29T12:54:33.9067913Z   Version: 21.0.11+10
+2026-06-29T12:54:33.9068408Z   Path: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.11-10/x64
+2026-06-29T12:54:33.9068773Z 
+2026-06-29T12:54:33.9077218Z ##[endgroup]
+2026-06-29T12:54:33.9092071Z Creating settings.xml with server-id: github
+2026-06-29T12:54:33.9092467Z Writing to /home/runner/.m2/settings.xml
+2026-06-29T12:54:34.0136076Z gradle cache is not found
+2026-06-29T12:54:34.0303580Z ##[group]Run kehoecj/validate-configs-action@v4.0.1
+2026-06-29T12:54:34.0303921Z with:
+2026-06-29T12:54:34.0304133Z   search-paths: .
+2026-06-29T12:54:34.0304364Z   exclude-dirs: .gradle,build
+2026-06-29T12:54:34.0304624Z   reporter: standard
+2026-06-29T12:54:34.0304845Z env:
+2026-06-29T12:54:34.0305246Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.11-10/x64
+2026-06-29T12:54:34.0305765Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.11-10/x64
+2026-06-29T12:54:34.0306492Z ##[endgroup]
+2026-06-29T12:54:34.0417013Z ##[command]/usr/bin/docker run --name e7406ef17e5a7a46a432aac5d3968b1339205_3afc11 --label 4e7406 --workdir /github/workspace --rm -e "JAVA_HOME" -e "JAVA_HOME_21_X64" -e "INPUT_SEARCH-PATHS" -e "INPUT_EXCLUDE-DIRS" -e "INPUT_EXCLUDE-FILE-TYPES" -e "INPUT_DEPTH" -e "INPUT_REPORTER" -e "INPUT_GROUP-BY" -e "HOME" -e "GITHUB_JOB" -e "GITHUB_REF" -e "GITHUB_SHA" -e "GITHUB_REPOSITORY" -e "GITHUB_REPOSITORY_OWNER" -e "GITHUB_REPOSITORY_OWNER_ID" -e "GITHUB_RUN_ID" -e "GITHUB_RUN_NUMBER" -e "GITHUB_RETENTION_DAYS" -e "GITHUB_RUN_ATTEMPT" -e "GITHUB_ACTOR_ID" -e "GITHUB_ACTOR" -e "GITHUB_WORKFLOW" -e "GITHUB_HEAD_REF" -e "GITHUB_BASE_REF" -e "GITHUB_EVENT_NAME" -e "GITHUB_SERVER_URL" -e "GITHUB_API_URL" -e "GITHUB_GRAPHQL_URL" -e "GITHUB_REF_NAME" -e "GITHUB_REF_PROTECTED" -e "GITHUB_REF_TYPE" -e "GITHUB_WORKFLOW_REF" -e "GITHUB_WORKFLOW_SHA" -e "GITHUB_REPOSITORY_ID" -e "GITHUB_TRIGGERING_ACTOR" -e "GITHUB_WORKSPACE" -e "GITHUB_ACTION" -e "GITHUB_EVENT_PATH" -e "GITHUB_ACTION_REPOSITORY" -e "GITHUB_ACTION_REF" -e "GITHUB_PATH" -e "GITHUB_ENV" -e "GITHUB_STEP_SUMMARY" -e "GITHUB_STATE" -e "GITHUB_OUTPUT" -e "RUNNER_OS" -e "RUNNER_ARCH" -e "RUNNER_NAME" -e "RUNNER_ENVIRONMENT" -e "RUNNER_TOOL_CACHE" -e "RUNNER_TEMP" -e "RUNNER_WORKSPACE" -e "ACTIONS_RUNTIME_URL" -e "ACTIONS_RUNTIME_TOKEN" -e "ACTIONS_CACHE_URL" -e "ACTIONS_RESULTS_URL" -e "ACTIONS_ORCHESTRATION_ID" -e GITHUB_ACTIONS=true -e CI=true -v "/var/run/docker.sock":"/var/run/docker.sock" -v "/home/runner/work/_temp":"/github/runner_temp" -v "/home/runner/work/_temp/_github_home":"/github/home" -v "/home/runner/work/_temp/_github_workflow":"/github/workflow" -v "/home/runner/work/_temp/_runner_file_commands":"/github/file_commands" -v "/home/runner/work/Verg-connector/Verg-connector":"/github/workspace" 4e7406:ef17e5a7a46a432aac5d3968b1339205  "." ".gradle,build" "" "" "standard" ""
+2026-06-29T12:54:34.2005648Z     ✓ /github/workspace/.github/workflows/build.yml
+2026-06-29T12:54:34.2006744Z     ✓ /github/workspace/gradle/wrapper/gradle-wrapper.properties
+2026-06-29T12:54:34.2021377Z     ✓ /github/workspace/gradle.properties
+2026-06-29T12:54:34.2022147Z     ✓ /github/workspace/src/main/resources/assets/vergconnector/lang/en_us.json
+2026-06-29T12:54:34.2023042Z     ✓ /github/workspace/src/main/resources/vergconnector.mixins.json
+2026-06-29T12:54:34.2023883Z     ✓ /github/workspace/src/main/templates/META-INF/neoforge.mods.toml
+2026-06-29T12:54:34.2758710Z ##[group]Run chmod +x gradlew
+2026-06-29T12:54:34.2759068Z [36;1mchmod +x gradlew[0m
+2026-06-29T12:54:34.2800070Z shell: /usr/bin/bash -e {0}
+2026-06-29T12:54:34.2800350Z env:
+2026-06-29T12:54:34.2800684Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.11-10/x64
+2026-06-29T12:54:34.2801197Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.11-10/x64
+2026-06-29T12:54:34.2801581Z ##[endgroup]
+2026-06-29T12:54:34.2917759Z ##[group]Run ./gradlew build
+2026-06-29T12:54:34.2918047Z [36;1m./gradlew build[0m
+2026-06-29T12:54:34.2949945Z shell: /usr/bin/bash -e {0}
+2026-06-29T12:54:34.2950227Z env:
+2026-06-29T12:54:34.2950549Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.11-10/x64
+2026-06-29T12:54:34.2951060Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.11-10/x64
+2026-06-29T12:54:34.2951442Z ##[endgroup]
+2026-06-29T12:54:36.1095607Z Downloading https://services.gradle.org/distributions/gradle-9.2.1-bin.zip
+2026-06-29T12:54:38.5745045Z ............10%.............20%.............30%.............40%.............50%.............60%.............70%.............80%.............90%.............100%
+2026-06-29T12:54:40.0052137Z 
+2026-06-29T12:54:40.0052975Z Welcome to Gradle 9.2.1!
+2026-06-29T12:54:40.0061428Z 
+2026-06-29T12:54:40.0061964Z Here are the highlights of this release:
+2026-06-29T12:54:40.0062650Z  - Windows ARM support
+2026-06-29T12:54:40.0063197Z  - Improved publishing APIs
+2026-06-29T12:54:40.0063708Z  - Better guidance for dependency verification failures
+2026-06-29T12:54:40.0064118Z 
+2026-06-29T12:54:40.0064954Z For more details see https://docs.gradle.org/9.2.1/release-notes.html
+2026-06-29T12:54:40.0065519Z 
+2026-06-29T12:54:40.1054823Z Starting a Gradle Daemon (subsequent builds will be faster)
+2026-06-29T12:54:43.0048717Z Calculating task graph as no cached configuration is available for tasks: build
+2026-06-29T12:54:49.4065040Z 
+2026-06-29T12:54:49.4092962Z > Configure project :
+2026-06-29T12:54:49.4093859Z Creating Minecraft artifacts without recompilation.
+2026-06-29T12:55:03.1056472Z 
+2026-06-29T12:55:03.1115022Z > Task :jarJar NO-SOURCE
+2026-06-29T12:55:03.1115740Z > Task :processTestResources NO-SOURCE
+2026-06-29T12:55:03.2067759Z > Task :generateModMetadata
+2026-06-29T12:55:03.2072481Z > Task :processResources
+2026-06-29T12:55:05.0058142Z 
+2026-06-29T12:55:05.0076480Z > Task :createMinecraftArtifacts
+2026-06-29T12:55:05.0103580Z Loaded 131 artifacts from /home/runner/work/Verg-connector/Verg-connector/build/tmp/createMinecraftArtifacts/nfrt_artifact_manifest.properties
+2026-06-29T12:55:05.0111279Z [1m*** Started working on [4mdownloadJson[0m[0m
+2026-06-29T12:55:05.0117299Z   ↓ https://launchermeta.mojang.com/mc/game/version_manifest_v2.json
+2026-06-29T12:55:05.0124035Z   ↓ https://piston-meta.mojang.com/v1/packages/eb8e6accb7544bf7f666ffa18e0140db1136d7ad/1.21.1.json
+2026-06-29T12:55:05.0130847Z  [1m[92m✓[0m Completed [4mdownloadJson[0m in 0.44s
+2026-06-29T12:55:05.0137474Z [1m*** Started working on [4mdownloadClientMappings[0m[0m
+2026-06-29T12:55:05.0143046Z [1m*** Started working on [4mdownloadServer[0m[0m
+2026-06-29T12:55:05.0149260Z [1m*** Started working on [4mdownloadClient[0m[0m
+2026-06-29T12:55:05.0150607Z   ↓ https://piston-data.mojang.com/v1/objects/2244b6f072256667bcd9a73df124d6c58de77992/client.txt
+2026-06-29T12:55:05.0157029Z   ↓ https://piston-data.mojang.com/v1/objects/59353fb40c36d304f2035d51e7d6e6baa98dc05c/server.jar
+2026-06-29T12:55:05.0163565Z   ↓ https://piston-data.mojang.com/v1/objects/30c73b1c5da787909b2f73340419fdf13b9def88/client.jar
+2026-06-29T12:55:05.0165054Z  [1m[92m✓[0m Completed [4mdownloadClientMappings[0m in 0.47s
+2026-06-29T12:55:05.0166262Z [1m*** Started working on [4mmergeMappings[0m[0m
+2026-06-29T12:55:05.1050276Z  ↳ Running external tool net.neoforged.installertools:installertools:2.1.2:fatjar
+2026-06-29T12:55:05.3067058Z  [1m[92m✓[0m Completed [4mdownloadClient[0m in 0.83s
+2026-06-29T12:55:05.5091381Z [1m*** Started working on [4mstripClient[0m[0m
+2026-06-29T12:55:05.9067394Z  [1m[92m✓[0m Completed [4mdownloadServer[0m in 1.36s
+2026-06-29T12:55:06.0088879Z [1m*** Started working on [4mextractServer[0m[0m
+2026-06-29T12:55:06.0148980Z  ↳ Running external tool net.neoforged.installertools:installertools:2.1.2:fatjar
+2026-06-29T12:55:06.6047555Z  [1m[92m✓[0m Completed [4mextractServer[0m in 0.66s
+2026-06-29T12:55:06.7057979Z [1m*** Started working on [4mstripServer[0m[0m
+2026-06-29T12:55:08.7045387Z  [1m[92m✓[0m Completed [4mmergeMappings[0m in 3.68s
+2026-06-29T12:55:08.9046183Z  [1m[92m✓[0m Completed [4mstripServer[0m in 2.20s
+2026-06-29T12:55:09.0047282Z  [1m[92m✓[0m Completed [4mstripClient[0m in 3.58s
+2026-06-29T12:55:09.1067374Z [1m*** Started working on [4mmerge[0m[0m
+2026-06-29T12:55:09.1107130Z  ↳ Running external tool net.neoforged:mergetool:2.0.3:fatjar
+2026-06-29T12:55:12.2061825Z  [1m[92m✓[0m Completed [4mmerge[0m in 3.09s
+2026-06-29T12:55:12.2062748Z [1m*** Started working on [4mrename[0m[0m
+2026-06-29T12:55:12.2074479Z  ↳ Running external tool net.neoforged:AutoRenamingTool:2.0.3:all
+2026-06-29T12:55:17.8044998Z  [1m[92m✓[0m Completed [4mrename[0m in 5.61s
+2026-06-29T12:55:17.8046371Z [1m*** Started working on [4mbinaryPatch[0m[0m
+2026-06-29T12:55:17.8047460Z   [33mWARNING: [0mnet.neoforged.installertools:binarypatcher:2.1.2:fatjar is not present in the artifact manifest
+2026-06-29T12:55:17.8049082Z   ↓ https://maven.neoforged.net/releases/net/neoforged/installertools/binarypatcher/2.1.2/binarypatcher-2.1.2-fatjar.jar
+2026-06-29T12:55:18.1059757Z  ↳ Running external tool net.neoforged.installertools:binarypatcher:2.1.2:fatjar
+2026-06-29T12:55:23.4044615Z  [1m[92m✓[0m Completed [4mbinaryPatch[0m in 5.55s
+2026-06-29T12:55:23.4045132Z [1m*** Started working on [4mcopyUnpatchedClasses[0m[0m
+2026-06-29T12:55:25.1044997Z  [1m[92m✓[0m Completed [4mcopyUnpatchedClasses[0m in 1.69s
+2026-06-29T12:55:25.1051791Z [1m*** Started working on [4mapplyDevTransforms[0m[0m
+2026-06-29T12:55:25.1052834Z  ↳ Running external tool net.neoforged.installertools:installertools:4.0.12:fatjar
+2026-06-29T12:55:27.2045325Z  [1m[92m✓[0m Completed [4mapplyDevTransforms[0m in 2.13s
+2026-06-29T12:55:27.4045092Z [1m*** Started working on [4mbinaryWithNeoForge[0m[0m
+2026-06-29T12:55:33.4045117Z  [1m[92m✓[0m Completed [4mbinaryWithNeoForge[0m in 6.08s
+2026-06-29T12:55:33.5044274Z Total runtime: 29.91s
+2026-06-29T12:55:33.5044937Z 
+2026-06-29T12:55:38.3065687Z /home/runner/work/Verg-connector/Verg-connector/src/main/java/net/fabricmc/fabric/api/client/rendering/v1/HudRenderCallback.java:3: error: cannot find symbol
+2026-06-29T12:55:38.3067120Z 
+2026-06-29T12:55:38.3067386Z import net.fabricmc.fabric.api.event.Event;
+2026-06-29T12:55:38.3067889Z                                     ^
+2026-06-29T12:55:38.3068300Z   symbol:   class Event
+2026-06-29T12:55:38.3068740Z   location: package net.fabricmc.fabric.api.event
+2026-06-29T12:55:38.3069998Z /home/runner/work/Verg-connector/Verg-connector/src/main/java/net/fabricmc/fabric/api/client/rendering/v1/HudRenderCallback.java:4: error: cannot find symbol
+2026-06-29T12:55:38.3071319Z import net.fabricmc.fabric.api.event.EventFactory;
+2026-06-29T12:55:38.3071843Z                                     ^
+2026-06-29T12:55:38.3072254Z   symbol:   class EventFactory
+2026-06-29T12:55:38.3072718Z   location: package net.fabricmc.fabric.api.event
+2026-06-29T12:55:38.3073979Z /home/runner/work/Verg-connector/Verg-connector/src/main/java/net/fabricmc/fabric/api/client/rendering/v1/HudRenderCallback.java:12: error: cannot find symbol
+2026-06-29T12:55:38.3075516Z     Event<HudRenderCallback> EVENT = EventFactory.createArrayBacked(HudRenderCallback.class,
+2026-06-29T12:55:38.3076658Z     ^
+2026-06-29T12:55:38.3076953Z   symbol:   class Event
+2026-06-29T12:55:38.3077341Z   location: interface HudRenderCallback
+2026-06-29T12:55:38.3078480Z /home/runner/work/Verg-connector/Verg-connector/src/main/java/net/fabricmc/fabric/api/client/screen/v1/ScreenEvents.java:4: error: cannot find symbol
+2026-06-29T12:55:38.3079679Z import net.fabricmc.fabric.api.event.Event;
+2026-06-29T12:55:38.3080150Z                                     ^
+2026-06-29T12:55:38.3080547Z   symbol:   class Event
+2026-06-29T12:55:38.3080951Z   location: package net.fabricmc.fabric.api.event
+2026-06-29T12:55:38.3082644Z /home/runner/work/Verg-connector/Verg-connector/src/main/java/net/fabricmc/fabric/api/client/screen/v1/ScreenEvents.java:5: error: cannot find symbol
+2026-06-29T12:55:38.3083869Z import net.fabricmc.fabric.api.event.EventFactory;
+2026-06-29T12:55:38.3084385Z                                     ^
+2026-06-29T12:55:38.3084801Z   symbol:   class EventFactory
+2026-06-29T12:55:38.3085263Z   location: package net.fabricmc.fabric.api.event
+2026-06-29T12:55:38.3087366Z /home/runner/work/Verg-connector/Verg-connector/src/main/java/net/fabricmc/fabric/api/client/screen/v1/ScreenEvents.java:23: error: cannot find symbol
+2026-06-29T12:55:38.3089148Z     public static final Event<AfterInit> AFTER_INIT = EventFactory.createArrayBacked(AfterInit.class, listeners -> (client, screen, scaledWidth, scaledHeight) -> {
+2026-06-29T12:55:38.3090248Z                         ^
+2026-06-29T12:55:38.3090590Z   symbol:   class Event
+2026-06-29T12:55:38.3090948Z   location: class ScreenEvents
+2026-06-29T12:55:38.3092034Z /home/runner/work/Verg-connector/Verg-connector/src/main/java/net/fabricmc/fabric/api/client/screen/v1/ScreenEvents.java:30: error: cannot find symbol
+2026-06-29T12:55:38.3093936Z     public static final Event<AfterRender> AFTER_RENDER = EventFactory.createArrayBacked(AfterRender.class, listeners -> (screen, drawContext, mouseX, mouseY, tickDelta) -> {
+2026-06-29T12:55:38.3095430Z                         ^
+2026-06-29T12:55:38.3095778Z   symbol:   class Event
+2026-06-29T12:55:38.3096315Z   location: class ScreenEvents
+2026-06-29T12:55:38.3096734Z > Task :compileJava
+2026-06-29T12:55:38.8107992Z /home/runner/work/Verg-connector/Verg-connector/src/main/java/net/fabricmc/fabric/api/client/rendering/v1/HudRenderCallback.java:12: error: cannot find symbol
+2026-06-29T12:55:38.8137151Z     Event<HudRenderCallback> EVENT = EventFactory.createArrayBacked(HudRenderCallback.class,
+2026-06-29T12:55:38.8166504Z                                      ^
+2026-06-29T12:55:38.8182584Z   symbol:   variable EventFactory
+2026-06-29T12:55:38.8183316Z   location: interface HudRenderCallback
+2026-06-29T12:55:38.8184624Z /home/runner/work/Verg-connector/Verg-connector/src/main/java/net/fabricmc/fabric/api/client/screen/v1/ScreenEvents.java:23: error: cannot find symbol
+2026-06-29T12:55:38.8186846Z     public static final Event<AfterInit> AFTER_INIT = EventFactory.createArrayBacked(AfterInit.class, listeners -> (client, screen, scaledWidth, scaledHeight) -> {
+2026-06-29T12:55:38.8188230Z                                                       ^
+2026-06-29T12:55:38.8188847Z   symbol:   variable EventFactory
+2026-06-29T12:55:38.8189379Z   location: class ScreenEvents
+2026-06-29T12:55:38.8190491Z /home/runner/work/Verg-connector/Verg-connector/src/main/java/net/fabricmc/fabric/api/client/screen/v1/ScreenEvents.java:30: error: cannot find symbol
+2026-06-29T12:55:38.8192381Z     public static final Event<AfterRender> AFTER_RENDER = EventFactory.createArrayBacked(AfterRender.class, listeners -> (screen, drawContext, mouseX, mouseY, tickDelta) -> {
+2026-06-29T12:55:38.8193757Z                                                           ^
+2026-06-29T12:55:38.8194359Z   symbol:   variable EventFactory
+2026-06-29T12:55:38.8194850Z   location: class ScreenEvents
+2026-06-29T12:55:38.8196239Z Note: /home/runner/work/Verg-connector/Verg-connector/src/main/java/com/baran3575/vergconnector/remapper/MappingManager.java uses or overrides a deprecated API.
+2026-06-29T12:55:38.8197633Z Note: Recompile with -Xlint:deprecation for details.
+2026-06-29T12:55:38.8198279Z Note: Some input files use unchecked or unsafe operations.
+2026-06-29T12:55:38.8198971Z Note: Recompile with -Xlint:unchecked for details.
+2026-06-29T12:55:38.8199558Z 10 errors
+2026-06-29T12:55:38.9057312Z 
+2026-06-29T12:55:38.9057334Z 
+2026-06-29T12:55:38.9066942Z FAILURE: Build failed with an exception.
+2026-06-29T12:55:38.9096703Z > Task :compileJava FAILED
+2026-06-29T12:55:38.9097325Z 
+2026-06-29T12:55:38.9106735Z * What went wrong:
+2026-06-29T12:55:38.9106973Z 
+2026-06-29T12:55:38.9107348Z Execution failed for task ':compileJava'.
+2026-06-29T12:55:38.9108076Z > Compilation failed; see the compiler output below.
+2026-06-29T12:55:38.9109941Z   Note: /home/runner/work/Verg-connector/Verg-connector/src/main/java/com/baran3575/vergconnector/remapper/MappingManager.java uses or overrides a deprecated API.
+2026-06-29T12:55:38.9111542Z   Note: Recompile with -Xlint:deprecation for details.
+2026-06-29T12:55:38.9112939Z   /home/runner/work/Verg-connector/Verg-connector/src/main/java/net/fabricmc/fabric/api/client/rendering/v1/HudRenderCallback.java:3: error: cannot find symbol
+2026-06-29T12:55:38.9114373Z   import net.fabricmc.fabric.api.event.Event;
+2026-06-29T12:55:38.9115145Z                                       ^
+2026-06-29T12:55:38.9115612Z     symbol:   class Event
+2026-06-29T12:55:38.9116280Z     location: package net.fabricmc.fabric.api.event
+2026-06-29T12:55:38.9117533Z   /home/runner/work/Verg-connector/Verg-connector/src/main/java/net/fabricmc/fabric/api/client/rendering/v1/HudRenderCallback.java:4: error: cannot find symbol
+2026-06-29T12:55:38.9118833Z   import net.fabricmc.fabric.api.event.EventFactory;
+2026-06-29T12:55:38.9119380Z                                       ^
+2026-06-29T12:55:38.9119809Z     symbol:   class EventFactory
+2026-06-29T12:55:38.9120283Z     location: package net.fabricmc.fabric.api.event
+2026-06-29T12:55:38.9121831Z   /home/runner/work/Verg-connector/Verg-connector/src/main/java/net/fabricmc/fabric/api/client/rendering/v1/HudRenderCallback.java:12: error: cannot find symbol
+2026-06-29T12:55:38.9123272Z       Event<HudRenderCallback> EVENT = EventFactory.createArrayBacked(HudRenderCallback.class,
+2026-06-29T12:55:38.9124023Z       ^
+2026-06-29T12:55:38.9124311Z     symbol:   class Event
+2026-06-29T12:55:38.9124697Z     location: interface HudRenderCallback
+2026-06-29T12:55:38.9125810Z   /home/runner/work/Verg-connector/Verg-connector/src/main/java/net/fabricmc/fabric/api/client/screen/v1/ScreenEvents.java:4: error: cannot find symbol
+2026-06-29T12:55:38.9127186Z   import net.fabricmc.fabric.api.event.Event;
+2026-06-29T12:55:38.9127662Z                                       ^
+2026-06-29T12:55:38.9128077Z     symbol:   class Event
+2026-06-29T12:55:38.9128519Z     location: package net.fabricmc.fabric.api.event
+2026-06-29T12:55:38.9129658Z   /home/runner/work/Verg-connector/Verg-connector/src/main/java/net/fabricmc/fabric/api/client/screen/v1/ScreenEvents.java:5: error: cannot find symbol
+2026-06-29T12:55:38.9130856Z   import net.fabricmc.fabric.api.event.EventFactory;
+2026-06-29T12:55:38.9131362Z                                       ^
+2026-06-29T12:55:38.9131775Z     symbol:   class EventFactory
+2026-06-29T12:55:38.9132243Z     location: package net.fabricmc.fabric.api.event
+2026-06-29T12:55:38.9133418Z   /home/runner/work/Verg-connector/Verg-connector/src/main/java/net/fabricmc/fabric/api/client/screen/v1/ScreenEvents.java:23: error: cannot find symbol
+2026-06-29T12:55:38.9134826Z       public static final Event<AfterInit> AFTER_INIT = EventFactory.createArrayBacked(AfterInit.class, listeners -> (client, screen, scaledWidth, scaledHeight) -> {
+2026-06-29T12:55:38.9135536Z                           ^
+2026-06-29T12:55:38.9135783Z     symbol:   class Event
+2026-06-29T12:55:38.9156475Z     location: class ScreenEvents
+2026-06-29T12:55:38.9157692Z   /home/runner/work/Verg-connector/Verg-connector/src/main/java/net/fabricmc/fabric/api/client/screen/v1/ScreenEvents.java:30: error: cannot find symbol
+2026-06-29T12:55:38.9159686Z       public static final Event<AfterRender> AFTER_RENDER = EventFactory.createArrayBacked(AfterRender.class, listeners -> (screen, drawContext, mouseX, mouseY, tickDelta) -> {
+2026-06-29T12:55:38.9161065Z                           ^
+2026-06-29T12:55:38.9161433Z     symbol:   class Event
+2026-06-29T12:55:38.9161797Z     location: class ScreenEvents
+2026-06-29T12:55:38.9162936Z   /home/runner/work/Verg-connector/Verg-connector/src/main/java/net/fabricmc/fabric/api/client/rendering/v1/HudRenderCallback.java:12: error: cannot find symbol
+2026-06-29T12:55:38.9163857Z       Event<HudRenderCallback> EVENT = EventFactory.createArrayBacked(HudRenderCallback.class,
+2026-06-29T12:55:38.9164570Z                                        ^
+2026-06-29T12:55:38.9165000Z     symbol:   variable EventFactory
+2026-06-29T12:55:38.9165281Z     location: interface HudRenderCallback
+2026-06-29T12:55:38.9166204Z   /home/runner/work/Verg-connector/Verg-connector/src/main/java/net/fabricmc/fabric/api/client/screen/v1/ScreenEvents.java:23: error: cannot find symbol
+2026-06-29T12:55:38.9168002Z       public static final Event<AfterInit> AFTER_INIT = EventFactory.createArrayBacked(AfterInit.class, listeners -> (client, screen, scaledWidth, scaledHeight) -> {
+2026-06-29T12:55:38.9169157Z                                                         ^
+2026-06-29T12:55:38.9169609Z     symbol:   variable EventFactory
+2026-06-29T12:55:38.9170184Z     location: class ScreenEvents
+2026-06-29T12:55:38.9171231Z   /home/runner/work/Verg-connector/Verg-connector/src/main/java/net/fabricmc/fabric/api/client/screen/v1/ScreenEvents.java:30: error: cannot find symbol
+2026-06-29T12:55:38.9173139Z       public static final Event<AfterRender> AFTER_RENDER = EventFactory.createArrayBacked(AfterRender.class, listeners -> (screen, drawContext, mouseX, mouseY, tickDelta) -> {
+2026-06-29T12:55:38.9174401Z                                                             ^
+2026-06-29T12:55:38.9175168Z     symbol:   variable EventFactory
+2026-06-29T12:55:38.9175605Z     location: class ScreenEvents
+2026-06-29T12:55:38.9176270Z   Note: Recompile with -Xlint:unchecked for details.
+2026-06-29T12:55:38.9176880Z   Note: Some input files use unchecked or unsafe operations.
+2026-06-29T12:55:38.9177393Z   10 errors
+2026-06-29T12:55:38.9177562Z 
+2026-06-29T12:55:38.9177684Z * Try:
+2026-06-29T12:55:38.9178128Z > Check your code and dependencies to fix the compilation error(s)
+2026-06-29T12:55:38.9178847Z > Run with --scan to generate a Build Scan (powered by Develocity).
+2026-06-29T12:55:38.9179282Z 
+2026-06-29T12:55:38.9179419Z BUILD FAILED in 1m 3s
+2026-06-29T12:55:38.9180413Z [Incubating] Problems report is available at: file:///home/runner/work/Verg-connector/Verg-connector/build/reports/problems/problems-report.html
+2026-06-29T12:55:38.9181320Z 
+2026-06-29T12:55:38.9181718Z Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+2026-06-29T12:55:38.9182302Z 
+2026-06-29T12:55:38.9182977Z You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+2026-06-29T12:55:38.9183814Z 
+2026-06-29T12:55:38.9184676Z For more on this, please refer to https://docs.gradle.org/9.2.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+2026-06-29T12:55:38.9185772Z 4 actionable tasks: 4 executed
+2026-06-29T12:55:38.9186573Z Configuration cache entry stored.
+2026-06-29T12:55:39.3175316Z ##[error]Process completed with exit code 1.
+2026-06-29T12:55:39.3289089Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-06-29T12:55:39.3290299Z Post job cleanup.
+2026-06-29T12:55:39.4596081Z (node:3031) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-06-29T12:55:39.4597053Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-06-29T12:55:39.4752532Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-06-29T12:55:39.4753716Z Post job cleanup.
+2026-06-29T12:55:39.5593415Z [command]/usr/bin/git version
+2026-06-29T12:55:39.5661048Z git version 2.54.0
+2026-06-29T12:55:39.5695671Z Temporarily overriding HOME='/home/runner/work/_temp/f94d31a5-6d4a-4529-8817-ba733e6eb0f4' before making global git config changes
+2026-06-29T12:55:39.5697062Z Adding repository directory to the temporary git global config as a safe directory
+2026-06-29T12:55:39.5701889Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Verg-connector/Verg-connector
+2026-06-29T12:55:39.5737979Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-06-29T12:55:39.5771497Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-06-29T12:55:39.6008359Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-06-29T12:55:39.6034113Z http.https://github.com/.extraheader
+2026-06-29T12:55:39.6044307Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-06-29T12:55:39.6076231Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-06-29T12:55:39.6314698Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-06-29T12:55:39.6349467Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-06-29T12:55:39.6749348Z Cleaning up orphan processes
+2026-06-29T12:55:39.7079656Z Terminate orphan process: pid (2601) (java)
+2026-06-29T12:55:39.7092054Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-java@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
