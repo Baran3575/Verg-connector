@@ -15,6 +15,7 @@ import net.neoforged.fml.loading.FMLPaths;
 import net.fabricmc.mappingio.MappingReader;
 import net.fabricmc.mappingio.MappingWriter;
 import net.fabricmc.mappingio.format.MappingFormat;
+import net.fabricmc.mappingio.tree.MappingTree;
 import net.fabricmc.mappingio.tree.MemoryMappingTree;
 import net.fabricmc.mappingio.adapter.MappingSourceNsSwitch;
 import net.fabricmc.mappingio.adapter.MappingNsRenamer;
@@ -117,7 +118,7 @@ public class MappingManager {
         }
         
         Map<String, String> map = new java.util.HashMap<>();
-        for (net.fabricmc.mappingio.tree.MappingTree.ClassMapping c : tree.getClasses()) {
+        for (MappingTree.ClassMapping c : tree.getClasses()) {
             String interClass = c.getName("intermediary");
             String namedClass = c.getName("named");
             if (interClass != null && namedClass != null) {
@@ -127,7 +128,7 @@ public class MappingManager {
                 map.put("L" + interClass + ";", "L" + namedClass + ";");
             }
             
-            for (net.fabricmc.mappingio.tree.MappingTree.MethodMapping m : c.getMethods()) {
+            for (MappingTree.MethodMapping m : c.getMethods()) {
                 String interMethod = m.getName("intermediary");
                 String namedMethod = m.getName("named");
                 if (interMethod != null && namedMethod != null) {
@@ -135,7 +136,7 @@ public class MappingManager {
                 }
             }
             
-            for (net.fabricmc.mappingio.tree.MappingTree.FieldMapping f : c.getFields()) {
+            for (MappingTree.FieldMapping f : c.getFields()) {
                 String interField = f.getName("intermediary");
                 String namedField = f.getName("named");
                 if (interField != null && namedField != null) {
