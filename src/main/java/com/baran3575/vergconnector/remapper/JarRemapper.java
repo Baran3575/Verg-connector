@@ -27,17 +27,39 @@ public class JarRemapper {
     public static void remapJar(Path inputJar, Path outputJar, Path mappingsFile) throws IOException {
         System.out.println("[Verg Connector] Remapping Fabric Mod: " + inputJar.getFileName());
 
+        Path cacheDir = mappingsFile.getParent().resolve("classpath_cache");
+        if (!java.nio.file.Files.exists(cacheDir)) {
+            java.nio.file.Files.createDirectories(cacheDir);
+        }
+
+        List<Path> originalClasspathJars = findClasspathJars();
+        List<Path> intermediaryClasspathJars = new ArrayList<>();
+
+        for (Path cpJar : originalClasspathJars) {
+            String name = cpJar.getFileName().toString().toLowerCase();
+            if ((name.contains("minecraft") && name.contains("client")) || name.contains("neoforge-21")) {
+                try {
+                    intermediaryClasspathJars.add(getOrGenerateIntermediaryJar(cpJar, cacheDir, mappingsFile));
+                } catch (Exception e) {
+                    System.err.println("[Verg Connector] Failed to generate intermediary jar for " + name + ": " + e.getMessage());
+                    intermediaryClasspathJars.add(cpJar);
+                }
+            } else {
+                intermediaryClasspathJars.add(cpJar);
+            }
+        }
+
         IMappingProvider provider = TinyUtils.createTinyMappingProvider(mappingsFile, "intermediary", "named");
 
         TinyRemapper remapper = TinyRemapper.newRemapper()
                 .withMappings(provider)
                 .ignoreConflicts(true)
+                .resolveMissing(true)
                 .extension(new MixinExtension())
                 .build();
                 
-        List<Path> classpathJars = findClasspathJars();
-        System.out.println("[Verg Connector] Providing " + classpathJars.size() + " classpath jars to TinyRemapper.");
-        remapper.readClassPath(classpathJars.toArray(new Path[0]));
+        System.out.println("[Verg Connector] Providing " + intermediaryClasspathJars.size() + " intermediary classpath jars to TinyRemapper.");
+        remapper.readClassPath(intermediaryClasspathJars.toArray(new Path[0]));
                 
         try (OutputConsumerPath outputConsumer = new OutputConsumerPath.Builder(outputJar).build()) {
             outputConsumer.addNonClassFiles(inputJar, NonClassCopyMode.FIX_META_INF, remapper);
@@ -48,6 +70,29 @@ public class JarRemapper {
         }
         
         System.out.println("[Verg Connector] Remapping complete for: " + outputJar.getFileName());
+    }
+
+    private static Path getOrGenerateIntermediaryJar(Path originalJar, Path cacheDir, Path mappingsFile) throws IOException {
+        String originalName = originalJar.getFileName().toString();
+        Path remappedJar = cacheDir.resolve(originalName.replace(".jar", "-intermediary.jar"));
+        if (java.nio.file.Files.exists(remappedJar) && java.nio.file.Files.size(remappedJar) > 0) {
+            return remappedJar;
+        }
+        System.out.println("[Verg Connector] Generating intermediary classpath jar: " + remappedJar.getFileName());
+        
+        IMappingProvider provider = TinyUtils.createTinyMappingProvider(mappingsFile, "named", "intermediary");
+        TinyRemapper remapper = TinyRemapper.newRemapper()
+                .withMappings(provider)
+                .ignoreConflicts(true)
+                .build();
+                
+        try (OutputConsumerPath outputConsumer = new OutputConsumerPath.Builder(remappedJar).build()) {
+            remapper.readInputs(originalJar);
+            remapper.apply(outputConsumer);
+        } finally {
+            remapper.finish();
+        }
+        return remappedJar;
     }
 
     private static List<Path> findClasspathJars() {
