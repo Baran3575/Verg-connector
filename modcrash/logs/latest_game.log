@@ -227,10 +227,10 @@ multidrawMode = Auto
 [DEBUG] Calling JLI_Launch
 [MioLibPatcher/INFO]: MioPatcher is running!
 ERROR StatusConsoleListener appender Console has no parameter that matches element Policies
-[11:27:28] [main/INFO]: ModLauncher running: args [--username, Vergi911, --version, 1.21.1 NeoForge 21.1.234, --gameDir, /storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/versions/1.21.1 NeoForge 21.1.234, --assetsDir, /storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/assets, --assetIndex, 17, --uuid, d521bfc2ca343b80bba853f534c3ee04, --accessToken, ❄❄❄❄❄❄❄❄, --clientId, ${clientid}, --xuid, , --userType, msa, --versionType, ZalithLauncher2.4.9_hotfix1, --fml.neoForgeVersion, 21.1.234, --fml.fmlVersion, 4.0.42, --fml.mcVersion, 1.21.1, --fml.neoFormVersion, 20240808.144430, --launchTarget, forgeclient]
-[11:27:28] [main/INFO]: JVM identified as Oracle Corporation OpenJDK 64-Bit Server VM 21.0.1-internal-adhoc.runner.openjdk
-[11:27:28] [main/INFO]: ModLauncher 11.0.5+main.901c6ea8 starting: java version 21.0.1-internal by N/A; OS Linux arch aarch64 version Android-16
-[11:27:28] [main/ERROR]: Error while resolving modules.
+[11:38:20] [main/INFO]: ModLauncher running: args [--username, Vergi911, --version, 1.21.1 NeoForge 21.1.234, --gameDir, /storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/versions/1.21.1 NeoForge 21.1.234, --assetsDir, /storage/emulated/0/Android/data/com.movtery.zalithlauncher.v2/files/.minecraft/assets, --assetIndex, 17, --uuid, d521bfc2ca343b80bba853f534c3ee04, --accessToken, ❄❄❄❄❄❄❄❄, --clientId, ${clientid}, --xuid, , --userType, msa, --versionType, ZalithLauncher2.4.9_hotfix1, --fml.neoForgeVersion, 21.1.234, --fml.fmlVersion, 4.0.42, --fml.mcVersion, 1.21.1, --fml.neoFormVersion, 20240808.144430, --launchTarget, forgeclient]
+[11:38:20] [main/INFO]: JVM identified as Oracle Corporation OpenJDK 64-Bit Server VM 21.0.1-internal-adhoc.runner.openjdk
+[11:38:20] [main/INFO]: ModLauncher 11.0.5+main.901c6ea8 starting: java version 21.0.1-internal by N/A; OS Linux arch aarch64 version Android-16
+[11:38:20] [main/ERROR]: Error while resolving modules.
 java.lang.module.ResolutionException: Module vergconnector contains package cpw.mods.jarhandling.impl, module cpw.mods.securejarhandler exports package cpw.mods.jarhandling.impl to vergconnector
 	at java.base/java.lang.module.Resolver.resolveFail(Unknown Source) ~[?:?]
 	at java.base/java.lang.module.Resolver.failTwoSuppliers(Unknown Source) ~[?:?]
