@@ -148,6 +148,10 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 }
 
+jar {
+    archiveClassifier = 'slim'
+}
+
 shadowJar {
     archiveClassifier = ''
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
@@ -157,7 +161,7 @@ shadowJar {
     }
 }
 
-tasks.build.dependsOn tasks.shadowJar
+assemble.dependsOn shadowJar
 
 // This block of code expands all declared replace properties in the specified resource targets.
 // A missing property will result in an error. Properties are expanded using ${} Groovy notation.
