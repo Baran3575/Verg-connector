@@ -123,7 +123,10 @@ configurations {
 
 dependencies {
     // Bytecode Remapping for Fabric Mods
+    compileOnly 'net.fabricmc:tiny-remapper:0.10.3'
     shadow 'net.fabricmc:tiny-remapper:0.10.3'
+    
+    compileOnly 'net.fabricmc:mapping-io:0.6.1'
     shadow 'net.fabricmc:mapping-io:0.6.1'
     // Example optional mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
