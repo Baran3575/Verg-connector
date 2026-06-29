@@ -39,20 +39,10 @@ public class VergConnectorLocator implements IModFileCandidateLocator {
     }
 
     private void processJar(Path path, IDiscoveryPipeline pipeline) throws Exception {
-        boolean success = false;
-        com.baran3575.vergconnector.jarhandling.FabricJarContentsWrapper wrappedContents = null;
-        try {
-            wrappedContents = new com.baran3575.vergconnector.jarhandling.FabricJarContentsWrapper(path);
-            Optional<URI> fabricModJson = wrappedContents.findFile("fabric.mod.json");
-            if (fabricModJson.isPresent()) {
-                System.out.println("[Verg Connector] Found Fabric mod: " + path.getFileName());
-                pipeline.addJarContent(wrappedContents, ModFileDiscoveryAttributes.DEFAULT.withLocator(this), IncompatibleFileReporting.IGNORE);
-                success = true;
-            }
-        } finally {
-            if (!success && wrappedContents != null) {
-                wrappedContents.close();
-            }
+        cpw.mods.jarhandling.JarContents contents = com.baran3575.vergconnector.jarhandling.FabricJarContentsWrapper.createJarContents(path);
+        if (contents != null) {
+            System.out.println("[Verg Connector] Found Fabric mod: " + path.getFileName());
+            pipeline.addJarContent(contents, ModFileDiscoveryAttributes.DEFAULT.withLocator(this), IncompatibleFileReporting.IGNORE);
         }
     }
 }

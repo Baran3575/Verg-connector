@@ -1,6 +1,7 @@
 package com.baran3575.vergconnector.jarhandling;
 
-import cpw.mods.jarhandling.impl.JarContentsImpl;
+import cpw.mods.jarhandling.JarContents;
+import cpw.mods.jarhandling.JarContentsBuilder;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -11,50 +12,47 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.jar.Manifest;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+import java.util.zip.ZipOutputStream;
 
 /**
- * Wraps a Fabric mod's JarContents by extending JarContentsImpl directly.
- * This guarantees that the ClassCastException to JarContentsImpl inside cpw.mods.jarhandling.SecureJar
- * will never occur.
+ * Parses a Fabric mod's fabric.mod.json and returns a JarContents instance
+ * which overlays a generated neoforge.mods.toml file onto the original JAR.
  *
  * CRITICAL: This class runs in the BOOTSTRAP classloader phase — Minecraft game
  * classes are NOT yet available. Do NOT reference ANY net.minecraft.* classes here.
  */
-public class FabricJarContentsWrapper extends JarContentsImpl {
-    private Path tempToml;
+public class FabricJarContentsWrapper {
 
-    public FabricJarContentsWrapper(Path path) {
-        super(new Path[]{path}, Manifest::new, null);
-    }
-
-    @Override
-    public Optional<URI> findFile(String name) {
-        if (name.equals("META-INF/neoforge.mods.toml") || name.equals("neoforge.mods.toml") ||
-            name.equals("META-INF/mods.toml") || name.equals("mods.toml")) {
-            if (tempToml == null) {
-                try {
-                    tempToml = generateVirtualToml();
-                } catch (IOException e) {
-                    System.err.println("[Verg Connector] Failed to generate virtual toml: " + e.getMessage());
-                    return Optional.empty();
-                }
+    public static JarContents createJarContents(Path path) throws IOException {
+        String jsonContent = null;
+        try (ZipFile zip = new ZipFile(path.toFile())) {
+            ZipEntry entry = zip.getEntry("fabric.mod.json");
+            if (entry == null) {
+                return null;
             }
-            return Optional.of(tempToml.toUri());
+            try (InputStream is = zip.getInputStream(entry)) {
+                jsonContent = new String(is.readAllBytes(), StandardCharsets.UTF_8);
+            }
         }
-        return super.findFile(name);
+
+        String tomlString = generateVirtualToml(jsonContent);
+
+        Path tempZip = Files.createTempFile("vergconn_meta_", ".jar");
+        tempZip.toFile().deleteOnExit();
+        try (ZipOutputStream zos = new ZipOutputStream(Files.newOutputStream(tempZip))) {
+            zos.putNextEntry(new ZipEntry("META-INF/"));
+            zos.closeEntry();
+            zos.putNextEntry(new ZipEntry("META-INF/neoforge.mods.toml"));
+            zos.write(tomlString.getBytes(StandardCharsets.UTF_8));
+            zos.closeEntry();
+        }
+
+        return new JarContentsBuilder().paths(tempZip, path).build();
     }
 
-    private Path generateVirtualToml() throws IOException {
-        Optional<URI> fabricJsonUri = super.findFile("fabric.mod.json");
-        if (fabricJsonUri.isEmpty()) {
-            throw new IOException("fabric.mod.json not found in delegate");
-        }
-
-        String jsonContent;
-        try (InputStream is = fabricJsonUri.get().toURL().openStream()) {
-            jsonContent = new String(is.readAllBytes(), StandardCharsets.UTF_8);
-        }
-
+    private static String generateVirtualToml(String jsonContent) throws IOException {
         String id          = parseJsonString(jsonContent, "id");
         String version     = parseJsonString(jsonContent, "version");
         String name        = parseJsonString(jsonContent, "name");
@@ -209,10 +207,7 @@ public class FabricJarContentsWrapper extends JarContentsImpl {
             }
         }
 
-        Path tempFile = Files.createTempFile("vergconn_mods_", ".toml");
-        Files.writeString(tempFile, toml.toString());
-        tempFile.toFile().deleteOnExit();
-        return tempFile;
+        return toml.toString();
     }
 
     // ─── Self-contained JSON & SemVer helpers ─────────────────────────────────
