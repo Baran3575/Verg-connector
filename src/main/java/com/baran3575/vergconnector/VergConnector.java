@@ -27,25 +27,18 @@ public class VergConnector {
     public static final String MODID = "vergconnector";
     public static final Logger LOGGER = LogUtils.getLogger();
     
-    private boolean initialized = false;
-
     public VergConnector(IEventBus modEventBus, ModContainer modContainer) {
+        // Run Fabric mod initialization BEFORE events are registered or registered payloads are collected
+        initializeFabricMods();
+
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::onBuildCreativeModeTabContents);
-        modEventBus.addListener(this::onRegister);
         modEventBus.addListener(this::registerPayloads);
         NeoForge.EVENT_BUS.register(this);
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
 
         if (net.neoforged.fml.loading.FMLEnvironment.dist == net.neoforged.api.distmarker.Dist.CLIENT) {
             VergConnectorClient.init(modEventBus);
-        }
-    }
-
-    private void onRegister(RegisterEvent event) {
-        if (!initialized && event.getRegistryKey().equals(net.minecraft.core.registries.Registries.BLOCK)) {
-            initialized = true;
-            initializeFabricMods();
         }
     }
 
@@ -160,7 +153,12 @@ public class VergConnector {
                             Class<?> clazz = Class.forName(entrypoint);
                             Object instance = clazz.getDeclaredConstructor().newInstance();
                             if (instance instanceof net.fabricmc.api.ModInitializer initializer) {
-                                initializer.onInitialize();
+                                try {
+                                    com.baran3575.vergconnector.mixin.RegistryHelper.UNFROZEN.set(true);
+                                    initializer.onInitialize();
+                                } finally {
+                                    com.baran3575.vergconnector.mixin.RegistryHelper.UNFROZEN.set(false);
+                                }
                                 LOGGER.info("[Verg Connector] Successfully initialized main entrypoint: {}", entrypoint);
                             }
                         } catch (Exception e) {
@@ -177,7 +175,12 @@ public class VergConnector {
                                 Class<?> clazz = Class.forName(entrypoint);
                                 Object instance = clazz.getDeclaredConstructor().newInstance();
                                 if (instance instanceof net.fabricmc.api.DedicatedServerModInitializer initializer) {
-                                    initializer.onInitializeServer();
+                                    try {
+                                        com.baran3575.vergconnector.mixin.RegistryHelper.UNFROZEN.set(true);
+                                        initializer.onInitializeServer();
+                                    } finally {
+                                        com.baran3575.vergconnector.mixin.RegistryHelper.UNFROZEN.set(false);
+                                    }
                                     LOGGER.info("[Verg Connector] Successfully initialized server entrypoint: {}", entrypoint);
                                 }
                             } catch (Exception e) {

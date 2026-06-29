@@ -65,7 +65,12 @@ public class VergConnectorClient {
                             Class<?> clazz = Class.forName(entrypoint);
                             Object instance = clazz.getDeclaredConstructor().newInstance();
                             if (instance instanceof net.fabricmc.api.ClientModInitializer initializer) {
-                                initializer.onInitializeClient();
+                                try {
+                                    com.baran3575.vergconnector.mixin.RegistryHelper.UNFROZEN.set(true);
+                                    initializer.onInitializeClient();
+                                } finally {
+                                    com.baran3575.vergconnector.mixin.RegistryHelper.UNFROZEN.set(false);
+                                }
                                 VergConnector.LOGGER.info("[Verg Connector Client] Successfully initialized client entrypoint: {}", entrypoint);
                             }
                         } catch (Exception e) {

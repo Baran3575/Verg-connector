@@ -157,7 +157,13 @@ public class FabricLoaderImpl implements FabricLoader {
         for (EntrypointEntry def : defs) {
             try {
                 Class<?> clazz = Class.forName(def.className);
-                Object obj = clazz.getDeclaredConstructor().newInstance();
+                Object obj;
+                try {
+                    com.baran3575.vergconnector.mixin.RegistryHelper.UNFROZEN.set(true);
+                    obj = clazz.getDeclaredConstructor().newInstance();
+                } finally {
+                    com.baran3575.vergconnector.mixin.RegistryHelper.UNFROZEN.set(false);
+                }
                 list.add(obj);
             } catch (Exception e) {
                 VergConnector.LOGGER.error(
