@@ -5,16 +5,14 @@ import com.baran3575.vergconnector.VergConnector;
 import java.io.InputStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
 /**
  * Reads mixin JSON configs from Fabric mod JARs and:
  * 1. Registers all mixin classes with MixinConflictResolver to surface conflicts early.
- * 2. Provides a safe list of active mixin configs so they can be de-duplicated on refmap name.
- *
- * Mixin configs are referenced in fabric.mod.json via:
- *   "mixins": ["mymod.mixins.json", {"config":"mymod.client.mixins.json", "environment":"client"}]
+ * 2. Parses the actual targeted classes using ASM by reading the class bytecode.
  */
 public class MixinConfigHandler {
 
@@ -40,7 +38,7 @@ public class MixinConfigHandler {
 
                 try (InputStream is = configUri.toURL().openStream()) {
                     String json = new String(is.readAllBytes(), StandardCharsets.UTF_8);
-                    processMixinJson(modId, configName, json);
+                    processMixinJson(modId, configName, json, modFilePath);
                 }
             } catch (Exception e) {
                 VergConnector.LOGGER.debug(
@@ -50,7 +48,7 @@ public class MixinConfigHandler {
         }
     }
 
-    private static void processMixinJson(String modId, String configName, String json) {
+    private static void processMixinJson(String modId, String configName, String json, Path modFilePath) {
         String pkg = parseJsonString(json, "package");
         if (pkg == null) pkg = "";
 
@@ -62,23 +60,16 @@ public class MixinConfigHandler {
         for (String mixinName : allMixins) {
             // Mixin names in the JSON are relative to "package", e.g. "MixinBlock" → "com.example.mixin.MixinBlock"
             String fullName = pkg.isEmpty() ? mixinName : pkg + "." + mixinName;
-            // Target is the same as mixin class for tracking purposes (we don't resolve @Mixin targets at this stage)
-            MixinConflictResolver.INSTANCE.registerMixin(fullName, fullName, modId);
-        }
-
-        // Check and log conflicts detected so far
-        List<String> conflicts = MixinConflictResolver.INSTANCE.getConflictingTargets();
-        if (!conflicts.isEmpty()) {
-            for (String conflict : conflicts) {
-                List<MixinConflictResolver.MixinEntry> entries =
-                    MixinConflictResolver.INSTANCE.getEntriesFor(conflict);
-                VergConnector.LOGGER.warn(
-                    "[Verg Connector] ⚠ Mixin conflict: '{}' is targeted by multiple mods: {}",
-                    conflict,
-                    entries.stream()
-                        .map(MixinConflictResolver.MixinEntry::toString)
-                        .reduce((a, b) -> a + ", " + b)
-                        .orElse("?"));
+            
+            // Read target classes using ASM
+            List<String> targets = readMixinTargets(modFilePath, fullName);
+            if (targets.isEmpty()) {
+                // Fallback to registering under the mixin name itself if no targets could be parsed
+                MixinConflictResolver.INSTANCE.registerMixin(fullName, fullName, modId);
+            } else {
+                for (String target : targets) {
+                    MixinConflictResolver.INSTANCE.registerMixin(target, fullName, modId);
+                }
             }
         }
 
@@ -87,18 +78,84 @@ public class MixinConfigHandler {
             configName, modId, allMixins.size());
     }
 
+    /**
+     * Reads the mixin class file from the mod path (jar or folder) and parses its @Mixin
+     * annotation using ASM to get the target classes. Bypasses classloading entirely.
+     */
+    private static List<String> readMixinTargets(Path modFilePath, String mixinFullName) {
+        List<String> targets = new ArrayList<>();
+        try {
+            String classPath = mixinFullName.replace('.', '/') + ".class";
+            byte[] bytes = null;
+
+            if (Files.isDirectory(modFilePath)) {
+                Path file = modFilePath.resolve(classPath);
+                if (Files.exists(file)) {
+                    bytes = Files.readAllBytes(file);
+                }
+            } else {
+                try (java.util.zip.ZipFile zip = new java.util.zip.ZipFile(modFilePath.toFile())) {
+                    java.util.zip.ZipEntry entry = zip.getEntry(classPath);
+                    if (entry != null) {
+                        try (InputStream is = zip.getInputStream(entry)) {
+                            bytes = is.readAllBytes();
+                        }
+                    }
+                }
+            }
+
+            if (bytes != null) {
+                org.objectweb.asm.ClassReader reader = new org.objectweb.asm.ClassReader(bytes);
+                org.objectweb.asm.tree.ClassNode node = new org.objectweb.asm.tree.ClassNode();
+                reader.accept(node, org.objectweb.asm.ClassReader.SKIP_CODE | org.objectweb.asm.ClassReader.SKIP_DEBUG | org.objectweb.asm.ClassReader.SKIP_FRAMES);
+
+                if (node.visibleAnnotations != null) {
+                    for (org.objectweb.asm.tree.AnnotationNode ann : node.visibleAnnotations) {
+                        if (ann.desc.equals("Lorg/spongepowered/asm/mixin/Mixin;")) {
+                            List<Object> values = ann.values;
+                            if (values != null) {
+                                for (int i = 0; i < values.size(); i += 2) {
+                                    String name = (String) values.get(i);
+                                    Object val = values.get(i + 1);
+                                    if (name.equals("value")) {
+                                        if (val instanceof List) {
+                                            for (Object o : (List<?>) val) {
+                                                if (o instanceof org.objectweb.asm.Type) {
+                                                    targets.add(((org.objectweb.asm.Type) o).getClassName());
+                                                }
+                                            }
+                                        }
+                                    } else if (name.equals("targets")) {
+                                        if (val instanceof List) {
+                                            for (Object o : (List<?>) val) {
+                                                if (o instanceof String) {
+                                                    targets.add((String) o);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            // Keep silent or debug
+        }
+        return targets;
+    }
+
     // ─── JSON helpers ──────────────────────────────────────────────────────────
 
     private static List<String> parseMixinArray(String json, String key) {
         List<String> list = new ArrayList<>();
-        // Locate "key" at the object level
         int keyIdx = 0;
         while (true) {
             keyIdx = json.indexOf('"' + key + '"', keyIdx);
             if (keyIdx == -1) break;
             int colon = json.indexOf(':', keyIdx + key.length() + 2);
             if (colon == -1) break;
-            // Skip whitespace to find '[' or '"'
             int pos = colon + 1;
             while (pos < json.length() && Character.isWhitespace(json.charAt(pos))) pos++;
             if (pos >= json.length()) break;
@@ -126,11 +183,8 @@ public class MixinConfigHandler {
                 list.add(arr.substring(i + 1, end));
                 i = end + 1;
             } else if (arr.charAt(i) == '{') {
-                // Object entry: {"config":"file.json","environment":"client"}
-                // We don't load the inner file here, but track the config name
                 int close = findMatchingBracket(arr, i, '{', '}');
                 if (close == -1) break;
-                // Try to extract the "config" field value as the mixin name
                 String obj = arr.substring(i + 1, close);
                 String configVal = parseJsonString(obj, "config");
                 if (configVal != null) list.add(configVal);
@@ -153,7 +207,6 @@ public class MixinConfigHandler {
         return json.substring(q1 + 1, q2);
     }
 
-    /** Find the index of the closing bracket/brace that matches the one at {@code start}. */
     private static int findMatchingBracket(String s, int start, char open, char close) {
         int depth = 0;
         boolean inQuote = false;
