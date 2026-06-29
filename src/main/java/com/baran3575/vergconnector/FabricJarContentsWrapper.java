@@ -259,9 +259,9 @@ public class FabricJarContentsWrapper implements JarContents {
                 sb.append('_');
             }
         }
-        if (sb.isEmpty()) return "unknown";
+        if (sb.length() == 0) return "unknown";
         // Must start with a letter
-        if (!Character.isLetter(sb.charAt(0))) sb.insert(0, 'mod_');
+        if (!Character.isLetter(sb.charAt(0))) sb.insert(0, "mod_");
         return sb.toString();
     }
 
