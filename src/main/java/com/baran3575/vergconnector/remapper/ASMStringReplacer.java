@@ -103,6 +103,15 @@ public class ASMStringReplacer {
         public void visit(String name, Object value) {
             if (value instanceof String) {
                 super.visit(name, replaceIntermediary((String) value, replacements));
+            } else if (value instanceof Type) {
+                Type type = (Type) value;
+                String desc = type.getDescriptor();
+                String replacedDesc = replaceIntermediary(desc, replacements);
+                if (!desc.equals(replacedDesc)) {
+                    super.visit(name, Type.getType(replacedDesc));
+                } else {
+                    super.visit(name, value);
+                }
             } else {
                 super.visit(name, value);
             }
