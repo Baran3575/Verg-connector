@@ -3,6 +3,7 @@
   "minVersion": "0.8",
   "package": "com.baran3575.vergconnector.mixin",
   "compatibilityLevel": "JAVA_21",
+  "priority": 500,
   "mixins": [
     "MappedRegistryMixin"
   ],
