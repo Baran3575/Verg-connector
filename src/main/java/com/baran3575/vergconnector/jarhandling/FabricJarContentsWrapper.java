@@ -151,12 +151,6 @@ public class FabricJarContentsWrapper {
                 }
 
                 if (depId.equals("fabric") || depId.equals("fabric-api")) {
-                    toml.append("[[dependencies.\"").append(id).append("\"]]\n")
-                        .append("    modId=\"vergconnector\"\n")
-                        .append("    type=\"required\"\n")
-                        .append("    versionRange=\"[1.0.0,)\"\n")
-                        .append("    ordering=\"NONE\"\n")
-                        .append("    side=\"BOTH\"\n\n");
                     continue;
                 }
 
