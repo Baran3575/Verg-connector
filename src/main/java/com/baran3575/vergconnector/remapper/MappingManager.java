@@ -61,9 +61,10 @@ public class MappingManager {
             MappingReader.read(intermediaryFile, tree);
 
             // Read Mojmap and merge. 
-            // ProGuard format typically uses "named" (src) and "official" (dst).
-            // But we want "official" to be the src so it merges with Intermediary's "official".
-            MappingReader.read(mojmapFile, new MappingNsRenamer(new MappingSourceNsSwitch(tree, "official"), Map.of("named", "named", "official", "official")));
+            // ProGuard reader produces `source` and `target` default namespaces.
+            // We need `target` to map to `official` and `source` to map to `named`.
+            // Then we can switch the source namespace to `official`.
+            MappingReader.read(mojmapFile, new MappingNsRenamer(new MappingSourceNsSwitch(tree, "official", true), Map.of("source", "named", "target", "official")));
             
             try (MappingWriter writer = MappingWriter.create(mappingFile, MappingFormat.TINY_2_FILE)) {
                 tree.accept(writer);
