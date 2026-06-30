@@ -35,10 +35,9 @@ public class JarRemapper {
 
         List<Path> originalClasspathJars = findClasspathJars();
         List<Path> intermediaryClasspathJars = new ArrayList<>();
-
         for (Path cpJar : originalClasspathJars) {
             String name = cpJar.getFileName().toString().toLowerCase();
-            if ((name.contains("minecraft") && name.contains("client")) || name.contains("neoforge-21")) {
+            if (name.contains("minecraft") || name.contains("neoforge") || name.contains("client")) {
                 try {
                     intermediaryClasspathJars.add(getOrGenerateIntermediaryJar(cpJar, cacheDir, mappingsFile));
                 } catch (Exception e) {
