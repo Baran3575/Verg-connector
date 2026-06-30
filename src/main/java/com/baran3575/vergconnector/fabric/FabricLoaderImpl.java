@@ -42,7 +42,33 @@ public class FabricLoaderImpl implements FabricLoader {
         }
     }
 
-    private FabricLoaderImpl() {}
+    private FabricLoaderImpl() {
+        // ponytail: pre-populate common Fabric API virtual mod containers to bypass mod dependency checks
+        registerVirtualMod("fabric");
+        registerVirtualMod("fabric-api");
+        registerVirtualMod("fabric-api-base");
+        registerVirtualMod("fabric-networking-api-v1");
+        registerVirtualMod("fabric-rendering-v1");
+        registerVirtualMod("fabric-rendering-data-attachment-v1");
+        registerVirtualMod("fabric-lifecycle-events-v1");
+        registerVirtualMod("fabric-events-interaction-v0");
+        registerVirtualMod("fabric-resource-loader-v0");
+        registerVirtualMod("fabric-screen-api-v1");
+        registerVirtualMod("fabric-keybinding-api-v1");
+        registerVirtualMod("fabric-registry-sync-v0");
+        registerVirtualMod("fabric-command-api-v2");
+        registerVirtualMod("fabric-item-group-api-v1");
+        registerVirtualMod("fabric-loot-api-v2");
+        registerVirtualMod("fabric-content-registries-v0");
+        registerVirtualMod("fabric-transitive-access-wideners-v1");
+        registerVirtualMod("minecraft");
+    }
+
+    private void registerVirtualMod(String id) {
+        var metadata = new ModMetadataImpl(id, "1.0.0", id, "Virtual Fabric API Module");
+        var container = new ModContainerImpl(metadata, java.nio.file.Paths.get("."));
+        mods.put(id, container);
+    }
 
     // ─── Registration API (called from VergConnector) ─────────────────────────
 
@@ -55,27 +81,46 @@ public class FabricLoaderImpl implements FabricLoader {
      * declaring mod container. Called for every key found in fabric.mod.json's
      * "entrypoints" object (including "jade", "main", "client", "server", etc.).
      */
-    public void registerEntrypoint(String key, String className, ModContainer provider) {
-        entrypointDefinitions.computeIfAbsent(key, k -> new ArrayList<>())
-                             .add(new EntrypointEntry(className, provider));
-    }
+     public void registerEntrypoint(String key, String className, ModContainer provider) {
+         entrypointDefinitions.computeIfAbsent(key, k -> new ArrayList<>())
+                              .add(new EntrypointEntry(className, provider));
+     }
 
-    // ─── FabricLoader API ─────────────────────────────────────────────────────
+     // ─── FabricLoader API ─────────────────────────────────────────────────────
 
-    @Override
-    public boolean isModLoaded(String id) {
-        return mods.containsKey(id) || ModList.get().isLoaded(id);
-    }
+     @Override
+     public boolean isModLoaded(String id) {
+         if (id.equals("fabric") || id.equals("fabric-api") || id.startsWith("fabric-")) {
+             return true;
+         }
+         return mods.containsKey(id) || ModList.get().isLoaded(id);
+     }
 
-    @Override
-    public Optional<ModContainer> getModContainer(String id) {
-        return Optional.ofNullable(mods.get(id));
-    }
+     @Override
+     public Optional<ModContainer> getModContainer(String id) {
+         ModContainer container = mods.get(id);
+         if (container != null) {
+             return Optional.of(container);
+         }
+         if (id.equals("fabric") || id.equals("fabric-api") || id.startsWith("fabric-")) {
+             var metadata = new ModMetadataImpl(id, "1.0.0", id, "Virtual Fabric API Module");
+             var virtualContainer = new ModContainerImpl(metadata, java.nio.file.Paths.get("."));
+             mods.put(id, virtualContainer);
+             return Optional.of(virtualContainer);
+         }
+         if (ModList.get().isLoaded(id)) {
+             var metadata = new ModMetadataImpl(id, "1.0.0", id, "Wrapped NeoForge Mod");
+             var wrappedContainer = new ModContainerImpl(metadata, java.nio.file.Paths.get("."));
+             mods.put(id, wrappedContainer);
+             return Optional.of(wrappedContainer);
+         }
+         return Optional.empty();
+     }
 
-    @Override
-    public Collection<ModContainer> getAllMods() {
-        return mods.values();
-    }
+     @Override
+     public Collection<ModContainer> getAllMods() {
+         return mods.values();
+     }
 
     @Override
     public Path getGameDir() {
