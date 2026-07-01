@@ -33,95 +33,208 @@ public class VergConnector {
 
     private void initializeFabricMods() {
         LOGGER.info("[Verg Connector] Initializing Fabric mods state and running main entrypoints...");
+        discoverAndLoadFabricMods();
+        runMainEntrypoints();
+        printMixinConflicts();
+    }
 
-        for (net.neoforged.neoforgespi.language.IModFileInfo modFileInfo : net.neoforged.fml.ModList.get().getModFiles()) {
-            net.neoforged.neoforgespi.locating.IModFile modFile = modFileInfo.getFile();
-            java.nio.file.Path fabricModJson = modFile.findResource("fabric.mod.json");
-            if (java.nio.file.Files.exists(fabricModJson)) {
-                try {
-                    String jsonContent = java.nio.file.Files.readString(fabricModJson, java.nio.charset.StandardCharsets.UTF_8);
-                    String id = parseTopLevelJsonString(jsonContent, "id");
-                    String version = parseTopLevelJsonString(jsonContent, "version");
-                    String name = parseTopLevelJsonString(jsonContent, "name");
-                    String description = parseTopLevelJsonString(jsonContent, "description");
+    private void discoverAndLoadFabricMods() {
+        java.nio.file.Path modsDir = net.neoforged.fml.loading.FMLPaths.MODSDIR.get();
+        if (!java.nio.file.Files.exists(modsDir)) {
+            LOGGER.warn("[Verg Connector] Mods directory not found: {}", modsDir);
+            return;
+        }
 
-                    if (id == null) id = "unknown";
-                    if (version == null) version = "1.0.0";
-                    if (name == null) name = id;
-                    if (description == null) description = "";
+        LOGGER.info("[Verg Connector] Scanning {} for Fabric mods...", modsDir);
 
-                    var metadata = new com.baran3575.vergconnector.fabric.ModMetadataImpl(id, version, name, description);
-                    var container = new com.baran3575.vergconnector.fabric.ModContainerImpl(metadata, modFile.getFilePath());
-                    com.baran3575.vergconnector.fabric.FabricLoaderImpl.INSTANCE.registerMod(id, container);
-                    LOGGER.info("[Verg Connector] Registered Fabric mod: {} ({})", name, version);
+        try (java.util.stream.Stream<java.nio.file.Path> stream = java.nio.file.Files.list(modsDir)) {
+            stream.filter(path -> path.toString().endsWith(".jar"))
+                  .forEach(jarPath -> {
+                      try {
+                          processFabricJar(jarPath);
+                      } catch (Exception e) {
+                          LOGGER.error("[Verg Connector] Failed to process {}: {}", jarPath.getFileName(), e.getMessage());
+                      }
+                  });
+        } catch (java.io.IOException e) {
+            LOGGER.error("[Verg Connector] Failed to list mods directory: {}", e.getMessage());
+        }
+    }
 
-                    // ─── Mixin conflict detection ──────────────────────────────────────
-                    java.util.List<String> mixinConfigs = parseTopLevelEntrypoints(jsonContent, "mixins");
-                    if (!mixinConfigs.isEmpty()) {
-                        com.baran3575.vergconnector.helper.MixinConfigHandler.processMixinConfigs(
-                            id, modFile.getFilePath(), mixinConfigs);
-                    }
-
-                    // ─── Register ALL entrypoint keys (main, client, server, jade, modmenu, …) ───
-                    java.util.Map<String, java.util.List<String>> allEntrypoints = parseAllEntrypoints(jsonContent);
-                    for (java.util.Map.Entry<String, java.util.List<String>> entry : allEntrypoints.entrySet()) {
-                        String epKey = entry.getKey();
-                        for (String className : entry.getValue()) {
-                            com.baran3575.vergconnector.fabric.FabricLoaderImpl.INSTANCE.registerEntrypoint(epKey, className, container);
-                            LOGGER.debug("[Verg Connector] Registered entrypoint: key='{}', class='{}'", epKey, className);
-                        }
-                    }
-
-                    // Execute main entrypoints immediately
-                    java.util.List<String> mainEntrypoints = allEntrypoints.getOrDefault("main", java.util.List.of());
-                    for (String entrypoint : mainEntrypoints) {
-                        try {
-                            LOGGER.info("[Verg Connector] Loading main entrypoint: {}", entrypoint);
-                            Class<?> clazz = Class.forName(entrypoint);
-                            Object instance = clazz.getDeclaredConstructor().newInstance();
-                            if (instance instanceof net.fabricmc.api.ModInitializer initializer) {
-                                try {
-                                    com.baran3575.vergconnector.helper.RegistryHelper.UNFROZEN.set(true);
-                                    initializer.onInitialize();
-                                } finally {
-                                    com.baran3575.vergconnector.helper.RegistryHelper.UNFROZEN.set(false);
-                                }
-                                LOGGER.info("[Verg Connector] Successfully initialized main entrypoint: {}", entrypoint);
-                            }
-                        } catch (Exception e) {
-                            LOGGER.error("[Verg Connector] Failed to initialize main entrypoint: {}", entrypoint, e);
-                        }
-                    }
-
-                    // Execute server entrypoints if on dedicated server
-                    if (net.neoforged.fml.loading.FMLEnvironment.dist == net.neoforged.api.distmarker.Dist.DEDICATED_SERVER) {
-                        java.util.List<String> serverEntrypoints = allEntrypoints.getOrDefault("server", java.util.List.of());
-                        for (String entrypoint : serverEntrypoints) {
-                            try {
-                                LOGGER.info("[Verg Connector] Loading server entrypoint: {}", entrypoint);
-                                Class<?> clazz = Class.forName(entrypoint);
-                                Object instance = clazz.getDeclaredConstructor().newInstance();
-                                if (instance instanceof net.fabricmc.api.DedicatedServerModInitializer initializer) {
-                                    try {
-                                        com.baran3575.vergconnector.helper.RegistryHelper.UNFROZEN.set(true);
-                                        initializer.onInitializeServer();
-                                    } finally {
-                                        com.baran3575.vergconnector.helper.RegistryHelper.UNFROZEN.set(false);
-                                    }
-                                    LOGGER.info("[Verg Connector] Successfully initialized server entrypoint: {}", entrypoint);
-                                }
-                            } catch (Exception e) {
-                                LOGGER.error("[Verg Connector] Failed to initialize server entrypoint: {}", entrypoint, e);
-                            }
-                        }
-                    }
-                } catch (Exception e) {
-                    LOGGER.error("[Verg Connector] Failed to process Fabric mod file: {}", modFile.getFileName(), e);
+    private void addJarToSystemClassloader(java.nio.file.Path jarPath) {
+        if (!java.nio.file.Files.exists(jarPath)) return;
+        try {
+            java.net.URL url = jarPath.toUri().toURL();
+            java.lang.ClassLoader cl = java.lang.ClassLoader.getSystemClassLoader();
+            while (cl != null) {
+                if (cl instanceof java.net.URLClassLoader urlCL) {
+                    java.lang.reflect.Method addURL = java.net.URLClassLoader.class.getDeclaredMethod("addURL", java.net.URL.class);
+                    addURL.setAccessible(true);
+                    addURL.invoke(urlCL, url);
+                    LOGGER.info("[Verg Connector] Added {} to classloader: {}", jarPath.getFileName(), cl.getClass().getName());
+                    return;
                 }
+                cl = cl.getParent();
+            }
+            LOGGER.warn("[Verg Connector] No URLClassLoader found in hierarchy to add {}", jarPath.getFileName());
+        } catch (Exception e) {
+            LOGGER.error("[Verg Connector] Failed to add {} to classpath: {}", jarPath.getFileName(), e.getMessage());
+        }
+    }
+
+    private boolean hasFabricModJson(java.nio.file.Path jarPath) {
+        try (java.util.zip.ZipFile zip = new java.util.zip.ZipFile(jarPath.toFile())) {
+            return zip.getEntry("fabric.mod.json") != null;
+        } catch (java.io.IOException e) {
+            return false;
+        }
+    }
+
+    private String readZipEntry(java.nio.file.Path jarPath, String entryName) throws java.io.IOException {
+        try (java.util.zip.ZipFile zip = new java.util.zip.ZipFile(jarPath.toFile())) {
+            java.util.zip.ZipEntry entry = zip.getEntry(entryName);
+            if (entry == null) return null;
+            try (java.io.InputStream is = zip.getInputStream(entry)) {
+                return new String(is.readAllBytes(), java.nio.charset.StandardCharsets.UTF_8);
+            }
+        }
+    }
+
+    private void registerMixinConfig(String configName, java.nio.file.Path jarPath) {
+        try {
+            String json = readZipEntry(jarPath, configName);
+            if (json == null) {
+                LOGGER.debug("[Verg Connector] Mixin config '{}' not found in {}", configName, jarPath.getFileName());
+                return;
+            }
+            LOGGER.info("[Verg Connector] Registering mixin config: {} from {}", configName, jarPath.getFileName());
+            org.spongepowered.asm.mixin.Mixins.addConfiguration(configName);
+        } catch (Exception e) {
+            LOGGER.error("[Verg Connector] Failed to register mixin config '{}': {}", configName, e.getMessage());
+        }
+    }
+
+    private void processFabricJar(java.nio.file.Path jarPath) {
+        if (!hasFabricModJson(jarPath)) return;
+
+        LOGGER.info("[Verg Connector] Found Fabric mod: {}", jarPath.getFileName());
+
+        String jsonContent;
+        try {
+            jsonContent = readZipEntry(jarPath, "fabric.mod.json");
+            if (jsonContent == null) return;
+        } catch (java.io.IOException e) {
+            LOGGER.error("[Verg Connector] Failed to read fabric.mod.json from {}", jarPath.getFileName());
+            return;
+        }
+
+        String id = parseTopLevelJsonString(jsonContent, "id");
+        String version = parseTopLevelJsonString(jsonContent, "version");
+        String name = parseTopLevelJsonString(jsonContent, "name");
+        String description = parseTopLevelJsonString(jsonContent, "description");
+
+        if (id == null) id = "unknown";
+        if (version == null) version = "1.0.0";
+        if (name == null) name = id;
+        if (description == null) description = "";
+
+        // 1. Remap the JAR (intermediary -> mojmap)
+        java.nio.file.Path jarToLoad = remapFabricJar(jarPath);
+
+        // 2. Add to system classloader (makes classes and resources accessible to mixin system)
+        addJarToSystemClassloader(jarToLoad);
+
+        // 3. Register mixin configs
+        java.util.List<String> mixinConfigs = parseTopLevelEntrypoints(jsonContent, "mixins");
+        for (String mixinConfig : mixinConfigs) {
+            registerMixinConfig(mixinConfig, jarToLoad);
+        }
+
+        // 4. Register mod and entrypoints in FabricLoaderImpl
+        var metadata = new com.baran3575.vergconnector.fabric.ModMetadataImpl(id, version, name, description);
+        var container = new com.baran3575.vergconnector.fabric.ModContainerImpl(metadata, jarPath);
+        com.baran3575.vergconnector.fabric.FabricLoaderImpl.INSTANCE.registerMod(id, container);
+
+        java.util.Map<String, java.util.List<String>> allEntrypoints = parseAllEntrypoints(jsonContent);
+        for (java.util.Map.Entry<String, java.util.List<String>> entry : allEntrypoints.entrySet()) {
+            String epKey = entry.getKey();
+            for (String className : entry.getValue()) {
+                com.baran3575.vergconnector.fabric.FabricLoaderImpl.INSTANCE.registerEntrypoint(epKey, className, container);
+                LOGGER.debug("[Verg Connector] Registered entrypoint: key='{}', class='{}'", epKey, className);
             }
         }
 
-        // Print aggregated mixin conflicts
+        LOGGER.info("[Verg Connector] Loaded Fabric mod: {} ({}) — {} entrypoints, {} mixin configs",
+            name, version, allEntrypoints.size(), mixinConfigs.size());
+    }
+
+    private java.nio.file.Path remapFabricJar(java.nio.file.Path jarPath) {
+        try {
+            java.nio.file.Path mappings = com.baran3575.vergconnector.remapper.MappingManager.getMappingsFile();
+            java.nio.file.Path cacheDir = net.neoforged.fml.loading.FMLPaths.GAMEDIR.get().resolve(".vergconnector").resolve("remapped");
+            if (!java.nio.file.Files.exists(cacheDir)) {
+                java.nio.file.Files.createDirectories(cacheDir);
+            }
+
+            java.nio.file.Path remappedPath = cacheDir.resolve(jarPath.getFileName().toString());
+            boolean needsRemap = !java.nio.file.Files.exists(remappedPath);
+
+            if (!needsRemap) {
+                long origTime = java.nio.file.Files.getLastModifiedTime(jarPath).toMillis();
+                long remapTime = java.nio.file.Files.getLastModifiedTime(remappedPath).toMillis();
+                if (origTime > remapTime) {
+                    LOGGER.info("[Verg Connector] {} has changed. Re-remapping...", jarPath.getFileName());
+                    java.nio.file.Files.deleteIfExists(remappedPath);
+                    needsRemap = true;
+                }
+            }
+
+            if (needsRemap) {
+                LOGGER.info("[Verg Connector] Remapping {}...", jarPath.getFileName());
+                com.baran3575.vergconnector.remapper.JarRemapper.remapJar(jarPath, remappedPath, mappings);
+                LOGGER.info("[Verg Connector] Remapped {} -> {}", jarPath.getFileName(), remappedPath);
+            }
+
+            return remappedPath;
+        } catch (Exception e) {
+            LOGGER.error("[Verg Connector] Remapping failed for {}, using original: {}", jarPath.getFileName(), e.getMessage());
+            return jarPath;
+        }
+    }
+
+    private void runMainEntrypoints() {
+        java.util.List<net.fabricmc.loader.api.EntrypointContainer<net.fabricmc.api.ModInitializer>> mainContainers =
+            com.baran3575.vergconnector.fabric.FabricLoaderImpl.INSTANCE.getEntrypointContainers("main", net.fabricmc.api.ModInitializer.class);
+        for (var container : mainContainers) {
+            try {
+                LOGGER.info("[Verg Connector] Loading main entrypoint from mod: {}", container.getProvider().getMetadata().getId());
+                com.baran3575.vergconnector.helper.RegistryHelper.UNFROZEN.set(true);
+                container.getEntrypoint().onInitialize();
+            } catch (Exception e) {
+                LOGGER.error("[Verg Connector] Failed to initialize main entrypoint from mod: {}", container.getProvider().getMetadata().getId(), e);
+            } finally {
+                com.baran3575.vergconnector.helper.RegistryHelper.UNFROZEN.set(false);
+            }
+        }
+
+        if (net.neoforged.fml.loading.FMLEnvironment.dist == net.neoforged.api.distmarker.Dist.DEDICATED_SERVER) {
+            java.util.List<net.fabricmc.loader.api.EntrypointContainer<net.fabricmc.api.DedicatedServerModInitializer>> serverContainers =
+                com.baran3575.vergconnector.fabric.FabricLoaderImpl.INSTANCE.getEntrypointContainers("server", net.fabricmc.api.DedicatedServerModInitializer.class);
+            for (var container : serverContainers) {
+                try {
+                    LOGGER.info("[Verg Connector] Loading server entrypoint from mod: {}", container.getProvider().getMetadata().getId());
+                    com.baran3575.vergconnector.helper.RegistryHelper.UNFROZEN.set(true);
+                    container.getEntrypoint().onInitializeServer();
+                } catch (Exception e) {
+                    LOGGER.error("[Verg Connector] Failed to initialize server entrypoint from mod: {}", container.getProvider().getMetadata().getId(), e);
+                } finally {
+                    com.baran3575.vergconnector.helper.RegistryHelper.UNFROZEN.set(false);
+                }
+            }
+        }
+    }
+
+    private void printMixinConflicts() {
         java.util.List<String> conflicts = com.baran3575.vergconnector.helper.MixinConflictResolver.INSTANCE.getConflictingTargets();
         if (!conflicts.isEmpty()) {
             LOGGER.warn("[Verg Connector] ⚠ Detected mixin target conflicts across loaded Fabric mods:");

@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.baran3575.vergconnector.helper.RegistryHelper;
 
-@Mixin(value = MappedRegistry.class, priority = 500)
+@Mixin(value = MappedRegistry.class, priority = 1000)
 public class MappedRegistryMixin {
 
     @Inject(method = "validateWrite", at = @At("HEAD"), cancellable = true)
