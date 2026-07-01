@@ -1,10 +1,8 @@
 package com.baran3575.vergconnector;
 
 import java.io.IOException;
-import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Optional;
 import java.util.stream.Stream;
 import cpw.mods.jarhandling.JarContents;
 import net.neoforged.neoforgespi.ILaunchContext;
@@ -13,12 +11,15 @@ import net.neoforged.neoforgespi.locating.IModFileCandidateLocator;
 import net.neoforged.neoforgespi.locating.ModFileDiscoveryAttributes;
 import net.neoforged.neoforgespi.locating.IncompatibleFileReporting;
 import net.neoforged.fml.loading.FMLPaths;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class VergConnectorLocator implements IModFileCandidateLocator {
+    private static final Logger LOGGER = LoggerFactory.getLogger("VergConnectorLocator");
 
     @Override
     public void findCandidates(ILaunchContext context, IDiscoveryPipeline pipeline) {
-        System.out.println("[Verg Connector] Scanning mods directory for Fabric and Forge mods...");
+        LOGGER.info("Scanning mods directory for Fabric and Forge mods...");
 
         Path modsDir = FMLPaths.MODSDIR.get();
         if (!Files.exists(modsDir)) {
@@ -31,11 +32,11 @@ public class VergConnectorLocator implements IModFileCandidateLocator {
                       try {
                           processJar(path, pipeline);
                       } catch (Exception e) {
-                          System.err.println("[Verg Connector] Failed to process jar: " + path + ". Error: " + e.getMessage());
+                          LOGGER.error("Failed to process jar: {}. Error: {}", path, e.getMessage());
                       }
                   });
         } catch (IOException e) {
-            System.err.println("[Verg Connector] Failed to list mods directory: " + e.getMessage());
+            LOGGER.error("Failed to list mods directory: {}", e.getMessage());
         }
     }
 
@@ -49,7 +50,7 @@ public class VergConnectorLocator implements IModFileCandidateLocator {
         
         Path finalPath = path;
         if (isFabric) {
-            System.out.println("[Verg Connector] Found Fabric mod: " + path.getFileName());
+            LOGGER.info("Found Fabric mod: {}", path.getFileName());
             try {
                 Path mappings = com.baran3575.vergconnector.remapper.MappingManager.getMappingsFile();
                 Path cacheDir = FMLPaths.GAMEDIR.get().resolve(".vergconnector").resolve("remapped");
@@ -58,14 +59,14 @@ public class VergConnectorLocator implements IModFileCandidateLocator {
                 Path remappedPath = cacheDir.resolve(path.getFileName().toString());
                 boolean needsRemap = !Files.exists(remappedPath);
                 
-                String currentVer = "v10"; // Invalidate cache when remapping logic updates
+                String currentVer = "v10";
                 Path verFile = cacheDir.resolve(".remapper_version");
                 
                 if (!needsRemap) {
                     long origTime = Files.getLastModifiedTime(path).toMillis();
                     long remapTime = Files.getLastModifiedTime(remappedPath).toMillis();
                     if (origTime > remapTime) {
-                        System.out.println("[Verg Connector] Original mod " + path.getFileName() + " has changed. Re-remapping...");
+                        LOGGER.info("Original mod {} has changed. Re-remapping...", path.getFileName());
                         Files.deleteIfExists(remappedPath);
                         needsRemap = true;
                     }
@@ -82,7 +83,7 @@ public class VergConnectorLocator implements IModFileCandidateLocator {
                 }
                 
                 if (!versionMatch) {
-                    System.out.println("[Verg Connector] Remapper version changed or missing. Invalidating cache...");
+                    LOGGER.info("Remapper version changed or missing. Invalidating cache...");
                     try (Stream<Path> s = Files.list(cacheDir)) {
                         s.filter(p -> !p.getFileName().toString().equals(".remapper_version")).forEach(p -> {
                             try {
@@ -103,8 +104,7 @@ public class VergConnectorLocator implements IModFileCandidateLocator {
                 }
                 finalPath = remappedPath;
             } catch (Exception e) {
-                System.err.println("[Verg Connector] Failed to remap Fabric mod " + path.getFileName() + ": " + e.getMessage());
-                // Fallback to unremapped
+                LOGGER.error("Failed to remap Fabric mod {}: {}", path.getFileName(), e.getMessage());
             }
             
             cpw.mods.jarhandling.JarContents contents = com.baran3575.vergconnector.jarhandling.FabricJarContentsWrapper.createJarContents(finalPath);
