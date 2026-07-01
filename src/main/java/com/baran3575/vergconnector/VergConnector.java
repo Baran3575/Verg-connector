@@ -82,10 +82,10 @@ public class VergConnector {
                             Object instance = clazz.getDeclaredConstructor().newInstance();
                             if (instance instanceof net.fabricmc.api.ModInitializer initializer) {
                                 try {
-                                    com.baran3575.vergconnector.mixin.RegistryHelper.UNFROZEN.set(true);
+                                    com.baran3575.vergconnector.helper.RegistryHelper.UNFROZEN.set(true);
                                     initializer.onInitialize();
                                 } finally {
-                                    com.baran3575.vergconnector.mixin.RegistryHelper.UNFROZEN.set(false);
+                                    com.baran3575.vergconnector.helper.RegistryHelper.UNFROZEN.set(false);
                                 }
                                 LOGGER.info("[Verg Connector] Successfully initialized main entrypoint: {}", entrypoint);
                             }
@@ -104,10 +104,10 @@ public class VergConnector {
                                 Object instance = clazz.getDeclaredConstructor().newInstance();
                                 if (instance instanceof net.fabricmc.api.DedicatedServerModInitializer initializer) {
                                     try {
-                                        com.baran3575.vergconnector.mixin.RegistryHelper.UNFROZEN.set(true);
+                                        com.baran3575.vergconnector.helper.RegistryHelper.UNFROZEN.set(true);
                                         initializer.onInitializeServer();
                                     } finally {
-                                        com.baran3575.vergconnector.mixin.RegistryHelper.UNFROZEN.set(false);
+                                        com.baran3575.vergconnector.helper.RegistryHelper.UNFROZEN.set(false);
                                     }
                                     LOGGER.info("[Verg Connector] Successfully initialized server entrypoint: {}", entrypoint);
                                 }

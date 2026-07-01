@@ -5,6 +5,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import com.baran3575.vergconnector.helper.RegistryHelper;
 
 @Mixin(value = MappedRegistry.class, priority = 500)
 public class MappedRegistryMixin {

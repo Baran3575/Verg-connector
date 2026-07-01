@@ -204,10 +204,10 @@ public class FabricLoaderImpl implements FabricLoader {
                 Class<?> clazz = Class.forName(def.className);
                 Object obj;
                 try {
-                    com.baran3575.vergconnector.mixin.RegistryHelper.UNFROZEN.set(true);
+                    com.baran3575.vergconnector.helper.RegistryHelper.UNFROZEN.set(true);
                     obj = clazz.getDeclaredConstructor().newInstance();
                 } finally {
-                    com.baran3575.vergconnector.mixin.RegistryHelper.UNFROZEN.set(false);
+                    com.baran3575.vergconnector.helper.RegistryHelper.UNFROZEN.set(false);
                 }
                 list.add(obj);
             } catch (Exception e) {

@@ -2,7 +2,7 @@ package com.baran3575.vergconnector;
 
 import net.neoforged.bus.api.IEventBus;
 import com.baran3575.vergconnector.fabric.FabricLoaderImpl;
-import com.baran3575.vergconnector.mixin.RegistryHelper;
+import com.baran3575.vergconnector.helper.RegistryHelper;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.loader.api.EntrypointContainer;
 
