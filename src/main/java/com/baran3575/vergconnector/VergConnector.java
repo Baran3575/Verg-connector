@@ -15,6 +15,7 @@ public class VergConnector {
     public static final Logger LOGGER = LogUtils.getLogger();
     
     public VergConnector(IEventBus modEventBus, ModContainer modContainer) {
+        LOGGER.info("[Verg Connector] Mod constructor invoked — VergConnector is loading!");
         // Run Fabric mod initialization BEFORE events are registered
         initializeFabricMods();
 
