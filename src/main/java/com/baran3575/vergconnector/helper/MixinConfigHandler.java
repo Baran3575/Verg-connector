@@ -1,4 +1,4 @@
-package com.baran3575.vergconnector.mixin;
+package com.baran3575.vergconnector.helper;
 
 import com.baran3575.vergconnector.VergConnector;
 
@@ -9,24 +9,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
-/**
- * Reads mixin JSON configs from Fabric mod JARs and:
- * 1. Registers all mixin classes with MixinConflictResolver to surface conflicts early.
- * 2. Parses the actual targeted classes using ASM by reading the class bytecode.
- */
 public class MixinConfigHandler {
 
-    /**
-     * Process mixin config names referenced by a Fabric mod's fabric.mod.json.
-     *
-     * @param modId       the fabric mod id
-     * @param modFilePath path to the JAR or directory root of the mod
-     * @param mixinConfigs list of mixin config file names (e.g., "mymod.mixins.json")
-     */
     public static void processMixinConfigs(String modId, Path modFilePath, List<String> mixinConfigs) {
         for (String configName : mixinConfigs) {
             try {
-                // Try to open the config from the mod JAR's root
                 URI jarUri = modFilePath.toUri();
                 String scheme = jarUri.getScheme();
                 URI configUri;
@@ -58,13 +45,10 @@ public class MixinConfigHandler {
         allMixins.addAll(parseMixinArray(json, "server"));
 
         for (String mixinName : allMixins) {
-            // Mixin names in the JSON are relative to "package", e.g. "MixinBlock" → "com.example.mixin.MixinBlock"
             String fullName = pkg.isEmpty() ? mixinName : pkg + "." + mixinName;
-            
-            // Read target classes using ASM
+
             List<String> targets = readMixinTargets(modFilePath, fullName);
             if (targets.isEmpty()) {
-                // Fallback to registering under the mixin name itself if no targets could be parsed
                 MixinConflictResolver.INSTANCE.registerMixin(fullName, fullName, modId);
             } else {
                 for (String target : targets) {
@@ -78,10 +62,6 @@ public class MixinConfigHandler {
             configName, modId, allMixins.size());
     }
 
-    /**
-     * Reads the mixin class file from the mod path (jar or folder) and parses its @Mixin
-     * annotation using ASM to get the target classes. Bypasses classloading entirely.
-     */
     private static List<String> readMixinTargets(Path modFilePath, String mixinFullName) {
         List<String> targets = new ArrayList<>();
         try {
@@ -141,12 +121,9 @@ public class MixinConfigHandler {
                 }
             }
         } catch (Exception e) {
-            // Keep silent or debug
         }
         return targets;
     }
-
-    // ─── JSON helpers ──────────────────────────────────────────────────────────
 
     private static List<String> parseMixinArray(String json, String key) {
         List<String> list = new ArrayList<>();

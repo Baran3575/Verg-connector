@@ -59,7 +59,7 @@ public class VergConnector {
                     // ─── Mixin conflict detection ──────────────────────────────────────
                     java.util.List<String> mixinConfigs = parseTopLevelEntrypoints(jsonContent, "mixins");
                     if (!mixinConfigs.isEmpty()) {
-                        com.baran3575.vergconnector.mixin.MixinConfigHandler.processMixinConfigs(
+                        com.baran3575.vergconnector.helper.MixinConfigHandler.processMixinConfigs(
                             id, modFile.getFilePath(), mixinConfigs);
                     }
 
@@ -123,12 +123,12 @@ public class VergConnector {
         }
 
         // Print aggregated mixin conflicts
-        java.util.List<String> conflicts = com.baran3575.vergconnector.mixin.MixinConflictResolver.INSTANCE.getConflictingTargets();
+        java.util.List<String> conflicts = com.baran3575.vergconnector.helper.MixinConflictResolver.INSTANCE.getConflictingTargets();
         if (!conflicts.isEmpty()) {
             LOGGER.warn("[Verg Connector] ⚠ Detected mixin target conflicts across loaded Fabric mods:");
             for (String conflict : conflicts) {
-                java.util.List<com.baran3575.vergconnector.mixin.MixinConflictResolver.MixinEntry> entries =
-                    com.baran3575.vergconnector.mixin.MixinConflictResolver.INSTANCE.getEntriesFor(conflict);
+                java.util.List<com.baran3575.vergconnector.helper.MixinConflictResolver.MixinEntry> entries =
+                    com.baran3575.vergconnector.helper.MixinConflictResolver.INSTANCE.getEntriesFor(conflict);
                 LOGGER.warn("  - Class '{}' is targeted by multiple mixins: {}", conflict, entries);
             }
         }
