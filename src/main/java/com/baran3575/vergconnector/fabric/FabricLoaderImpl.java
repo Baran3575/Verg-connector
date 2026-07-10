@@ -201,10 +201,10 @@ public class FabricLoaderImpl implements FabricLoader {
         List<EntrypointEntry> defs = entrypointDefinitions.getOrDefault(key, List.of());
         for (EntrypointEntry def : defs) {
             try {
-                // ponytail: load from the game/transforming classloader (Jade is a real mod via the
-                // locator), not FabricLoaderImpl's defining loader, so entrypoint classes resolve.
-                ClassLoader cl = Thread.currentThread().getContextClassLoader();
-                if (cl == null) cl = FabricLoaderImpl.class.getClassLoader();
+                // ponytail: the Fabric mod is a real NeoForge mod added by the locator with its own
+                // module classloader. Load its entrypoint via that classloader (resolved from ModList
+                // by mod id), NOT the context classloader — otherwise Jade's classes are invisible.
+                ClassLoader cl = resolveClassLoader(def.provider.getMetadata().getId());
                 Class<?> clazz = Class.forName(def.className, true, cl);
                 Object obj;
                 try {
@@ -221,5 +221,27 @@ public class FabricLoaderImpl implements FabricLoader {
             }
         }
         return list;
+    }
+
+    /**
+     * Resolve the classloader for a Fabric mod. The mod is loaded as a real NeoForge mod (via
+     * VergConnectorLocator), so its classes live on its own ModFile classloader, obtainable from
+     * ModList. Falls back to the context / defining loader when not found.
+     */
+    private ClassLoader resolveClassLoader(String modId) {
+        try {
+            var modFileInfo = net.neoforged.fml.ModList.get().getModFileById(modId);
+            if (modFileInfo != null) {
+                var modFile = modFileInfo.getFile();
+                if (modFile != null) {
+                    ClassLoader cl = modFile.getClassLoader();
+                    if (cl != null) return cl;
+                }
+            }
+        } catch (Exception ignored) {
+            // fall through to fallback below
+        }
+        ClassLoader ctx = Thread.currentThread().getContextClassLoader();
+        return ctx != null ? ctx : FabricLoaderImpl.class.getClassLoader();
     }
 }
