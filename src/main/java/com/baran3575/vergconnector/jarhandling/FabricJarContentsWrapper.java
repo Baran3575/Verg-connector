@@ -1,6 +1,7 @@
 package com.baran3575.vergconnector.jarhandling;
 
 import cpw.mods.jarhandling.JarContents;
+import cpw.mods.jarhandling.JarContentsBuilder;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -70,12 +71,11 @@ public class FabricJarContentsWrapper {
             zos.closeEntry();
         }
 
-        // NeoForge 21.1.234: JarContents is an interface implemented by SecureJar.
-        // The only supported way to obtain a real, FML-acceptable JarContents is via
-        // SecureJar.from(Path). The previously used JarContentsBuilder().paths(...).build()
-        // produced an object FML's SecureJar.from() later failed to cast to its internal
-        // JarContentsImpl (ClassCastException -> Jade rejected as a mod).
-        return cpw.mods.jarhandling.SecureJar.from(combined);
+        // NeoForge 21.1.234: a real JarContents is produced by JarContentsBuilder.
+        // The combined jar carries the remapped Fabric classes plus the generated
+        // META-INF/neoforge.mods.toml as its only extra entry, so FML's reader accepts
+        // the mod (the earlier overlay approach failed with a cast/ClassCastException).
+        return new JarContentsBuilder().paths(combined).build();
     }
 
     private static String generateVirtualToml(String jsonContent) throws IOException {
