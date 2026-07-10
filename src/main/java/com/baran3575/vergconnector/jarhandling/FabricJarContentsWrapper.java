@@ -70,7 +70,12 @@ public class FabricJarContentsWrapper {
             zos.closeEntry();
         }
 
-        return JarContents.ofPath(combined);
+        // NeoForge 21.1.234: JarContents is an interface implemented by SecureJar.
+        // The only supported way to obtain a real, FML-acceptable JarContents is via
+        // SecureJar.from(Path). The previously used JarContentsBuilder().paths(...).build()
+        // produced an object FML's SecureJar.from() later failed to cast to its internal
+        // JarContentsImpl (ClassCastException -> Jade rejected as a mod).
+        return cpw.mods.jarhandling.SecureJar.from(combined);
     }
 
     private static String generateVirtualToml(String jsonContent) throws IOException {

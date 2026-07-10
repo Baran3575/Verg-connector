@@ -233,8 +233,8 @@ public class FabricLoaderImpl implements FabricLoader {
         try {
             var modFileInfo = net.neoforged.fml.ModList.get().getModFileById(modId);
             if (modFileInfo != null) {
-                var jarContents = modFileInfo.getFile().getContents();
-                // The remapped Fabric jar is the primary content root of the mod file.
+                var jarContents = modFileInfo.getFile().getSecureJar();
+                // SecureJar implements JarContents; the remapped Fabric jar is its primary path.
                 if (jarContents != null) {
                     Path jarPath = jarContents.getPrimaryPath();
                     URL url = jarPath.toUri().toURL();
