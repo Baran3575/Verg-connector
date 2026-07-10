@@ -1,6 +1,7 @@
 package com.baran3575.vergconnector.fabric;
 
 import java.nio.file.Path;
+import java.net.URL;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.Map;
@@ -230,9 +231,22 @@ public class FabricLoaderImpl implements FabricLoader {
      */
     private ClassLoader resolveClassLoader(String modId) {
         try {
-            return net.minecraft.core.Registry.class.getClassLoader();
+            var modFileInfo = net.neoforged.fml.ModList.get().getModFileById(modId);
+            if (modFileInfo != null) {
+                var jarContents = modFileInfo.getFile().getContents();
+                // The remapped Fabric jar is the primary content root of the mod file.
+                if (jarContents != null) {
+                    Path jarPath = jarContents.getPrimaryPath();
+                    URL url = jarPath.toUri().toURL();
+                    ClassLoader parent = Thread.currentThread().getContextClassLoader();
+                    if (parent == null) {
+                        parent = net.minecraft.core.Registry.class.getClassLoader();
+                    }
+                    return new java.net.URLClassLoader(new URL[]{url}, parent);
+                }
+            }
         } catch (Exception ignored) {
-            // fall through
+            // fall through to fallback
         }
         ClassLoader ctx = Thread.currentThread().getContextClassLoader();
         return ctx != null ? ctx : FabricLoaderImpl.class.getClassLoader();

@@ -1,7 +1,6 @@
 package com.baran3575.vergconnector.jarhandling;
 
 import cpw.mods.jarhandling.JarContents;
-import cpw.mods.jarhandling.JarContentsBuilder;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -14,6 +13,7 @@ import java.util.Optional;
 import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 /**
@@ -25,9 +25,9 @@ import java.util.zip.ZipOutputStream;
  */
 public class FabricJarContentsWrapper {
 
-    public static JarContents createJarContents(Path path) throws IOException {
+    public static JarContents createJarContents(Path remappedJar) throws IOException {
         String jsonContent = null;
-        try (ZipFile zip = new ZipFile(path.toFile())) {
+        try (ZipFile zip = new ZipFile(remappedJar.toFile())) {
             ZipEntry entry = zip.getEntry("fabric.mod.json");
             if (entry == null) {
                 return null;
@@ -39,17 +39,38 @@ public class FabricJarContentsWrapper {
 
         String tomlString = generateVirtualToml(jsonContent);
 
-        Path tempZip = Files.createTempFile("vergconn_meta_", ".jar");
-        tempZip.toFile().deleteOnExit();
-        try (ZipOutputStream zos = new ZipOutputStream(Files.newOutputStream(tempZip))) {
-            zos.putNextEntry(new ZipEntry("META-INF/"));
-            zos.closeEntry();
+        // Build a SINGLE real jar that contains the remapped mod's classes AND a generated
+        // META-INF/neoforge.mods.toml. SecureJar.from() (called by FML's reader) requires the
+        // JarContents to be produced by a standard JarFileContents, so we must ship one physical
+        // file rather than overlaying a separate meta-jar. We copy the remapped jar verbatim and
+        // inject the toml as the only extra entry.
+        Path combined = Files.createTempFile("vergconn_combined_", ".jar");
+        combined.toFile().deleteOnExit();
+        try (ZipInputStream zin = new ZipInputStream(Files.newInputStream(remappedJar));
+             ZipOutputStream zos = new ZipOutputStream(Files.newOutputStream(combined))) {
+            ZipEntry in;
+            while ((in = zin.getNextEntry()) != null) {
+                String name = in.getName();
+                if (name.equals("META-INF/neoforge.mods.toml")) {
+                    continue;
+                }
+                ZipEntry out = new ZipEntry(name);
+                if (in.getMethod() == ZipEntry.STORED) {
+                    out.setMethod(ZipEntry.STORED);
+                    out.setSize(in.getSize());
+                    out.setCompressedSize(in.getCompressedSize());
+                    out.setCrc(in.getCrc());
+                }
+                zos.putNextEntry(out);
+                zin.transferTo(zos);
+                zos.closeEntry();
+            }
             zos.putNextEntry(new ZipEntry("META-INF/neoforge.mods.toml"));
             zos.write(tomlString.getBytes(StandardCharsets.UTF_8));
             zos.closeEntry();
         }
 
-        return new JarContentsBuilder().paths(tempZip, path).build();
+        return JarContents.ofPath(combined);
     }
 
     private static String generateVirtualToml(String jsonContent) throws IOException {

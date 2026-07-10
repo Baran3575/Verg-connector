@@ -58,13 +58,14 @@ public class MappingManager {
             System.out.println("[Verg Connector] Merging mappings using mapping-io...");
             MemoryMappingTree tree = new MemoryMappingTree();
             
-            // Read Intermediary
+            // Read Intermediary (namespaces: namespace + "intermediary")
             MappingReader.read(intermediaryFile, tree);
 
-            // Read Mojmap and merge. 
-            // ProGuard reader produces `source` and `target` default namespaces.
-            // We need `target` to map to `official` and `source` to map to `named`.
-            // Then we can switch the source namespace to `official`.
+            // Read Mojmap and merge.
+            // The ProGuard reader produces the default namespaces "source" (intermediary) and
+            // "target" (official). We first switch "target" -> "official" so the Mojang side
+            // lives under "official", then rename "source" -> "named" so the resulting chain is
+            // intermediary (from the intermediary file) -> named -> official.
             MappingReader.read(mojmapFile, new MappingNsRenamer(new MappingSourceNsSwitch(tree, "official", true), Map.of("source", "named", "target", "official")));
             
             try (MappingWriter writer = MappingWriter.create(mappingFile, MappingFormat.TINY_2_FILE)) {
