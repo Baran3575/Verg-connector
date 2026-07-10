@@ -36,7 +36,13 @@ public class ASMStringReplacer {
                 List<Path> files = Files.walk(root)
                         .filter(p -> {
                             String s = p.toString();
-                            return s.endsWith(".class") || s.endsWith(".json");
+                            if (s.endsWith(".class")) return true;
+                            if (!s.endsWith(".json")) return false;
+                            // ponytail: never string-remap mixin configs/refmaps. TinyRemapper's
+                            // MixinExtension already rewrote them to the target namespace; re-mangling
+                            // them (esp. the refmap keys) corrupts mixin application on NeoForge.
+                            if (s.contains("mixins.json") || s.contains("refmap.json")) return false;
+                            return true;
                         })
                         .collect(java.util.stream.Collectors.toList());
                 
