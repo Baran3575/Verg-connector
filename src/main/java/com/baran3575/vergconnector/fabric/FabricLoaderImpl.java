@@ -230,16 +230,9 @@ public class FabricLoaderImpl implements FabricLoader {
      */
     private ClassLoader resolveClassLoader(String modId) {
         try {
-            var modFileInfo = net.neoforged.fml.ModList.get().getModFileById(modId);
-            if (modFileInfo != null) {
-                var modFile = modFileInfo.getFile();
-                if (modFile != null) {
-                    ClassLoader cl = modFile.getClassLoader();
-                    if (cl != null) return cl;
-                }
-            }
+            return net.minecraft.core.Registry.class.getClassLoader();
         } catch (Exception ignored) {
-            // fall through to fallback below
+            // fall through
         }
         ClassLoader ctx = Thread.currentThread().getContextClassLoader();
         return ctx != null ? ctx : FabricLoaderImpl.class.getClassLoader();
