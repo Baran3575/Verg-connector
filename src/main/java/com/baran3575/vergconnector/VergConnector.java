@@ -101,16 +101,21 @@ public class VergConnector {
     }
 
     private void registerMixinConfig(String configName, java.nio.file.Path jarPath) {
+        // ponytail: DO NOT call Mixins.addConfiguration here. On NeoForge 1.21.1 the jar is not on
+        // the app/system classloader (JPMS module loader, not URLClassLoader), so the mixin JSON
+        // resource can't be read -> IllegalArgumentException -> MixinInitialisationError -> mod dies.
+        // Mixins are already declared as [[mixins]] in the virtual neoforge.mods.toml
+        // (FabricJarContentsWrapper), so SpongeMixin loads them from Jade's own mod resources.
         try {
             String json = readZipEntry(jarPath, configName);
             if (json == null) {
                 LOGGER.debug("[Verg Connector] Mixin config '{}' not found in {}", configName, jarPath.getFileName());
                 return;
             }
-            LOGGER.info("[Verg Connector] Registering mixin config: {} from {}", configName, jarPath.getFileName());
-            org.spongepowered.asm.mixin.Mixins.addConfiguration(configName);
+            LOGGER.info("[Verg Connector] Mixin config '{}' from {} will be loaded via virtual TOML [[mixins]]",
+                configName, jarPath.getFileName());
         } catch (Exception e) {
-            LOGGER.error("[Verg Connector] Failed to register mixin config '{}': {}", configName, e.getMessage());
+            LOGGER.error("[Verg Connector] Failed to read mixin config '{}': {}", configName, e.getMessage());
         }
     }
 

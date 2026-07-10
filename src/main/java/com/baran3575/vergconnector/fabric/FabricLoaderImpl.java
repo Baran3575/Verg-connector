@@ -201,7 +201,11 @@ public class FabricLoaderImpl implements FabricLoader {
         List<EntrypointEntry> defs = entrypointDefinitions.getOrDefault(key, List.of());
         for (EntrypointEntry def : defs) {
             try {
-                Class<?> clazz = Class.forName(def.className);
+                // ponytail: load from the game/transforming classloader (Jade is a real mod via the
+                // locator), not FabricLoaderImpl's defining loader, so entrypoint classes resolve.
+                ClassLoader cl = Thread.currentThread().getContextClassLoader();
+                if (cl == null) cl = FabricLoaderImpl.class.getClassLoader();
+                Class<?> clazz = Class.forName(def.className, true, cl);
                 Object obj;
                 try {
                     com.baran3575.vergconnector.helper.RegistryHelper.UNFROZEN.set(true);
